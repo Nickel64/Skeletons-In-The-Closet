@@ -1,5 +1,7 @@
 package View;
 
+import Utils.Resources;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Observable;
@@ -10,13 +12,12 @@ import java.util.Observer;
  */
 public class View extends JComponent implements Observer{
 
-    private final String TITLE = "Skeletons In The Closet";
-
     public View() {
-        JFrame f = new JFrame(TITLE);
+        JFrame f = new JFrame(Resources.TITLE);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
 
+        //TODO things and stuff
 
         f.pack();
         f.setVisible(true);
@@ -37,12 +38,31 @@ public class View extends JComponent implements Observer{
 
     }
 
-    //drawUI
-        ////drawCurrentRoom
-            //drawRoom
-                //drawTile
-                //drawEntity
-                    //draw entity.getTiles
-    //animateEntity
+    public void drawInterface(){
 
+    }
+
+    public void showMenu(){
+
+    }
+
+    public void drawWorld(){
+
+    }
+
+    public void drawRoom(){
+
+    }
+
+    public void drawTile(){
+
+    }
+
+    public void drawEntity(){
+
+    }
+
+    public void animateEntity(){
+
+    }
 }

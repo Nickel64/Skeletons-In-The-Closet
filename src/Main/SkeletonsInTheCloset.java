@@ -1,4 +1,4 @@
-package SkeletonsInTheCloset;
+package Main;
 import View.*;
 
 public class SkeletonsInTheCloset {
