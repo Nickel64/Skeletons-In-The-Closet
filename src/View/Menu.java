@@ -3,7 +3,11 @@ package View;
 import javax.swing.*;
 
 /**
- * Created by nicks on 18/09/2017.
+ * The game 'pause menu'
+ * Still undecided how this is going to be implemented
+ *
+ * Created: 18/08/17
+ * @author Nicholas Snellgrove
  */
-public class Menu extends JFrame {
+public class Menu extends JComponent {
 }
