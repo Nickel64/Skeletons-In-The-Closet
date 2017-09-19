@@ -1,11 +1,12 @@
 package Entities;
 
 import java.awt.*;
-
+import java.util.Observable;
 /**
  * Created by Shlomoburg on 19/09/2017.
  */
 public class Player implements Entity{
+    private Direction dir;
     private Image sprite; //the visual representation of the unit
     private int health; // how much health the unit has
     private int damage; // how much damage the unit deals
@@ -23,7 +24,11 @@ public class Player implements Entity{
         }
         return false;
     }
-    public void attack(){
-
+    public void attack(Entity entity){
+        entity.damaged(this.damage);
     }
+    public void damaged(int damageAmount){
+        this.health = this.health - damageAmount;
+    }
+    public boolean inAggroRange(){return false;}
 }
