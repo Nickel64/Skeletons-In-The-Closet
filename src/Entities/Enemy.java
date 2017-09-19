@@ -6,6 +6,7 @@ import java.awt.*;
  * Created by Shlomoburg on 19/09/2017.
  */
 public class Enemy implements Entity {
+    private Direction dir;
     private Image sprite; //the visual representation of the unit
     private int health; // how much health the unit has
     private int damage; // how much damage the unit deals
@@ -29,10 +30,13 @@ public class Enemy implements Entity {
         }
         return false;
     }
-    public void attack(){
+    public void attack(Entity entity){
 
     }
     public void move(){
+
+    }
+    public void damaged(int damageAmount){
 
     }
 }

@@ -5,6 +5,15 @@ package Entities;
  */
 public interface Entity {
     enum Direction{Up,Down,Left,Right}
+    public boolean inAggroRange();
+    public boolean isDead();
+    public void attack(Entity entity);
+    public void damaged(int damage);
 
+   // damaged
+   // turn
+    //move
+   // chooseaction
+    //attack
 
 }
