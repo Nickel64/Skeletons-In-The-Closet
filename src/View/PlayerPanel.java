@@ -1,5 +1,7 @@
 package View;
 
+import Entities.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Observable;
@@ -14,10 +16,10 @@ import java.util.Observer;
  */
 public class PlayerPanel extends JComponent implements Observer {
 
-    //Player player;
+    Player player;
 
-    public PlayerPanel() {
-
+    public PlayerPanel(Player player) {
+        this.player = player;
     }
 
     @Override

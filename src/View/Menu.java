@@ -10,4 +10,8 @@ import javax.swing.*;
  * @author Nicholas Snellgrove
  */
 public class Menu extends JComponent {
+
+    public Menu(){
+
+    }
 }

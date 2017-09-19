@@ -2,7 +2,8 @@ package View;
 
 import Map.*;
 import Utils.*;
-import com.sun.java.swing.plaf.windows.WindowsRadioButtonMenuItemUI;
+import Entities.*;
+import Controller.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,10 +18,19 @@ import java.util.Observer;
  */
 public class View extends JComponent implements Observer{
 
+    PlayerPanel playerStats;
+    Menu menu;
+
+    Controller controller;
+
     public View() {
         JFrame f = new JFrame(Resources.TITLE);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
+
+        playerStats = new PlayerPanel(null);
+        menu = new Menu();
+
 
         //TODO things and stuff
 
@@ -103,7 +113,7 @@ public class View extends JComponent implements Observer{
      * @param g the graphics2D object to draw to
      */
 
-    public void drawEntity(Graphics2D g){
+    public void drawEntity(Graphics2D g, Entity e){
 
     }
 
@@ -114,7 +124,7 @@ public class View extends JComponent implements Observer{
      * @param g the graphics2D object to draw to
      */
 
-    public void animateEntity(Graphics2D g){
+    public void animateEntity(Graphics2D g, Entity e){
 
     }
 
@@ -135,6 +145,10 @@ public class View extends JComponent implements Observer{
      * @param g the graphics2D object to draw to
      */
     public void showScene(Graphics2D g){
+
+    }
+
+    public void showText(Graphics2D g, Entity e){
 
     }
 }
