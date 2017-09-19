@@ -1,4 +1,4 @@
-package Map;
+package Model;
 
 /**
  * Map containing all rooms
@@ -6,12 +6,12 @@ package Map;
  * Created: 19/9/17
  * @author Balgmi Nam
  */
-public class Map {
+public class Model {
 
     private static final String fileName = "map.txt";   //will be using txt to create layout of world
-//    private Map<String, Room> map;  //map of rooms for eay access when moving room to room
+//    private Map<String, Room> map;  //map of room names and rooms for easy access when moving room to room
 
-    public Map() {}
+    public Model() {}
 
     public void initialise() {
 //        map = new HashMap<String, Room>();
