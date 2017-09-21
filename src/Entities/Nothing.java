@@ -9,6 +9,9 @@ public class Nothing implements Entity {
     public void damaged(int damage){}
     public void attack(Entity entity){}
 
+    public String toString() {
+        return ".";
+    }
     //update view, then view calls model;
 
 }

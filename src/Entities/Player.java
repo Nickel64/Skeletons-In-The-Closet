@@ -31,4 +31,8 @@ public class Player implements Entity{
         this.health = this.health - damageAmount;
     }
     public boolean inAggroRange(){return false;}
+
+    public String toString() {
+        return "+";
+    }
 }

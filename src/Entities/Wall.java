@@ -6,4 +6,14 @@ package Entities;
 public class Wall implements Entity {
     public boolean inAggroRange(){throw new Error();}
     public boolean isDead(){throw new Error();}
+
+    @Override
+    public void attack(Entity entity) {throw new Error();}
+
+    @Override
+    public void damaged(int damage) {throw new Error();}
+
+    public String toString() {
+        return "W";
+    }
 }

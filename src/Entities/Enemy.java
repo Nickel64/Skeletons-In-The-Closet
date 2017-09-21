@@ -39,4 +39,8 @@ public class Enemy implements Entity {
     public void damaged(int damageAmount){
 
     }
+
+    public String toString() {
+        return "E";
+    }
 }
