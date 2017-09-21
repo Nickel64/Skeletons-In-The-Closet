@@ -1,6 +1,7 @@
 package Controller;
 
 import View.*;
+import Model.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -14,10 +15,11 @@ import java.awt.event.MouseListener;
 
 public class Controller implements KeyListener, MouseListener {
     private View view;
+    private Model model;
 
-    public Controller(View view) {//, Model model) {}
+    public Controller(View view, Model model) {
         this.view = view;
-        //this.model = model;
+        this.model = model;
 
         //initialise timer loop, pinging model each iteration
     }
