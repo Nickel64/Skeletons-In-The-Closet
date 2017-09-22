@@ -13,6 +13,11 @@ public class Wall implements Entity {
     @Override
     public void damaged(int damage) {throw new Error();}
 
+    @Override
+    public boolean canMove() {
+        return false;
+    }
+
     public String toString() {
         return "W";
     }

@@ -10,6 +10,8 @@ public interface Entity {
     public void attack(Entity entity);
     public void damaged(int damage);
 
+    public boolean canMove();
+
    // damaged
    // turn
     //move

@@ -2,6 +2,8 @@ package Map;
 
 import Entities.*;
 import Entities.Entity;
+import Entities.Entity.Direction;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -28,6 +30,7 @@ public class Room {
      * @return whether or not this Room is the current room
      */
     public boolean initialise(Scanner sc) {
+        cleared = false;
         boolean playerFound = false;
         entities = new ArrayList<Entity>();
         if(!sc.hasNextInt()) throw new Error("1No array size, instead: "+sc.next());
@@ -85,7 +88,7 @@ public class Room {
     /**
      * @return whether or not the room is cleared and player can progress
      */
-    public boolean isRoomCleared() {return false;}
+    public boolean isRoomCleared() {return cleared;}
 
     /**
      *
@@ -108,17 +111,15 @@ public class Room {
         return entities;
     }
 
+    public boolean containsEntity(Entity entity) {
+        return entities.contains(entity);
+    }
+
     public void removeEntity(Entity entity) {
         entities.remove(entity);
     }
 
-    public void moveEntity(Entity entity, Entity.Direction direction) {
-        if (!entities.contains(entity)) {
-            System.out.println("ERROR: Entity not available to move");
-            return;
-        }
-
-        //WILL HAVE TO ITERATE THROUGH ARRAY TO FIND TILE WITH CORRECT ENT
+    public void moveEntity(Entity entity, Direction direction) {
         int x = -1;
         int y = -1;
         for(int i = 0; i < layout.length; i++) {
@@ -129,5 +130,27 @@ public class Room {
                 }
             }
         }
+        if(y == -1 || x == -1) throw new Error("Point of entity has not been found");
+        int destX = y;
+        int destY = x;
+        switch (direction) {
+            case Up:
+                if(y-1 < 0) throw new Error("Cannot move entity "+direction.name());
+                destY--;
+            case Right:
+                if(x+1 > layout.length) throw new Error("Cannot move entity "+direction.name());
+                destX++;
+            case Left:
+                if(x-1 < 0) throw new Error("Cannot move entity "+direction.name());
+                destX--;
+            case Down:
+                if(y+1 < layout[x].length) throw new Error("Cannot move entity "+direction.name());
+                destY++;
+        }
+        if(destX == -1 || destY == -1) throw new Error("Unknown direction: "+ direction.name());
+        if(!layout[destX][destY].canMoveOnto()) throw new Error("Cannot move onto tile in "+direction.name());
+        Entity temp = layout[x][y].getEntity();
+        layout[x][y].setEntity(layout[destX][destY].getEntity());
+        layout[destX][destY].setEntity(temp);
     }
 }

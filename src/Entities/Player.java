@@ -32,6 +32,11 @@ public class Player implements Entity{
     }
     public boolean inAggroRange(){return false;}
 
+    @Override
+    public boolean canMove() {
+        return true;
+    }
+
     public String toString() {
         return "+";
     }

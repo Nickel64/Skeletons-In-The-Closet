@@ -40,6 +40,12 @@ public class Tile {
     public boolean canMoveOnto() {return false;}
 
     /**
+     * Returns whether or not an entity can mov
+     * @return whether an entity is able to move
+     */
+    public boolean canMove() {return false;}
+
+    /**
      * Returns whether or not tile is occupied
      * @return whether this tile is occupied
      */

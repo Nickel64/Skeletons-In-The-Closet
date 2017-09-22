@@ -40,6 +40,11 @@ public class Enemy implements Entity {
 
     }
 
+    @Override
+    public boolean canMove() {
+        return true;
+    }
+
     public String toString() {
         return "E";
     }

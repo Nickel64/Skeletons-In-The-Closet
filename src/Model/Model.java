@@ -1,11 +1,14 @@
 package Model;
 
+import Entities.Entity;
+import Entities.Entity.Direction;
+import Map.Room;
+
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
-
-import Entities.*;
-import Map.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Map containing all rooms
@@ -28,16 +31,17 @@ public class Model {
 
     public void initialise() {
         map = new HashMap<String, Room>();
-        currentRoom = null;
         try {
             File f = new File(fileName);
             if(!f.canRead()) throw new Error("file cannot read");
             Scanner sc = new Scanner(f);
             while(sc.hasNext()) {
                 String roomName = sc.next();
-                System.out.println("room: "+roomName);
-                Room currentRoom = new Room();
-                currentRoom.initialise(sc);
+                Room curRoom = new Room();
+                if(curRoom.initialise(sc)) {
+                    currentRoom = curRoom;
+                }
+                map.put(roomName, curRoom);
             }
         } catch (FileNotFoundException e) {
             System.out.println("File scan error! "+e.getMessage());
@@ -49,14 +53,18 @@ public class Model {
      * @param entity: object to be moved
      * @param dir: direction to be moved in
      */
-    public void moveEntity(Entity entity, Entity.Direction dir) {
+    public void moveEntity(Entity entity, Direction dir) {
+        //check entity
+        if(!currentRoom.containsEntity(entity)) throw new Error("Cannot move a nonexistent entity");
+        if(!entity.canMove()) throw new Error("Cannot move an unmovable entity");
+        currentRoom.moveEntity(entity, dir);
     }
 
 //    /**
-//     * Kills/destroys entity given from the current Room that player is in
+//     * Removes entity given from the current Room that player is in
 //     * @param entity: object to be killed/destroyed
 //     */
-    public void killEntity(Entity entity) {}
+    public void removeEntity(Entity entity) {}
 
     /**
      * prints room, text based
