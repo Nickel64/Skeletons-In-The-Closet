@@ -33,17 +33,12 @@ public class Tile {
         return imgName;
     }
 
-    /**
-     * Returns whether or not an entity can move onto this tile
-     * @return whether an entity is able to move to this tile
-     */
-    public boolean canMoveOnto() {return false;}
-
-    /**
-     * Returns whether or not an entity can mov
-     * @return whether an entity is able to move
-     */
-    public boolean canMove() {return false;}
+    //SHOULD BE IN ENTITY?
+//    /**
+//     * Returns whether or not an entity can move onto this tile
+//     * @return whether an entity is able to move to this tile
+//     */
+//    public boolean canMoveOnto() {return false;}
 
     /**
      * Returns whether or not tile is occupied
