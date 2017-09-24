@@ -39,4 +39,13 @@ public class Enemy extends Observable implements Entity {
     public void damaged(int damageAmount){
 
     }
+
+    @Override
+    public boolean canMove() {
+        return true;
+    }
+
+    public String toString() {
+        return "E";
+    }
 }

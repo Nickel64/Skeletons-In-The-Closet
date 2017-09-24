@@ -31,4 +31,13 @@ public class Player extends Observable implements Entity {
         this.health = this.health - damageAmount;
     }
     public boolean inAggroRange(){return false;}
+
+    @Override
+    public boolean canMove() {
+        return true;
+    }
+
+    public String toString() {
+        return "+";
+    }
 }

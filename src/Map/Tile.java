@@ -1,4 +1,6 @@
 package Map;
+import Entities.*;
+import Map.*;
 
 /**
  * Tile containing information on entities occupying it
@@ -9,9 +11,11 @@ package Map;
 public class Tile {
 
     private String imgName;     //image file name for the given tile
-//    private Entity entity;
+    private Entity entity;
 
-    public Tile() {}
+    public Tile(Entity e) {
+        entity = e;
+    }
 
     /**
      * Sets the tiles image file to the file name given
@@ -29,11 +33,12 @@ public class Tile {
         return imgName;
     }
 
-    /**
-     * Returns whether or not an entity can move onto this tile
-     * @return whether an entity is able to move to this tile
-     */
-    public boolean canMoveOnto() {return false;}
+    //SHOULD BE IN ENTITY?
+//    /**
+//     * Returns whether or not an entity can move onto this tile
+//     * @return whether an entity is able to move to this tile
+//     */
+//    public boolean canMoveOnto() {return false;}
 
     /**
      * Returns whether or not tile is occupied
@@ -43,19 +48,27 @@ public class Tile {
         return false;
     }
 
-//    /**
-//     * Returns the entity that occupies the tile
-//     * @return the entity that occupies this tile
-//     */
-//    public Entity getEntity() {
-//        return entity;
-//    }
+    public boolean isEntity(Entity entity) {
+        return (entity == this.entity);
+    }
 
-//    /**
-//     * Sets the tile to contain the given entity if tile is empty
-//     * @param entity: Object to set as occupying tile
-//     */
-//    public void setEntity(Entity entity) {
-//        this.entity = entity;
-//    }
+    /**
+     * Returns the entity that occupies the tile
+     * @return the entity that occupies this tile
+     */
+    public Entity getEntity() {
+        return entity;
+    }
+
+    /**
+     * Sets the tile to contain the given entity if tile is empty
+     * @param entity: Object to set as occupying tile
+     */
+    public void setEntity(Entity entity) {
+        this.entity = entity;
+    }
+
+    public String toString() {
+        return entity.toString();
+    }
 }

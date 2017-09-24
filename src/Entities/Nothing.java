@@ -9,6 +9,14 @@ public class Nothing implements Entity {
     public void damaged(int damage){}
     public void attack(Entity entity){}
 
+    @Override
+    public boolean canMove() {
+        return false;
+    }
+
+    public String toString() {
+        return ".";
+    }
     //update view, then view calls model;
 
 }
