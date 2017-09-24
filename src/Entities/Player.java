@@ -8,11 +8,18 @@ import java.util.Observable;
 public class Player extends Observable implements Entity {
     private Direction dir;
     private Image sprite; //the visual representation of the unit
-    private int health; // how much health the unit has
+    private int health = 100; // how much health the unit has
+    private int special = 100;
+    private int exp = 0;
+    private int level;
     private int damage; // how much damage the unit deals
     private int speed; // how fast the unit can move
 
     public Player(int health, int damage, int speed){
+
+    }
+
+    public Player(){
 
     }
     public int getHealth(){return health;}

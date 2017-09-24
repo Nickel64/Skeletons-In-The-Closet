@@ -44,8 +44,8 @@ public class Tile {
      * Returns whether or not tile is occupied
      * @return whether this tile is occupied
      */
-    public boolean hasEntity() {
-        return false;
+    public boolean canMoveOnto() {
+        return entity == null;
     }
 
     public boolean isEntity(Entity entity) {
