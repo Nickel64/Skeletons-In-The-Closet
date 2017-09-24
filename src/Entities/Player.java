@@ -5,7 +5,7 @@ import java.util.Observable;
 /**
  * Created by Shlomoburg on 19/09/2017.
  */
-public class Player implements Entity{
+public class Player extends Observable implements Entity {
     private Direction dir;
     private Image sprite; //the visual representation of the unit
     private int health; // how much health the unit has

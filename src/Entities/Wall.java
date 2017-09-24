@@ -6,4 +6,6 @@ package Entities;
 public class Wall implements Entity {
     public boolean inAggroRange(){throw new Error();}
     public boolean isDead(){throw new Error();}
+    public void damaged(int damage){}
+    public void attack(Entity entity){}
 }

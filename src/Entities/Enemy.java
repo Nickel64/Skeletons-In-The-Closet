@@ -1,11 +1,11 @@
 package Entities;
 
 import java.awt.*;
-
+import java.util.Observable;
 /**
  * Created by Shlomoburg on 19/09/2017.
  */
-public class Enemy implements Entity {
+public class Enemy extends Observable implements Entity {
     private Direction dir;
     private Image sprite; //the visual representation of the unit
     private int health; // how much health the unit has
