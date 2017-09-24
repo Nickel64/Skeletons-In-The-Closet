@@ -12,7 +12,9 @@ public class Player extends Observable implements Entity {
     private int damage; // how much damage the unit deals
     private int speed; // how fast the unit can move
 
+    public Player(int health, int damage, int speed){
 
+    }
     public int getHealth(){return health;}
     public int getDamage(){return damage;}
     public int getSpeed(){return speed;}

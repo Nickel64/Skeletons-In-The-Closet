@@ -17,6 +17,14 @@ public class Enemy extends Observable implements Entity {
     public int getDamage(){return damage;}
     public int getSpeed(){return speed;}
     public Image getSprite(){return sprite;}
+
+    //name will determine the sprite or something
+    public Enemy(String name, int health, int damage, int speed){
+
+    }
+    public Enemy(){
+
+    }
     /**
      * Calculates whether the enemy is in range to attack the player
      * @return inRange
@@ -48,4 +56,5 @@ public class Enemy extends Observable implements Entity {
     public String toString() {
         return "E";
     }
+
 }
