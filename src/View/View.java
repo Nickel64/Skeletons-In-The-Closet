@@ -6,12 +6,9 @@ import Utils.*;
 import Entities.*;
 import Controller.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
-import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -36,19 +33,20 @@ public class View extends JComponent implements Observer{
     JButton quitBtn = new JButton("Quit");
 
     //control buttons
-    JButton up = new JButton("Up");
-    JButton left = new JButton("Left");
-    JButton down = new JButton("Down");
-    JButton right = new JButton("Right");
+    JButton up = new JButton();
+    JButton left = new JButton();
+    JButton down = new JButton();
+    JButton right = new JButton();
     JButton attack = new JButton();
     JButton AoE = new JButton();
     JButton defend = new JButton();
 
-    //MVC vields
+    //MVC fields
     Controller controller;
-    Model model;
+    Model model = new Model();
 
     public View() {
+
         //setting up the frame
         frame = new JFrame(Resources.TITLE);
         frame.setLayout(new BorderLayout());
@@ -57,44 +55,67 @@ public class View extends JComponent implements Observer{
         frame.setFocusable(true);
 
         //setting up the other panels
-        playerStats = new PlayerPanel();
+        playerStats = new PlayerPanel(frame);
+        menu = new Menu(frame);
+
+        //setting up the movement buttons
+        up.setIcon(new ImageIcon(Resources.getImage("up")));
+        up.setBackground(Color.black);
+        down.setIcon(new ImageIcon(Resources.getImage("down")));
+        down.setBackground(Color.black);
+        left.setIcon(new ImageIcon(Resources.getImage("left")));
+        left.setBackground(Color.black);
+        right.setIcon(new ImageIcon(Resources.getImage("right")));
+        right.setBackground(Color.black);
 
         //setting up the action buttons
-        try {
-            attack.setIcon(new ImageIcon(ImageIO.read(Resources.class.getResource("ImgResources/crossed-swords.png"))));
-            attack.setBackground(Color.black);
-            AoE.setIcon(new ImageIcon(ImageIO.read(Resources.class.getResource("ImgResources/cycle.png"))));
-            AoE.setBackground(Color.black);
-            defend.setIcon(new ImageIcon(ImageIO.read(Resources.class.getResource("ImgResources/vibrating-shield.png"))));
-            defend.setBackground(Color.black);
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
+        attack.setIcon(new ImageIcon(Resources.getImage("attack")));
+        attack.setBackground(Color.black);
+        AoE.setIcon(new ImageIcon(Resources.getImage("aoe")));
+        AoE.setBackground(Color.black);
+        defend.setIcon(new ImageIcon(Resources.getImage("defend")));
+        defend.setBackground(Color.black);
 
 
         //Setting up the gridBagLayout
         GridBagConstraints c = new GridBagConstraints();
 
 
-        buttonPanel = new JPanel(new GridBagLayout());
-        buttonPanel.add(up);
-        buttonPanel.add(down);
-        buttonPanel.add(left);
-        buttonPanel.add(right);
+        buttonPanel = new JPanel();
+        buttonPanel.setBackground(Color.BLACK);
+        JPanel movePanel = new JPanel(new GridBagLayout());
+        movePanel.setBackground(Color.BLACK);
+        buttonPanel.add(movePanel);
+
+
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 0.5;
+        c.weighty = 1.0;
+        //set the constraints for each button before adding it to the panel
+        c.gridx = 1;
+        c.gridy = 0;
+        //c.ipadx = 50;
+        movePanel.add(up, c);
+        c.gridx = 1;
+        c.gridy = 2;
+        movePanel.add(down, c);
+        c.gridx = 0;
+        c.gridy = 1;
+        movePanel.add(left, c);
+        c.gridx = 2;
+        c.gridy = 1;
+        movePanel.add(right, c);
         buttonPanel.add(attack);
         buttonPanel.add(AoE);
         buttonPanel.add(defend);
 
 
-        //setting up this view
-        this.setBackground(Color.blue);
-
         //setting up the interface panel
-        interfacePanel.setBackground(Color.green);
+        interfacePanel.setBackground(Color.black);
         interfacePanel.setLayout(new BorderLayout());
         interfacePanel.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()/5));
         interfacePanel.add(buttonPanel, BorderLayout.WEST);
+        interfacePanel.add(playerStats, BorderLayout.EAST);
 
 
         //adding the buttons to the menubar
@@ -104,11 +125,13 @@ public class View extends JComponent implements Observer{
 
         //adding the components
         frame.setJMenuBar(menuBar);
+        frame.add(menu, BorderLayout.NORTH);
+        //menu.setVisible(false);
         frame.add(this, BorderLayout.CENTER);
+        //this.setVisible(false);
         frame.add(interfacePanel, BorderLayout.SOUTH);
 
         //final setups
-
 
         frame.pack();
         frame.setVisible(true);
@@ -118,6 +141,9 @@ public class View extends JComponent implements Observer{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D gg = (Graphics2D) g;
+        this.drawRoom(gg, model.getCurrentRoom());
+        this.drawInterface(gg);
     }
 
     @Override
@@ -140,7 +166,7 @@ public class View extends JComponent implements Observer{
      */
 
     public void drawInterface(Graphics2D g){
-
+        g.drawImage(Resources.getImage("border"), 0, this.getHeight()-Resources.getImage("border").getHeight(null), null);
     }
 
     /**

@@ -1,6 +1,9 @@
 package View;
 
+import Controller.*;
+
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * The game 'pause menu'
@@ -11,7 +14,22 @@ import javax.swing.*;
  */
 public class Menu extends JComponent {
 
-    public Menu(){
+    JFrame parent;
+    Controller controller;
 
+    public Menu(JFrame parent){
+        this.parent = parent;
+
+    }
+
+    @Override
+    public Dimension getPreferredSize(){
+        return new Dimension(parent.getWidth(), parent.getHeight()*(4/5));
+    }
+
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
     }
 }

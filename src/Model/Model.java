@@ -88,4 +88,8 @@ public class Model {
     public void printRoom() {
         currentRoom.printLayout();
     }
+
+    public Room getCurrentRoom(){
+        return this.currentRoom;
+    }
 }

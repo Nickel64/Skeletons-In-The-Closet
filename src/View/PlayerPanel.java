@@ -17,9 +17,14 @@ import java.util.Observer;
 public class PlayerPanel extends JComponent implements Observer {
 
     Player player;
+    JFrame parent;
 
-    public PlayerPanel() {
-        //player = new Player(50,50,50);
+    //drawing calc fields
+    int startX = 50;
+    int startY = 10;
+
+    public PlayerPanel(JFrame parent) {
+        this.parent = parent;
         player = new Player(50,50);
     }
 
@@ -30,6 +35,12 @@ public class PlayerPanel extends JComponent implements Observer {
 
     @Override
     public void paintComponent(Graphics _g) {
-        super.paintComponent(_g);
+        _g.setColor(Color.red);
+        _g.fillRect(0,0,50,50);
+    }
+
+    @Override
+    public Dimension getPreferredSize(){
+        return new Dimension(parent.getWidth()/2, parent.getHeight()/5);
     }
 }
