@@ -13,8 +13,13 @@ public class Wall implements Entity {
     @Override
     public void damaged(int damage) {throw new Error();}
 
-    @Override
+    public void start() {}
+
     public boolean canMove() {
+        return false;
+    }
+
+    public boolean canStepOn() {
         return false;
     }
 

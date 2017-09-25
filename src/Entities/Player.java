@@ -41,9 +41,14 @@ public class Player extends Observable implements Entity {
     }
     public boolean inAggroRange(){return false;}
 
-    @Override
+    public void start() {}
+
     public boolean canMove() {
         return true;
+    }
+
+    public boolean canStepOn() {
+        return false;
     }
 
     public String toString() {

@@ -57,17 +57,40 @@ public class Model {
         //check entity
         if(!currentRoom.containsEntity(entity)) throw new Error("Cannot move a nonexistent entity");
         if(!entity.canMove()) throw new Error("Cannot move an unmovable entity");
-        currentRoom.moveEntity(entity, dir);
+        currentRoom.moveEntity(entity, dir, this);
     }
 
-//    /**
-//     * Removes entity given from the current Room that player is in
-//     * @param entity: object to be killed/destroyed
-//     */
+    /**
+     * Moves the given entity in the given direction if possible
+     * @param entity: object to be moved
+     * @param dir: direction to be moved in
+     */
+    public void checkAttack(Entity entity, Direction dir) {
+        //check entity
+        if(!currentRoom.containsEntity(entity)) throw new Error("Cannot initiate attack with a nonexistent entity");
+        currentRoom.checkAttack(entity, dir);
+    }
+
+    public void changeCurrentRoom(Room room) {
+        currentRoom = room;
+        room.startEntities();
+    }
+
+    public Room getRoom(String name) {
+        if(!map.containsKey(name)) throw new Error("No such element with key "+name+" found");
+        return map.get(name);
+    }
+
+    /**
+     * Removes entity given from the current Room that player is in
+     * @param entity: object to be killed/destroyed
+     */
     public void removeEntity(Entity entity) {}
 
     /**
      * prints room, text based
      */
-    public void printRoom() {}
+    public void printRoom() {
+        currentRoom.printLayout();
+    }
 }
