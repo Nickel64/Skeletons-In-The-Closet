@@ -1,7 +1,9 @@
 package Controller;
 
+import Entities.Entity;
 import View.*;
 import Model.*;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -37,6 +39,26 @@ public class Controller implements KeyListener, MouseListener {
     public void keyPressed(KeyEvent e) {
         //process input from keyboard
         //e.g. move up, down, left, right, attack
+        int code = e.getKeyCode();
+        if(code == KeyEvent.VK_KP_UP || code == KeyEvent.VK_UP) {
+            //move up
+            model.moveEntity(null /*player*/, Entity.Direction.Up);
+        }
+        else if(code == KeyEvent.VK_KP_DOWN || code == KeyEvent.VK_DOWN) {
+            //move down
+            model.moveEntity(null /*player*/, Entity.Direction.Down);
+        }
+        else if(code == KeyEvent.VK_KP_LEFT || code == KeyEvent.VK_LEFT) {
+            //move left
+            model.moveEntity(null /*player*/, Entity.Direction.Left);
+        }
+        else if(code == KeyEvent.VK_KP_RIGHT || code == KeyEvent.VK_RIGHT) {
+            //move right
+            model.moveEntity(null /*player*/, Entity.Direction.Right);
+        }
+        else if(code == KeyEvent.VK_SPACE) {
+            //attack
+        }
     }
 
     @Override
