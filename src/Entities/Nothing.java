@@ -9,9 +9,15 @@ public class Nothing implements Entity {
     public void damaged(int damage){}
     public void attack(Entity entity){}
 
-    @Override
     public boolean canMove() {
-        return false;
+        return true;
+    }
+
+    public boolean canStepOn() {
+        return true;
+    }
+
+    public void start() {
     }
 
     public String toString() {

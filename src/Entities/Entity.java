@@ -10,7 +10,22 @@ public interface Entity {
      void attack(Entity entity);
      void damaged(int damage);
 
-    public boolean canMove();
+    /**
+     * Starts the entity pinging
+     */
+    void start();
+
+    /**
+     *
+     * @return whether or not the entity is able to move
+     */
+    boolean canMove();
+
+    /**
+     *
+     * @return whether or not the entity is able to be replaced/stepped on by another entity
+     */
+    boolean canStepOn();
 
    // damaged
    // turn
