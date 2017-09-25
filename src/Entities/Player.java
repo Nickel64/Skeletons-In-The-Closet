@@ -11,7 +11,7 @@ public class Player extends Observable implements Entity {
     private int health = 100; // how much health the unit has
     private int special = 100;
     private int exp = 0;
-    private int level;
+    //private int level;
     private int damage; // how much damage the unit deals
     private int speed; // how fast the unit can move
     private int experience;

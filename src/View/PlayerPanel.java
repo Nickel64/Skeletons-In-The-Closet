@@ -19,7 +19,8 @@ public class PlayerPanel extends JComponent implements Observer {
     Player player;
 
     public PlayerPanel() {
-        player = new Player(50,50,50);
+        //player = new Player(50,50,50);
+        player = new Player(50,50);
     }
 
     @Override
