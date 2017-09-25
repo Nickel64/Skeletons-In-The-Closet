@@ -45,7 +45,10 @@ public class Enemy extends Observable implements Entity {
 
     }
     public void damaged(int damageAmount){
+        this.health = this.health - damageAmount;
+        if(isDead()){
 
+        }
     }
 
     @Override
