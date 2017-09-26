@@ -21,39 +21,11 @@ public class Resources {
         Image img = null;
 
         try {
-            switch (imgDesc) {
-                case "attack":
-                    img = ImageIO.read(Resources.class.getResource("ImgResources/crossed-swords2.png"));
-                    break;
-                case "defend":
-                    img = ImageIO.read(Resources.class.getResource("ImgResources/vibrating-shield.png"));
-                    break;
-                case "aoe":
-                    img = ImageIO.read(Resources.class.getResource("ImgResources/cycle.png"));
-                    break;
-                case "up":
-                    img = ImageIO.read(Resources.class.getResource("ImgResources/upArrow.png"));
-                    break;
-                case "down":
-                    img = ImageIO.read(Resources.class.getResource("ImgResources/downArrow.png"));
-                    break;
-                case "left":
-                    img = ImageIO.read(Resources.class.getResource("ImgResources/leftArrow.png"));
-                    break;
-                case "right":
-                    img = ImageIO.read(Resources.class.getResource("ImgResources/rightArrow.png"));
-                    break;
-                case "border":
-                    img = ImageIO.read(Resources.class.getResource("ImgResources/border.png"));
-                default:
-                    throw new Error("Invalid image request");
-            }
+            img = ImageIO.read(Resources.class.getResource("ImgResources/"+imgDesc+".png"));
         }
         catch(IOException e){
             e.printStackTrace();
         }
-        finally{
-            return img;
-        }
+        return img;
     }
 }

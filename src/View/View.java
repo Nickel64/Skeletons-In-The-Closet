@@ -14,12 +14,15 @@ import java.util.Observer;
 
 /**
  * The main view of the game
+ * Contained within a JFrame, the View handles the graphical representation of the game world
+ * A separate JPanel is used to contain the PlayerPanel and the button controls.
  *
  * Created: 18/09/2017
  * @author Nicholas Snellgrove
  */
 public class View extends JComponent implements Observer{
 
+    //Panels of the view
     JFrame frame;
     PlayerPanel playerStats;
     Menu menu;
@@ -58,65 +61,10 @@ public class View extends JComponent implements Observer{
         playerStats = new PlayerPanel(frame);
         menu = new Menu(frame);
 
-        //setting up the movement buttons
-        up.setIcon(new ImageIcon(Resources.getImage("up")));
-        up.setBackground(Color.black);
-        down.setIcon(new ImageIcon(Resources.getImage("down")));
-        down.setBackground(Color.black);
-        left.setIcon(new ImageIcon(Resources.getImage("left")));
-        left.setBackground(Color.black);
-        right.setIcon(new ImageIcon(Resources.getImage("right")));
-        right.setBackground(Color.black);
-
-        //setting up the action buttons
-        attack.setIcon(new ImageIcon(Resources.getImage("attack")));
-        attack.setBackground(Color.black);
-        AoE.setIcon(new ImageIcon(Resources.getImage("aoe")));
-        AoE.setBackground(Color.black);
-        defend.setIcon(new ImageIcon(Resources.getImage("defend")));
-        defend.setBackground(Color.black);
-
-
-        //Setting up the gridBagLayout
-        GridBagConstraints c = new GridBagConstraints();
-
-
-        buttonPanel = new JPanel();
-        buttonPanel.setBackground(Color.BLACK);
-        JPanel movePanel = new JPanel(new GridBagLayout());
-        movePanel.setBackground(Color.BLACK);
-        buttonPanel.add(movePanel);
-
-
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 0.5;
-        c.weighty = 1.0;
-        //set the constraints for each button before adding it to the panel
-        c.gridx = 1;
-        c.gridy = 0;
-        //c.ipadx = 50;
-        movePanel.add(up, c);
-        c.gridx = 1;
-        c.gridy = 2;
-        movePanel.add(down, c);
-        c.gridx = 0;
-        c.gridy = 1;
-        movePanel.add(left, c);
-        c.gridx = 2;
-        c.gridy = 1;
-        movePanel.add(right, c);
-        buttonPanel.add(attack);
-        buttonPanel.add(AoE);
-        buttonPanel.add(defend);
-
-
-        //setting up the interface panel
-        interfacePanel.setBackground(Color.black);
-        interfacePanel.setLayout(new BorderLayout());
-        interfacePanel.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()/5));
-        interfacePanel.add(buttonPanel, BorderLayout.WEST);
-        interfacePanel.add(playerStats, BorderLayout.EAST);
-
+        //build the interface panel
+        //a lot of logic in this part
+        //so its a separate method
+        buildInterface();
 
         //adding the buttons to the menubar
         menuBar.add(menuBtn);
@@ -126,9 +74,7 @@ public class View extends JComponent implements Observer{
         //adding the components
         frame.setJMenuBar(menuBar);
         frame.add(menu, BorderLayout.NORTH);
-        //menu.setVisible(false);
         frame.add(this, BorderLayout.CENTER);
-        //this.setVisible(false);
         frame.add(interfacePanel, BorderLayout.SOUTH);
 
         //final setups
@@ -158,6 +104,11 @@ public class View extends JComponent implements Observer{
     public void update(Observable o, Object arg) {
         repaint();
     }
+
+
+    ////////////////////////
+    //Visual methods below//
+    ////////////////////////
 
     /**
      * Will draw the interface of the game. I.e. Menu bars, stats etc
@@ -254,7 +205,82 @@ public class View extends JComponent implements Observer{
 
     }
 
+
+    /**
+     * If an entity speaks, and nobody has programmed a way for it to speak out loud,
+     * did it speak at all?
+     *
+     * @param g the plane of existence
+     * @param e the entity that's having a crisis
+     */
     public void showText(Graphics2D g, Entity e){
+
+    }
+
+    /////////////////////////
+    //Utility Methods below//
+    /////////////////////////
+
+
+    public void buildInterface(){
+
+        //setting up the movement buttons
+        up.setIcon(new ImageIcon(Resources.getImage("up")));
+        up.setBackground(Color.black);
+        down.setIcon(new ImageIcon(Resources.getImage("down")));
+        down.setBackground(Color.black);
+        left.setIcon(new ImageIcon(Resources.getImage("left")));
+        left.setBackground(Color.black);
+        right.setIcon(new ImageIcon(Resources.getImage("right")));
+        right.setBackground(Color.black);
+
+        //setting up the action buttons
+        attack.setIcon(new ImageIcon(Resources.getImage("attack")));
+        attack.setBackground(Color.black);
+        AoE.setIcon(new ImageIcon(Resources.getImage("aoe")));
+        AoE.setBackground(Color.black);
+        defend.setIcon(new ImageIcon(Resources.getImage("defend")));
+        defend.setBackground(Color.black);
+
+
+        //Setting up the gridBagLayout
+        GridBagConstraints c = new GridBagConstraints();
+
+
+        buttonPanel = new JPanel();
+        buttonPanel.setBackground(Color.BLACK);
+        JPanel movePanel = new JPanel(new GridBagLayout());
+        movePanel.setBackground(Color.BLACK);
+        buttonPanel.add(movePanel);
+
+
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 0.5;
+        c.weighty = 1.0;
+        //set the constraints for each button before adding it to the panel
+        c.gridx = 1;
+        c.gridy = 0;
+        movePanel.add(up, c);
+        c.gridx = 1;
+        c.gridy = 2;
+        movePanel.add(down, c);
+        c.gridx = 0;
+        c.gridy = 1;
+        movePanel.add(left, c);
+        c.gridx = 2;
+        c.gridy = 1;
+        movePanel.add(right, c);
+        buttonPanel.add(attack);
+        buttonPanel.add(AoE);
+        buttonPanel.add(defend);
+
+
+        //setting up the interface panel
+        interfacePanel.setBackground(Color.black);
+        interfacePanel.setLayout(new BorderLayout());
+        interfacePanel.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()/5));
+        interfacePanel.add(buttonPanel, BorderLayout.WEST);
+        interfacePanel.add(playerStats, BorderLayout.EAST);
 
     }
 }
