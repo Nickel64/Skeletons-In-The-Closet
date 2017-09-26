@@ -8,9 +8,12 @@ import java.util.Observable;
 public class Player extends Observable implements Entity {
     private Direction dir;
     private Image sprite; //the visual representation of the unit
-    private int health = 100; // how much health the unit has
+    private int health; // how much health the unit has
+    private int maxHealth;
+    private int maxSpecial = 100;
     private int special = 100;
     private int exp = 0;
+    private int maxExp = 100;
     //private int level;
     private int damage; // how much damage the unit deals
     private int speed; // how fast the unit can move
@@ -19,20 +22,34 @@ public class Player extends Observable implements Entity {
 
     public Player(int health, int damage){
         this.health = health;
+        this.maxHealth = health;
         this.damage = damage;
     }
 
     public Player(){
 
     }
+    public int getMaxHealth(){return maxHealth;}
     public int getHealth(){return health;}
+    public int getMaxSpecial(){return maxSpecial;}
+    public int getSpecial(){return special;}
+    public int getMaxExp(){return maxExp;}
+    public int getExp(){return exp;}
     public int getDamage(){return damage;}
    // public int getSpeed(){return speed;}
     public Image getSprite(){return sprite;}
 
-    public void settHealth(int Health){ health = Health;}
+    public void setHealth(int Health){ health = Health;}
     public void  setDamage(int Damage){ damage = Damage;}
     //public void  setSpeed(int Speed){speed = Speed;}
+    public void setSpecial(int s){special = s;}
+
+    public void incExp(int xp){
+        this.exp += xp;
+        if(this.exp >= maxExp){
+            levelUp();
+        }
+    }
 
     public boolean isDead(){
         if (health<=0){
@@ -41,7 +58,9 @@ public class Player extends Observable implements Entity {
         return false;
     }
     public void levelUp(){
-        damage = damage + 1;
+        exp = 0;
+        level++;
+        damage = damage + 2;
     }
     /**
      * attack method for changing the players sprite to attack
