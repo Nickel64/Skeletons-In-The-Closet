@@ -23,10 +23,15 @@ public class Room {
     private static final Integer ROOM_WIDTH = 5;
     private static final Integer ROOM_HEIGHT = 5;
     private Tile[][] layout;
-    private List<Entity> entities;
+    private List<Entity> enemies;
+    private Player player;
+    private String name;
+    private int level;
     private boolean cleared = false;
 
-    public Room() {}
+    public Room(String name) {
+        this.name = name;
+    }
 
     /**
      * Initialises the room using information from scanner and returns whether or not this room contains the player
@@ -35,16 +40,9 @@ public class Room {
      */
     public Scanner initialise(Scanner sc) {
         cleared = false;
-        entities = new ArrayList<>();
-//        if(!sc.hasNextInt()) throw new Error("1No array size, instead: "+sc.next());
-//        int sizeX = sc.nextInt();
-//        System.out.println("size1: "+sizeX);
-//        if(!sc.hasNextInt()) throw new Error("2No array size, instead: "+sc.next());
-//        int sizeY = sc.nextInt();
-//        System.out.println("size2: "+sizeY);
+        enemies = new ArrayList<>();
         if(!sc.hasNextInt()) throw new Error("No room level, instead: "+sc.next());
-        int level = sc.nextInt();
-        System.out.println("level: "+ level);
+        this.level = sc.nextInt();
 
         String curString;
         layout = new Tile[ROOM_WIDTH][ROOM_HEIGHT];
@@ -53,33 +51,37 @@ public class Room {
                 Entity curEntity = null;
                 curString = sc.next();
                 if(curString.matches("[A-Za-z]")) {             //connection to another room
-                    DoorTile door = new DoorTile(curString);
-                    layout[i][j] = door;
                     curEntity = new Nothing();
+                    DoorTile door = new DoorTile(curString, curEntity);
+                    layout[i][j] = door;
                 } else {
                     if(curString.matches("\\.")) {              //open space
                         curEntity = new Nothing();
                     } else if(curString.matches("\\*")) {         //wall
                         curEntity = new Wall();
+
                     } else if(curString.matches("\\+")) {       //player
-                        curEntity = new Player();
+                        this.player = new Player();
+                        curEntity = this.player;
+
                     } else if(curString.matches("[0-9]")){                 //enemy
                         //TODO: if between 1-3 norm, 4-6 agile, 7-9 strong, 10 BOSS
                         //TODO: CHECK IF APPROPRIATE
                         int enemyID = Integer.parseInt(curString);
                         if(enemyID <= 3 && enemyID >= 1) {
                             //NORMAL ENEMY
-                            curEntity = new Enemy(enemyID+"", (5+enemyID)* level, 2, 3);
+                            curEntity = new Enemy(enemyID, (5+enemyID)* level, 2, 3);
                         } else if(enemyID <= 6 && enemyID >= 4) {
                             //AGILE
-                            curEntity = new Enemy(enemyID+"", 3* level, 3, (4+enemyID-3)* level);
+                            curEntity = new Enemy(enemyID, 3* level, 3, (4+enemyID-3)* level);
                         } else if(enemyID <= 9 && enemyID >= 7) {
                             //STRONG
-                            curEntity = new Enemy(enemyID+"", 4* level, (5+enemyID-6)* level, 2* level);
+                            curEntity = new Enemy(enemyID, 4* level, (5+enemyID-6)* level, 2* level);
                         } else {
                             //BOSS
-                            curEntity = new Enemy(enemyID+"", (12+enemyID-6)* level, (8+enemyID-6)* level, (2+enemyID-6)* level);
+                            curEntity = new Enemy(enemyID, (12+enemyID-6)* level, (8+enemyID-6)* level, (2+enemyID-6)* level);
                         }
+                        enemies.add(curEntity);
                     }
                     layout[i][j] = new FloorTile(curEntity);
                 }
@@ -88,25 +90,20 @@ public class Room {
             }
             System.out.println();
         }
-//        printLayout();
         return sc;
     }
 
-    public void startEntities() {
-        for(Entity e: entities) {
-            e.start();
-        }
+    public Player getPlayer() {
+        return this.player;
     }
 
-    public void printLayout() {
-        System.out.println("layout:");
-        for (Tile[] aLayout : layout) {
-            for (Tile anALayout : aLayout) {
-                System.out.print(anALayout.toString());
-            }
-            System.out.println("");
+    /**
+     * Starts the enemies ping
+     */
+    public void startEnemies() {
+        for(Entity e: enemies) {
+            e.start();
         }
-        System.out.println("done");
     }
 
     /**
@@ -114,14 +111,32 @@ public class Room {
      */
     private boolean isRoomCleared() {return cleared;}
 
-    public boolean containsEntity(Entity entity) {
-        return entities.contains(entity);
+    public Entity getEntityAt(int x, int y) {
+        return layout[x][y].getEntity();
     }
 
-    private void removeEntity(Entity entity) {
-        entities.remove(entity);
+    public boolean containsEnemy(Entity enemy) {
+        return enemies.contains(enemy);
     }
 
+    public List<Entity> getEnemies() {
+        return enemies;
+    }
+
+    /**
+     * Removes entity
+     * @param enemy
+     */
+    private void removeEnemy(Entity enemy) {
+        enemies.remove(enemy);
+    }
+
+    /**
+     * Finds the coordinate of which the entity is currently at
+     *
+     * @param entity to find coordinate of
+     * @return Point of entity coordinate
+     */
     private Point findPoint(Entity entity) {
         //finds the given entity, if not found, throw error
         for(int i = 0; i < layout.length; i++) {
@@ -134,6 +149,14 @@ public class Room {
         throw new Error("Point of entity has not been found");
     }
 
+    /**
+     * Returns the Point of destination for a movement in the given direction from coordinate x, y.
+     *
+     * @param x coordinate of layout
+     * @param y coordinate of layout
+     * @param direction of movement
+     * @return the point of destination
+     */
     private Point movesTo(int x, int y, Direction direction) {
         switch (direction) {
             case Up:
@@ -152,6 +175,13 @@ public class Room {
         throw new Error("Unknown direction: "+ direction.name());
     }
 
+    /**
+     * Moves the entity in the given direction if possible.
+     *
+     * @param entity that is to be moved
+     * @param direction of which entity wishes to move
+     * @param model of game
+     */
     public void moveEntity(Entity entity, Direction direction, Model model) {
         Point p = findPoint(entity);
         int x = p.x;
@@ -174,6 +204,12 @@ public class Room {
         }
     }
 
+    /**
+     * Attacks and damages the entity in the given direction if possible.
+     *
+     * @param entity that is initiating attack
+     * @param direction that entity is attacking
+     */
     public void checkAttack(Entity entity, Direction direction) {
         Point p = findPoint(entity);
         int x = p.x;
@@ -186,12 +222,30 @@ public class Room {
         Entity defender = layout[destX][destY].getEntity();
         entity.attack(defender);
         if(defender.isDead()) {
-            removeEntity(defender);
+            removeEnemy(defender);
             layout[destX][destY].setEntity(new Nothing());
         }
     }
 
+    /**
+     * Gets the image file name at layout x and y for tile.
+     *
+     * @param x coordinate of layout
+     * @param y coordinate of layout
+     * @return String of file name
+     */
     public String getImageFileNameAt(int x, int y) {
         return layout[x][y].getImageName();
+    }
+
+    public String toString() {
+        String str = name+" "+level;
+        for (Tile[] aLayout : layout) {
+            str += "\n";
+            for (Tile anALayout : aLayout) {
+                str += anALayout.toString()+" ";
+            }
+        }
+        return str;
     }
 }

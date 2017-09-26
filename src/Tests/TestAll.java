@@ -4,7 +4,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 public class TestAll {
-    public String[] tests = {"MapTests", "PathfinderTests"};
+    public String[] tests = {"ModelTest", "PathfinderTests"};
 
 
     public void testAll() {
