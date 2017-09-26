@@ -96,7 +96,7 @@ public class Player extends Observable implements Entity {
         return "+";
     }
 
-    //change the sprite of the player, can't move the player as it doesnt know its tile
+    //change the sprite of the player, can't move the player as it doesn't know its tile
     public void move(Direction dir){
         if(dir==Direction.Up){
         //be first sprite, update view, be moving sprite update view, be final sprite
