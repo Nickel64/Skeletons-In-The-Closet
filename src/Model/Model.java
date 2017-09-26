@@ -22,6 +22,8 @@ public class Model {
     private Map<String, Room> map;  //map of room names and rooms for easy access when moving room to room
     private Room currentRoom;
 
+    public Model(){}
+
     public void initialise() {
         map = new HashMap<String, Room>();
         try {

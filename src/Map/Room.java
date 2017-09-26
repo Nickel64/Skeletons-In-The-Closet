@@ -46,25 +46,25 @@ public class Room {
         System.out.println("level: "+ level);
 
         layout = new Tile[sizeX][sizeY];
-        while(sc.hasNext("[A-Za-z]")) {
-            String room = sc.next();
-            System.out.println("connected: "+room);
-        }
+
         for(int i = 0; i < sizeX; i++) {
             for(int j = 0; j < sizeY; j++) {
                 Entity curEntity = null;
-                if(sc.hasNext("[A-Za-z]")) {             //connection to another room
-                    DoorTile door = new DoorTile(sc.next());
+                String code = sc.next();
+                if(code.matches("[A-Za-z]")) {             //connection to another room
+                    //As door tile contains no entity
+                    curEntity = new Nothing();
+                    DoorTile door = new DoorTile(code, curEntity);
                     layout[i][j] = door;
                 } else {
-                    if(sc.hasNext("\\.")) {              //open space
+                    if(code.matches("\\.")) {              //open space
                         curEntity = new Nothing();
-                    } else if(sc.hasNext("#")) {         //wall
+                    } else if(code.matches("\\*")) {         //wall
                         curEntity = new Wall();
-                    } else if(sc.hasNextInt()) {                 //enemy
+                    } else if(Integer) {                 //enemy
                         //TODO: if between 1-3 norm, 4-6 agile, 7-9 strong, 10+ BOSS
                         //TODO: CHECK IF APPROPRIATE
-                        int enemyID = sc.nextInt();
+                        int enemyID = Integer.parseInt(code);
                         if(enemyID <= 3 && enemyID >= 1) {
                             //NORMAL ENEMY
                             curEntity = new Enemy(enemyID+"", (5+enemyID)* level, 2, 3);

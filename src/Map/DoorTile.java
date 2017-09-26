@@ -6,8 +6,9 @@ public class DoorTile implements Tile {
 
     private String filename = "door.jpg";
     private String connectedRoomName;
+    private Entity entity;
 
-    DoorTile(String connectedRoomName) {
+    DoorTile(String connectedRoomName, Entity entity) {
         this.connectedRoomName = connectedRoomName;
     }
 
@@ -33,20 +34,24 @@ public class DoorTile implements Tile {
 
     @Override
     public boolean isEntity(Entity entity) {
-        return false;
+        return entity == this.entity;
     }
 
     @Override
     public Entity getEntity() {
-        return null;
+        return this.entity;
     }
 
     @Override
     public void setEntity(Entity entity) {
-        throw new Error("Cannot set entity at door tile");
+        throw new Error("Cannot set entity to anything other than entity at door tile");
     }
 
     String nameOfNextRoom() {
+        return connectedRoomName;
+    }
+
+    public String toString() {
         return connectedRoomName;
     }
 }
