@@ -20,6 +20,8 @@ import java.util.Scanner;
 
 public class Room {
 
+    private static final Integer ROOM_WIDTH = 5;
+    private static final Integer ROOM_HEIGHT = 5;
     private Tile[][] layout;
     private List<Entity> entities;
     private boolean cleared = false;
@@ -31,40 +33,40 @@ public class Room {
      * @param sc: Scanner to parse room layout
      * @return whether or not this Room is the current room
      */
-    public boolean initialise(Scanner sc) {
+    public Scanner initialise(Scanner sc) {
         cleared = false;
-        boolean playerFound = false;
         entities = new ArrayList<>();
-        if(!sc.hasNextInt()) throw new Error("1No array size, instead: "+sc.next());
-        int sizeX = sc.nextInt();
-        System.out.println("size1: "+sizeX);
-        if(!sc.hasNextInt()) throw new Error("2No array size, instead: "+sc.next());
-        int sizeY = sc.nextInt();
-        System.out.println("size2: "+sizeY);
+//        if(!sc.hasNextInt()) throw new Error("1No array size, instead: "+sc.next());
+//        int sizeX = sc.nextInt();
+//        System.out.println("size1: "+sizeX);
+//        if(!sc.hasNextInt()) throw new Error("2No array size, instead: "+sc.next());
+//        int sizeY = sc.nextInt();
+//        System.out.println("size2: "+sizeY);
         if(!sc.hasNextInt()) throw new Error("No room level, instead: "+sc.next());
         int level = sc.nextInt();
         System.out.println("level: "+ level);
 
-        layout = new Tile[sizeX][sizeY];
-        while(sc.hasNext("[A-Za-z]")) {
-            String room = sc.next();
-            System.out.println("connected: "+room);
-        }
-        for(int i = 0; i < sizeX; i++) {
-            for(int j = 0; j < sizeY; j++) {
+        String curString;
+        layout = new Tile[ROOM_WIDTH][ROOM_HEIGHT];
+        for(int i = 0; i < ROOM_WIDTH; i++) {
+            for(int j = 0; j < ROOM_HEIGHT; j++) {
                 Entity curEntity = null;
-                if(sc.hasNext("[A-Za-z]")) {             //connection to another room
-                    DoorTile door = new DoorTile(sc.next());
+                curString = sc.next();
+                if(curString.matches("[A-Za-z]")) {             //connection to another room
+                    DoorTile door = new DoorTile(curString);
                     layout[i][j] = door;
+                    curEntity = new Nothing();
                 } else {
-                    if(sc.hasNext("\\.")) {              //open space
+                    if(curString.matches("\\.")) {              //open space
                         curEntity = new Nothing();
-                    } else if(sc.hasNext("#")) {         //wall
+                    } else if(curString.matches("\\*")) {         //wall
                         curEntity = new Wall();
-                    } else if(sc.hasNextInt()) {                 //enemy
-                        //TODO: if between 1-3 norm, 4-6 agile, 7-9 strong, 10+ BOSS
+                    } else if(curString.matches("\\+")) {       //player
+                        curEntity = new Player();
+                    } else if(curString.matches("[0-9]")){                 //enemy
+                        //TODO: if between 1-3 norm, 4-6 agile, 7-9 strong, 10 BOSS
                         //TODO: CHECK IF APPROPRIATE
-                        int enemyID = sc.nextInt();
+                        int enemyID = Integer.parseInt(curString);
                         if(enemyID <= 3 && enemyID >= 1) {
                             //NORMAL ENEMY
                             curEntity = new Enemy(enemyID+"", (5+enemyID)* level, 2, 3);
@@ -78,18 +80,16 @@ public class Room {
                             //BOSS
                             curEntity = new Enemy(enemyID+"", (12+enemyID-6)* level, (8+enemyID-6)* level, (2+enemyID-6)* level);
                         }
-                    } else if(sc.hasNext("\\+")) {       //player
-                        playerFound = true;
-                        curEntity = new Player();
                     }
-                    sc.next();
                     layout[i][j] = new FloorTile(curEntity);
                 }
-                if(curEntity == null) throw new Error("Entity is invalid+"+sc.next());
+                if(curEntity == null) throw new Error("Entity is invalid+"+curString);
+                System.out.print(curString);
             }
+            System.out.println();
         }
-        printLayout();
-        return playerFound;
+//        printLayout();
+        return sc;
     }
 
     public void startEntities() {
@@ -189,5 +189,9 @@ public class Room {
             removeEntity(defender);
             layout[destX][destY].setEntity(new Nothing());
         }
+    }
+
+    public String getImageFileNameAt(int x, int y) {
+        return layout[x][y].getImageName();
     }
 }

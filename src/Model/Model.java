@@ -24,6 +24,7 @@ public class Model {
 
     public void initialise() {
         map = new HashMap<String, Room>();
+        boolean firstRoom = true;
         try {
             File f = new File(fileName);
             if(!f.canRead()) throw new Error("file cannot read");
@@ -31,7 +32,9 @@ public class Model {
             while(sc.hasNext()) {
                 String roomName = sc.next();
                 Room curRoom = new Room();
-                if(curRoom.initialise(sc)) {
+                sc = curRoom.initialise(sc);
+                if(firstRoom) {
+                    firstRoom = false;
                     currentRoom = curRoom;
                 }
                 map.put(roomName, curRoom);

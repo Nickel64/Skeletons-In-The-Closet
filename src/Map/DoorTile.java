@@ -49,4 +49,8 @@ public class DoorTile implements Tile {
     String nameOfNextRoom() {
         return connectedRoomName;
     }
+
+    public String toString() {
+        return connectedRoomName;
+    }
 }
