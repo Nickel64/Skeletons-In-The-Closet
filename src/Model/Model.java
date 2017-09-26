@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * Map containing all rooms
+ * Model containing all rooms and game logic
  *
  * Created: 19/9/17
  * @author Balgmi Nam
@@ -25,25 +25,29 @@ public class Model {
     public Model(){}
 
     public void initialise() {
-        map = new HashMap<String, Room>();
-        boolean firstRoom = true;
         try {
             File f = new File(fileName);
-            if(!f.canRead()) throw new Error("file cannot read");
+            if (!f.canRead()) throw new Error("file cannot read");
             Scanner sc = new Scanner(f);
+            read(sc);
+        } catch (FileNotFoundException e) {
+            System.out.println("File scan error! " + e.getMessage());
+        }
+    }
+
+    public void read(Scanner sc) {
+        map = new HashMap<String, Room>();
+        boolean firstRoom = true;
             while(sc.hasNext()) {
                 String roomName = sc.next();
-                Room curRoom = new Room();
-                sc = curRoom.initialise(sc);
+                Room curRoom = new Room(roomName);
                 if(firstRoom) {
                     firstRoom = false;
                     currentRoom = curRoom;
                 }
                 map.put(roomName, curRoom);
+                sc = curRoom.initialise(sc);
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("File scan error! "+e.getMessage());
-        }
     }
 
     /**
@@ -53,7 +57,7 @@ public class Model {
      */
     public void moveEntity(Entity entity, Direction dir) {
         //check entity
-        if(!currentRoom.containsEntity(entity)) throw new Error("Cannot move a nonexistent entity");
+        if(!currentRoom.containsEnemy(entity)) throw new Error("Cannot move a nonexistent entity");
         if(!entity.canMove()) throw new Error("Cannot move an unmovable entity");
         currentRoom.moveEntity(entity, dir, this);
     }
@@ -65,13 +69,13 @@ public class Model {
      */
     public void checkAttack(Entity entity, Direction dir) {
         //check entity
-        if(!currentRoom.containsEntity(entity)) throw new Error("Cannot initiate attack with a nonexistent entity");
+        if(!currentRoom.containsEnemy(entity)) throw new Error("Cannot initiate attack with a nonexistent entity");
         currentRoom.checkAttack(entity, dir);
     }
 
     public void changeCurrentRoom(Room room) {
         currentRoom = room;
-        room.startEntities();
+        room.startEnemies();
     }
 
     public Room getRoom(String name) {

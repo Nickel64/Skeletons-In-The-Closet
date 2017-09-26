@@ -2,10 +2,13 @@ package Entities;
 
 import java.awt.*;
 import java.util.Observable;
+import java.util.StringJoiner;
+
 /**
  * Created by Shlomoburg on 19/09/2017.
  */
 public class Enemy extends Observable implements Entity {
+    private int name;
     private Direction dir;
     private Image sprite; //the visual representation of the unit
     private int health; // how much health the unit has
@@ -19,11 +22,11 @@ public class Enemy extends Observable implements Entity {
     public Image getSprite(){return sprite;}
 
     //name will determine the sprite or something
-    public Enemy(String name, int health, int damage, int speed){
-
-    }
-    public Enemy(){
-
+    public Enemy(int name, int health, int damage, int speed){
+        this.name = name;
+        this.health = health;
+        this.damage = damage;
+        this.speed = speed;
     }
     /**
      * Calculates whether the enemy is in range to attack the player
@@ -64,7 +67,7 @@ public class Enemy extends Observable implements Entity {
     }
 
     public String toString() {
-        return "E";
+        return name+"";
     }
 
 }
