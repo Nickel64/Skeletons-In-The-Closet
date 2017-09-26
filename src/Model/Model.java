@@ -2,6 +2,7 @@ package Model;
 
 import Entities.Entity;
 import Entities.Entity.Direction;
+import Entities.Player;
 import Map.Room;
 
 import java.io.File;
@@ -93,7 +94,11 @@ public class Model {
      * prints room, text based
      */
     public void printRoom() {
-        currentRoom.printLayout();
+        System.out.println(currentRoom.toString());
+    }
+
+    public Player getPlayer() {
+        return currentRoom.getPlayer();
     }
 
     public Room getCurrentRoom(){

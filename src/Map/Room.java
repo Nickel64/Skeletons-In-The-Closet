@@ -24,6 +24,7 @@ public class Room {
     private static final Integer ROOM_HEIGHT = 5;
     private Tile[][] layout;
     private List<Entity> enemies;
+    private Player player;
     private String name;
     private int level;
     private boolean cleared = false;
@@ -60,7 +61,9 @@ public class Room {
                         curEntity = new Wall();
 
                     } else if(curString.matches("\\+")) {       //player
-                        curEntity = new Player();
+                        this.player = new Player();
+                        curEntity = this.player;
+
                     } else if(curString.matches("[0-9]")){                 //enemy
                         //TODO: if between 1-3 norm, 4-6 agile, 7-9 strong, 10 BOSS
                         //TODO: CHECK IF APPROPRIATE
@@ -90,6 +93,13 @@ public class Room {
         return sc;
     }
 
+    public Player getPlayer() {
+        return this.player;
+    }
+
+    /**
+     * Starts the enemies ping
+     */
     public void startEnemies() {
         for(Entity e: enemies) {
             e.start();
@@ -101,6 +111,10 @@ public class Room {
      */
     private boolean isRoomCleared() {return cleared;}
 
+    public Entity getEntityAt(int x, int y) {
+        return layout[x][y].getEntity();
+    }
+
     public boolean containsEnemy(Entity enemy) {
         return enemies.contains(enemy);
     }
@@ -109,10 +123,20 @@ public class Room {
         return enemies;
     }
 
+    /**
+     * Removes entity
+     * @param enemy
+     */
     private void removeEnemy(Entity enemy) {
         enemies.remove(enemy);
     }
 
+    /**
+     * Finds the coordinate of which the entity is currently at
+     *
+     * @param entity to find coordinate of
+     * @return Point of entity coordinate
+     */
     private Point findPoint(Entity entity) {
         //finds the given entity, if not found, throw error
         for(int i = 0; i < layout.length; i++) {
@@ -125,6 +149,14 @@ public class Room {
         throw new Error("Point of entity has not been found");
     }
 
+    /**
+     * Returns the Point of destination for a movement in the given direction from coordinate x, y.
+     *
+     * @param x coordinate of layout
+     * @param y coordinate of layout
+     * @param direction of movement
+     * @return the point of destination
+     */
     private Point movesTo(int x, int y, Direction direction) {
         switch (direction) {
             case Up:
@@ -143,6 +175,13 @@ public class Room {
         throw new Error("Unknown direction: "+ direction.name());
     }
 
+    /**
+     * Moves the entity in the given direction if possible.
+     *
+     * @param entity that is to be moved
+     * @param direction of which entity wishes to move
+     * @param model of game
+     */
     public void moveEntity(Entity entity, Direction direction, Model model) {
         Point p = findPoint(entity);
         int x = p.x;
@@ -165,6 +204,12 @@ public class Room {
         }
     }
 
+    /**
+     * Attacks and damages the entity in the given direction if possible.
+     *
+     * @param entity that is initiating attack
+     * @param direction that entity is attacking
+     */
     public void checkAttack(Entity entity, Direction direction) {
         Point p = findPoint(entity);
         int x = p.x;
@@ -182,6 +227,13 @@ public class Room {
         }
     }
 
+    /**
+     * Gets the image file name at layout x and y for tile.
+     *
+     * @param x coordinate of layout
+     * @param y coordinate of layout
+     * @return String of file name
+     */
     public String getImageFileNameAt(int x, int y) {
         return layout[x][y].getImageName();
     }

@@ -55,6 +55,7 @@ public class ModelTest {
             Scanner sc = new Scanner(simpleMap);
             m.read(sc);
             Room r = m.getCurrentRoom();
+
         } catch (Error e) {
             e.printStackTrace();
             fail(e.getMessage());
