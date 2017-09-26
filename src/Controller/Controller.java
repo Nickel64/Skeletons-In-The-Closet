@@ -1,9 +1,9 @@
 package Controller;
 
 import Entities.Entity;
-import View.*;
 import Model.*;
 
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -16,19 +16,17 @@ import java.awt.event.MouseListener;
  * * * * * * * * * * * * * * */
 
 public class Controller implements KeyListener, MouseListener {
-    private View view;
     private Model model;
 
-    public Controller(View view, Model model) {
-        this.view = view;
+    public Controller(Model model) {
         this.model = model;
 
-        //initialise timer loop, pinging model each iteration
-    }
+        new Timer(100, (ev) -> {
+            //ping model so enemies move, etc
 
-    public void updateView() {
-        view.notify();
-    }
+            //when menu is open, pause timer? (maybe be responsibility of model?)
+    });
+}
 
     /* KEY LISTENER METHODS */
 
@@ -58,6 +56,7 @@ public class Controller implements KeyListener, MouseListener {
         }
         else if(code == KeyEvent.VK_SPACE) {
             //attack
+            model.checkAttack(null, Entity.Direction.Up/*Whatever direction player is in :/*/);
         }
     }
 
@@ -70,8 +69,9 @@ public class Controller implements KeyListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        //sets movement target (for use by pathfinding algorithms
+        // sets movement target (for use by pathfinding algorithms
         // refer to sokoban assignment
+        // to be implemented later (once people make up their minds about what we're even doing)
     }
 
     @Override
