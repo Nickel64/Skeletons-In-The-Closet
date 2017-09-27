@@ -6,15 +6,18 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
-/** Used to find shortest path from point a to point b
- * Created: 2017/09/21
- * Author: Morgan French-Stagg
- * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
+/**
+ * Used to find the shortest path from pointA to pointB
+ *
+ * @author Morgan French-Stagg
+ */
 public class Pathfinder {
 
     public static Stack<int[]> findPath(int[] pointA, int[] pointB, Tile[][] map) {
         if(pointA.equals(pointB)) return new Stack<>();
+        if(pointA[0] < 0 || pointA[1] < 0 || pointB[0] < 0 || pointB[1] < 0) return new Stack<>();
+        int sizeX = map.length - 1, sizeY = map[0].length - 1;
+        if(pointA[0] > sizeX || pointA[1] > sizeY || pointB[0] > sizeX || pointB[1] > sizeY) return new Stack<>();
 
         Stack<int[]> out = new Stack<>();
         out.push(pointA);

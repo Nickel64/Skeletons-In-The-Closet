@@ -8,6 +8,12 @@ import Map.*;
 
 import java.util.Stack;
 
+/**
+ * Used to test the pathfinder algorithm and
+ * ensure that it can find a short path between two points on a Board
+ *
+ * @author Morgan French-Stagg
+ */
 public class PathfinderTests {
 
     /**
@@ -44,6 +50,41 @@ public class PathfinderTests {
     }
 
     /**
+     * Used to test that the pathfinder will not attempt to move into negative positions
+     */
+    @Test
+    public void testEmptyGridFail1(){
+        Tile[][] grid = new Tile[10][10];
+        Stack<int[]> path = Pathfinder.findPath(new int[]{0,0}, new int[]{-1,-1}, grid);
+        //Stack<int[]> expected = createExpected(new int[][]{{0,0}, {1,0}, {2,0}, {3,0}, {3,1}, {3,2}, {3,3}});
+        Stack<int[]> expected = new Stack<>();
+        checkEmptyGrid(expected, path);
+    }
+
+    /**
+     * Used to check that the pathfinder will not move into positions outside the right edge of the board
+     */
+    @Test
+    public void testEmptyGridFail2(){
+        Tile[][] grid = new Tile[10][10];
+        Stack<int[]> path = Pathfinder.findPath(new int[]{0,0}, new int[]{11,11}, grid);
+        //Stack<int[]> expected = createExpected(new int[][]{{0,0}, {1,0}, {2,0}, {3,0}, {3,1}, {3,2}, {3,3}});
+        Stack<int[]> expected = new Stack<>();
+        checkEmptyGrid(expected, path);
+    }
+
+    /**
+     * Used to check that the pathfinder will not move into positions outside the right edge of the board
+     */
+    @Test
+    public void testEmptyGridFail3(){
+        Tile[][] grid = new Tile[10][10];
+        Stack<int[]> path = Pathfinder.findPath(new int[]{0,0}, new int[]{10,10}, grid);
+        Stack<int[]> expected = new Stack<>();
+        checkEmptyGrid(expected, path);
+    }
+
+    /**
      * Helper method used to compare two Stacks of integer arrays
      * @param expected
      *      Expected path between two points
@@ -70,6 +111,17 @@ public class PathfinderTests {
         }
     }
 
+    /**
+     * Used to convert a 2D array of ints into a stack of 1D int arrays
+     *
+     * Used to make created the 'expected' array eaiser
+     * @param toUse
+     *      2D array of ints
+     *      outer array -> collection of inner arrays
+     *      inner array -> format {x,y}
+     * @return
+     *      Stack containing all of the inner arrays
+     */
     public Stack<int[]> createExpected(int[][] toUse){
         Stack<int[]> expected = new Stack<>();
         for(int i = 0; i < toUse.length; i++){
