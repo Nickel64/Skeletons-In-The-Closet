@@ -303,6 +303,14 @@ public class View extends JComponent implements Observer{
 
     public void buildInterface(){
 
+        attack.setName("Attack");
+        defend.setName("Defend");
+        AoE.setName("AOE");
+        up.setName("Up");
+        down.setName("Down");
+        left.setName("Left");
+        right.setName("Right");
+
         //setting up the movement buttons
         up.setIcon(new ImageIcon(Resources.getImage("up")));
         up.setBackground(Color.black);
