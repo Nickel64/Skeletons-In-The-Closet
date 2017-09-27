@@ -128,9 +128,9 @@ public class Room {
 
     /**
      * Returns the height of the room
-     * @return int of hieght
+     * @return int of height
      */
-    public int getHieght() {return this.height;}
+    public int getHeight() {return this.height;}
 
     /**
      * Gets the entity at layout x and y.
