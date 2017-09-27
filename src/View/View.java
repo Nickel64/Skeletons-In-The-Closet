@@ -9,6 +9,8 @@ import Controller.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -46,9 +48,16 @@ public class View extends JComponent implements Observer{
 
     //MVC fields
     Controller controller;
-    Model model = new Model();
+    Model model;
 
-    public View() {
+    //visual fields
+    int startX = 165;
+    int startY = 30;
+    int tileSize = 50;
+
+    public View(Model m) {
+
+        this.model = m;
 
         //setting up the frame
         frame = new JFrame(Resources.TITLE);
@@ -65,6 +74,7 @@ public class View extends JComponent implements Observer{
         //a lot of logic in this part
         //so its a separate method
         buildInterface();
+        buildControls();
 
         //adding the buttons to the menubar
         menuBar.add(menuBtn);
@@ -148,12 +158,13 @@ public class View extends JComponent implements Observer{
      * @param g the graphics2D object to draw to
      */
     public void drawRoom(Graphics2D g, Room r){
-        int startX = 165;
-        int startY = 30;
-        int tileSize = 50;
-        for(int y = 0; y < 10; y++){
-            for(int x = 0; x < 14; x++){
-                g.drawRect(startX+(50*x),startY+(tileSize*y),tileSize,tileSize);
+        for(int y = 0; y < r.ROOM_HEIGHT; y++){
+            for(int x = 0; x < r.ROOM_WIDTH; x++){
+                //just a visual thing
+                //14x10 seems good to me
+                //g.setColor(Color.black);
+                //g.drawRect(startX+(50*x),startY+(tileSize*y),tileSize,tileSize);
+                drawTile(g, model.getCurrentRoom().getTileAtLocation(x,y), x, y);
             }
         }
     }
@@ -166,8 +177,18 @@ public class View extends JComponent implements Observer{
      * @param g the graphics2D object to draw to
      * @param t the tile to be drawn
      */
-    public void drawTile(Graphics2D g, Tile t){
-
+    public void drawTile(Graphics2D g, Tile t, int x, int y){
+        //TODO implement with actual images
+        if(t instanceof DoorTile){
+            g.setColor(Color.GRAY);
+        }
+        else if(t instanceof FloorTile){
+            g.setColor(Color.cyan);
+        }
+        g.fillRect(startX+(50*x),startY+(tileSize*y),tileSize,tileSize);
+        if(t.getEntity() != null){
+            drawEntity(g, t.getEntity(), x,y);
+        }
     }
 
     /**
@@ -177,8 +198,22 @@ public class View extends JComponent implements Observer{
      * @param g the graphics2D object to draw to
      */
 
-    public void drawEntity(Graphics2D g, Entity e){
-
+    public void drawEntity(Graphics2D g, Entity e, int x, int y){
+        //TODO I'm gonna do this smarter I promise
+        if(e instanceof Nothing)
+            return;
+        else if(e instanceof Player){
+            g.setColor(Color.blue);
+            g.fillOval(startX + tileSize/4+(50*x),startY+tileSize/4+(tileSize*y),tileSize/2,tileSize/2);
+        }
+        else if(e instanceof  Wall){
+            g.setColor(Color.darkGray);
+            g.fillRect(startX+(50*x),startY+(tileSize*y),tileSize,tileSize);
+        }
+        else if(e instanceof Enemy){
+            g.setColor(Color.red);
+            g.fillOval(startX + tileSize/4+(50*x),startY+tileSize/4+(tileSize*y),tileSize/2,tileSize/2);
+        }
     }
 
     /**
@@ -227,6 +262,43 @@ public class View extends JComponent implements Observer{
     /////////////////////////
     //Utility Methods below//
     /////////////////////////
+
+    public void buildControls(){
+        //custom actionListeners for the menu buttons
+        this.quitBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int check = JOptionPane.showConfirmDialog(frame, "Quit without saving? " +
+                        "(All unsaved progress will be lost");
+                if(check == 0)
+                    frame.dispose();
+                else
+                    return;
+            }
+        });
+        this.helpBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "We'll have some instructions in here one day");
+            }
+        });
+        this.menuBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Steady on, mate");
+            }
+        });
+
+        frame.addKeyListener(controller);
+        this.addMouseListener(controller);
+        left.addActionListener(controller);
+        up.addActionListener(controller);
+        down.addActionListener(controller);
+        right.addActionListener(controller);
+        attack.addActionListener(controller);
+        defend.addActionListener(controller);
+        AoE.addActionListener(controller);
+    }
 
 
     public void buildInterface(){

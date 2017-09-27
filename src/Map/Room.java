@@ -20,8 +20,8 @@ import java.util.Scanner;
 
 public class Room {
 
-    private static final Integer ROOM_WIDTH = 5;
-    private static final Integer ROOM_HEIGHT = 5;
+    public static final Integer ROOM_WIDTH = 5;
+    public static final Integer ROOM_HEIGHT = 5;
     private Tile[][] layout;
     private List<Entity> enemies;
     private Player player;
@@ -104,6 +104,10 @@ public class Room {
         for(Entity e: enemies) {
             e.start();
         }
+    }
+
+    public Tile getTileAtLocation(int x, int y){
+        return layout[y][x];
     }
 
     /**
