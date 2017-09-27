@@ -52,10 +52,10 @@ public class Model {
                 String roomName = sc.next();
                 Room curRoom = new Room(roomName);
                 if(firstRoom) {
+                    if(curRoom.getPlayer() != null) throw new Error("There requires a player <+> placed in first room");
                     firstRoom = false;
                     currentRoom = curRoom;
-                    if(currentRoom.getPlayer() != null) throw new Error("There requires a player <+> placed in first room");
-                } else if(currentRoom.getPlayer() != null) throw new Error("There is a player start position found outside of first room");
+                } else if(curRoom.getPlayer() != null) throw new Error("There is a player start position found outside of first room");
                 map.put(roomName, curRoom);
                 sc = curRoom.initialise(sc);
             }
