@@ -23,7 +23,9 @@ public class Model {
     private Map<String, Room> map;  //map of room names and rooms for easy access when moving room to room
     private Room currentRoom;
 
-    public Model(){}
+    public Model(){
+
+    }
 
     /**
      * Reads the file map.txt into a scanner, precedes to read

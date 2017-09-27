@@ -2,12 +2,10 @@ package Controller;
 
 import Entities.Entity;
 import Model.*;
+import View.*;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
 /** * * * * * * * * * * * * *
  * Controller class
@@ -15,18 +13,14 @@ import java.awt.event.MouseListener;
  * Author: Rachel Anderson
  * * * * * * * * * * * * * * */
 
-public class Controller implements KeyListener, MouseListener {
+public class Controller implements KeyListener, MouseListener, ActionListener {
     private Model model;
+    private View view;
 
-    public Controller(Model model) {
+    public Controller(Model model, View view) {
         this.model = model;
-
-        new Timer(100, (ev) -> {
-            //ping model so enemies move, etc
-
-            //when menu is open, pause timer? (maybe be responsibility of model?)
-    });
-}
+        this.view = view;
+    }
 
     /* KEY LISTENER METHODS */
 
@@ -40,23 +34,22 @@ public class Controller implements KeyListener, MouseListener {
         int code = e.getKeyCode();
         if(code == KeyEvent.VK_KP_UP || code == KeyEvent.VK_UP) {
             //move up
-            model.moveEntity(null /*player*/, Entity.Direction.Up);
+            model.moveEntity(model.getPlayer(), Entity.Direction.Up);
         }
         else if(code == KeyEvent.VK_KP_DOWN || code == KeyEvent.VK_DOWN) {
             //move down
-            model.moveEntity(null /*player*/, Entity.Direction.Down);
+            model.moveEntity(model.getPlayer(), Entity.Direction.Down);
         }
         else if(code == KeyEvent.VK_KP_LEFT || code == KeyEvent.VK_LEFT) {
             //move left
-            model.moveEntity(null /*player*/, Entity.Direction.Left);
+            model.moveEntity(model.getPlayer(), Entity.Direction.Left);
         }
         else if(code == KeyEvent.VK_KP_RIGHT || code == KeyEvent.VK_RIGHT) {
             //move right
-            model.moveEntity(null /*player*/, Entity.Direction.Right);
+            model.moveEntity(model.getPlayer(), Entity.Direction.Right);
         }
         else if(code == KeyEvent.VK_SPACE) {
-            //attack
-            model.checkAttack(null, Entity.Direction.Up/*Whatever direction player is in :/*/);
+            model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
         }
     }
 
@@ -85,6 +78,35 @@ public class Controller implements KeyListener, MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) {}
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        //used for buttons
+        if(JButton.class.isInstance(e.getSource())) {
+            String buttonName = ((JButton)e.getSource()).getAccessibleContext().getAccessibleName();
+            switch(buttonName) {
+                case "Up":
+                    model.moveEntity(model.getPlayer(), Entity.Direction.Up);
+                    break;
+                case "Down":
+                    model.moveEntity(model.getPlayer(), Entity.Direction.Down);
+                    break;
+                case "Left":
+                    model.moveEntity(model.getPlayer(), Entity.Direction.Left);
+                    break;
+                case "Right":
+                    model.moveEntity(model.getPlayer(), Entity.Direction.Right);
+                    break;
+                case "Attack":
+                    model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
+                    break;
+                case "Defend":
+                    break;
+                case "AOE":
+                    break;
+            }
+        }
+    }
 
     /* END OF MOUSE LISTENER METHODS */
 }

@@ -4,7 +4,7 @@ import Entities.Entity;
 
 public class DoorTile implements Tile {
 
-    private String filename = "door.jpg";
+    private String filename = "door.png";
     private String connectedRoomName;
     private Entity entity;
 
