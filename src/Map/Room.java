@@ -112,7 +112,7 @@ public class Room {
     private boolean isRoomCleared() {return cleared;}
 
     public Entity getEntityAt(int x, int y) {
-        return layout[x][y].getEntity();
+        return layout[y][x].getEntity();
     }
 
     public boolean containsEnemy(Entity enemy) {
@@ -139,10 +139,10 @@ public class Room {
      */
     private Point findPoint(Entity entity) {
         //finds the given entity, if not found, throw error
-        for(int i = 0; i < layout.length; i++) {
-            for(int j = 0; j < layout[i].length; j++) {
+        for(int i = 0; i < layout.length; i++) {    //y
+            for(int j = 0; j < layout[i].length; j++) {     //x
                 if(layout[i][j].isEntity(entity)) {
-                    return new Point(i, j);
+                    return new Point(j, i);
                 }
             }
         }
@@ -163,13 +163,13 @@ public class Room {
                 if (y - 1 < 0) throw new Error("Cannot move entity " + direction.name());
                 return new Point(x, y - 1);
             case Right:
-                if (x + 1 > layout.length) throw new Error("Cannot move entity " + direction.name());
+                if (x + 1 >= ROOM_WIDTH) throw new Error("Cannot move entity " + direction.name());
                 return new Point(x + 1, y);
             case Left:
                 if (x - 1 < 0) throw new Error("Cannot move entity " + direction.name());
                 return new Point(x - 1, y);
             case Down:
-                if (y + 1 < layout[x].length) throw new Error("Cannot move entity " + direction.name());
+                if ((y +1) >= ROOM_HEIGHT) throw new Error("Cannot move entity " + direction.name()+" x: "+(x+1)+" y: "+y);
                 return new Point(x, y + 1);
         }
         throw new Error("Unknown direction: "+ direction.name());
@@ -187,20 +187,27 @@ public class Room {
         int x = p.x;
         int y = p.y;
 
+        System.out.println("enity is at: "+x+", "+y);
+
         Point destP = movesTo(x, y, direction);
         int destX = destP.x;
         int destY = destP.y;
 
-        if(!layout[destX][destY].canMoveOnto()) throw new Error("Cannot move onto tile in "+direction.name());
-        if(layout[destX][destY] instanceof DoorTile) {
+        System.out.println("to move onto coord "+destX+", "+destY);
+        System.out.println("where :"+layout[destY][destX].getEntity().toString());
+
+        if(!layout[destY][destX].canMoveOnto()) throw new Error("Cannot move onto tile in "+direction.name());
+        if(layout[destY][destX] instanceof DoorTile) {
             if(!(entity instanceof Player)) throw new Error("An entity other than player cannot move from room to room");
             if(!isRoomCleared()) throw new Error("Player cannot progress to next room until room is cleared");
             DoorTile door = (DoorTile) layout[destX][destY];        //finds the next room and changes models cur room
             model.changeCurrentRoom(model.getRoom(door.nameOfNextRoom()));
         } else {
-            Entity temp = layout[x][y].getEntity();     //finds the two movable tile entities and swaps them
-            layout[x][y].setEntity(layout[destX][destY].getEntity());
-            layout[destX][destY].setEntity(temp);
+            System.out.println("Swapping tiles from "+x+", "+y+" to "+destX+", "+destY);
+            System.out.println("swap"+layout[y][x].getEntity().toString()+" and "+layout[destY][destX].getEntity().toString());
+            Entity temp = layout[y][x].getEntity();     //finds the two movable tile entities and swaps them
+            layout[y][x].setEntity(layout[destY][destX].getEntity());
+            layout[destY][destX].setEntity(temp);
         }
     }
 
