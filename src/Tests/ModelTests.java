@@ -14,31 +14,130 @@ import static org.junit.Assert.*;
  */
 public class ModelTests {
 
-        @Test
-        public void test_initialise_1() {
-            //tests that model initialises rooms and entities properly
-            //correct number of enemy entities made, room layout is the same to simpleMap
-            Model m = new Model();
-            String simpleMap =
-                    "RoomA 1\n" +
-                            "* * . . . \n" +
-                            ". . . . 2 \n" +
-                            "1 . 2 . . \n" +
-                            "* * * . . \n" +
-                            ". . . . * ";
-            try {
-                Scanner sc = new Scanner(simpleMap);
-                m.read(sc);
-                assertNotNull(m.getCurrentRoom());
-                Room r = m.getCurrentRoom();
-                assertNotNull(r.getEnemies());
-                assertEquals(3, r.getEnemies().size());
-                assertEquals(simpleMap, r.toString());
-            } catch (Error error) {
-                error.printStackTrace();
-                fail(error.getMessage());
-            }
+    @Test
+    public void test_initialise_1() {
+        //tests that model initialises rooms and entities properly
+        //correct number of enemy entities made, room layout should be the same to simpleMap
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". . + . 2 \n" +
+                        "1 . 2 . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        try {
+            Scanner sc = new Scanner(simpleMap);
+            m.read(sc);
+            assertNotNull(m.getCurrentRoom());
+            Room r = m.getCurrentRoom();
+            assertNotNull(r.getEnemies());
+            assertEquals(3, r.getEnemies().size());
+            assertEquals(simpleMap, r.toString());
+        } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
         }
+    }
+
+    @Test
+    public void test_initialise_2() {
+        //tests that model initialises rooms and entities properly
+        //correct number of enemy entities made, change in room layout should initialise fine
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "6 5\n" +
+                        "* * . . . . \n" +
+                        ". . + . 2 * \n" +
+                        "1 . 2 . . * \n" +
+                        "* * * . . . \n" +
+                        ". . . . * . ";
+        try {
+            Scanner sc = new Scanner(simpleMap);
+            m.read(sc);
+            assertNotNull(m.getCurrentRoom());
+            Room r = m.getCurrentRoom();
+            assertNotNull(r.getEnemies());
+            assertEquals(3, r.getEnemies().size());
+            assertEquals(simpleMap, r.toString());
+        } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    @Test
+    public void test_initialise_3() {
+        //tests that model initialises rooms and entities properly
+        //all is correct in format except no player found in first room
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". . . . 2 \n" +
+                        "1 . 2 . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        try {
+            Scanner sc = new Scanner(simpleMap);
+            m.read(sc);
+            fail();
+        } catch (Error error) {
+        }
+    }
+
+    @Test
+    public void test_initialise_4() {
+        //tests that model initialises rooms and entities properly
+        //all is correct in format except no player found in first room
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "5 5\n" +
+                        "* * . + . \n" +
+                        ". . . . 2 \n" +
+                        "1 . 2 . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * "+
+                        "RoomB 1\n" +
+                        "5 5 " +
+                        "* * . . . \n" +
+                        ". . + . 2 \n" +
+                        "1 . 2 . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        try {
+            Scanner sc = new Scanner(simpleMap);
+            m.read(sc);
+            fail();
+        } catch (Error error) {
+        }
+    }
+
+    @Test
+    public void test_initialise_5() {
+        //tests that model initialises rooms and entities properly
+        //incorrect number of enemy entities made, room layout is the same to simpleMap
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "1 5\n" +
+                        "* \n" +
+                        ". \n" +
+                        "1 \n" +
+                        "* \n" +
+                        ". ";
+        try {
+            Scanner sc = new Scanner(simpleMap);
+            m.read(sc);
+        } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
 
     @Test
     public void test_move_DOWN_1() {
@@ -46,6 +145,7 @@ public class ModelTests {
         Model m = new Model();
         String simpleMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . . . \n" +
                         ". . . . 2 \n" +
                         ". . + . . \n" +
@@ -53,6 +153,7 @@ public class ModelTests {
                         ". . . . * ";
         String endMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . . . \n" +
                         ". . . . . \n" +
                         ". . + . 2 \n" +
@@ -79,6 +180,7 @@ public class ModelTests {
         Model m = new Model();
         String simpleMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . . . \n" +
                         ". . . . . \n" +
                         ". 4 + . . \n" +
@@ -104,6 +206,7 @@ public class ModelTests {
         Model m = new Model();
         String simpleMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . . . \n" +
                         ". . . . . \n" +
                         ". 4 + . . \n" +
@@ -129,6 +232,7 @@ public class ModelTests {
         Model m = new Model();
         String simpleMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . . . \n" +
                         ". . . . 2 \n" +
                         ". . + . . \n" +
@@ -136,6 +240,7 @@ public class ModelTests {
                         ". . . . * ";
         String endMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . . 2 \n" +
                         ". . . . . \n" +
                         ". . + . . \n" +
@@ -162,6 +267,7 @@ public class ModelTests {
         Model m = new Model();
         String simpleMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . . . \n" +
                         ". . . . . \n" +
                         ". 4 + . . \n" +
@@ -187,6 +293,7 @@ public class ModelTests {
         Model m = new Model();
         String simpleMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . + . \n" +
                         ". . . . . \n" +
                         ". . . . . \n" +
@@ -212,6 +319,7 @@ public class ModelTests {
         Model m = new Model();
         String simpleMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . . . \n" +
                         ". 2 . . . \n" +
                         ". . + . . \n" +
@@ -219,6 +327,7 @@ public class ModelTests {
                         ". . . . * ";
         String endMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . . . \n" +
                         "2 . . . . \n" +
                         ". . + . . \n" +
@@ -245,6 +354,7 @@ public class ModelTests {
         Model m = new Model();
         String simpleMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . . . \n" +
                         ". . . . . \n" +
                         ". 4 + . . \n" +
@@ -270,6 +380,7 @@ public class ModelTests {
         Model m = new Model();
         String simpleMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . . . \n" +
                         ". . . . . \n" +
                         ". 4 + . . \n" +
@@ -295,6 +406,7 @@ public class ModelTests {
         Model m = new Model();
         String simpleMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . . . \n" +
                         ". 2 . . . \n" +
                         ". . + . . \n" +
@@ -302,6 +414,7 @@ public class ModelTests {
                         ". . . . * ";
         String endMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . . . \n" +
                         ". . 2 . . \n" +
                         ". . + . . \n" +
@@ -328,6 +441,7 @@ public class ModelTests {
         Model m = new Model();
         String simpleMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . . . \n" +
                         ". . . . . \n" +
                         ". 4 + . . \n" +
@@ -353,6 +467,7 @@ public class ModelTests {
         Model m = new Model();
         String simpleMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . . . \n" +
                         ". . . . 6 \n" +
                         ". . + . . \n" +
@@ -378,6 +493,7 @@ public class ModelTests {
         Model m = new Model();
         String simpleMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . . . \n" +
                         ". . . . . \n" +
                         ". 4 . . . \n" +
@@ -424,6 +540,7 @@ public class ModelTests {
         Model m = new Model();
         String simpleMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . . . \n" +
                         ". . . * . \n" +
                         ". 4 + . . \n" +
@@ -470,6 +587,7 @@ public class ModelTests {
         Model m = new Model();
         String simpleMap =
                 "RoomA 1\n" +
+                        "5 5\n" +
                         "* * . . . \n" +
                         ". . . * . \n" +
                         ". 4 + . . \n" +

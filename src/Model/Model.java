@@ -25,6 +25,9 @@ public class Model {
 
     public Model(){}
 
+    /**
+     * Reads the file map.txt into a scanner, precedes to read
+     */
     public void initialise() {
         try {
             File f = new File(fileName);
@@ -36,6 +39,10 @@ public class Model {
         }
     }
 
+    /**
+     * Reads from the scanner to initialise rooms until no map information left
+     * @param sc Scanner of the map information to read
+     */
     public void read(Scanner sc) {
         map = new HashMap<String, Room>();
         boolean firstRoom = true;
@@ -45,7 +52,8 @@ public class Model {
                 if(firstRoom) {
                     firstRoom = false;
                     currentRoom = curRoom;
-                }
+                    if(currentRoom.getPlayer() != null) throw new Error("There requires a player <+> placed in first room");
+                } else if(currentRoom.getPlayer() != null) throw new Error("There is a player start position found outside of first room");
                 map.put(roomName, curRoom);
                 sc = curRoom.initialise(sc);
             }
@@ -74,11 +82,20 @@ public class Model {
         currentRoom.checkAttack(entity, dir);
     }
 
+    /**
+     * Changes the current room to the given parameter
+     * @param room to be changes to the current room
+     */
     public void changeCurrentRoom(Room room) {
         currentRoom = room;
         room.startEnemies();
     }
 
+    /**
+     * Gets the room of the given name
+     * @param name of room
+     * @return Room correlated with name
+     */
     public Room getRoom(String name) {
         if(!map.containsKey(name)) throw new Error("No such element with key "+name+" found");
         return map.get(name);
@@ -97,10 +114,18 @@ public class Model {
         System.out.println(currentRoom.toString());
     }
 
+    /**
+     * Returns the player
+     * @return Player
+     */
     public Player getPlayer() {
         return currentRoom.getPlayer();
     }
 
+    /**
+     * Returns the current room
+     * @return current Room
+     */
     public Room getCurrentRoom(){
         return this.currentRoom;
     }

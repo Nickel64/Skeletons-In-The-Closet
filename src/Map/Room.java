@@ -20,13 +20,15 @@ import java.util.Scanner;
 
 public class Room {
 
-    private static final Integer ROOM_WIDTH = 5;
-    private static final Integer ROOM_HEIGHT = 5;
+//    private static final Integer ROOM_WIDTH = 5;
+//    private static final Integer ROOM_HEIGHT = 5;
     private Tile[][] layout;
     private List<Entity> enemies;
     private Player player;
     private String name;
     private int level;
+    private int width;
+    private int height;
     private boolean cleared = false;
 
     public Room(String name) {
@@ -44,10 +46,15 @@ public class Room {
         if(!sc.hasNextInt()) throw new Error("No room level, instead: "+sc.next());
         this.level = sc.nextInt();
 
+        if(!sc.hasNextInt()) throw new Error("No room size, instead: "+sc.next());
+        this.width = sc.nextInt();
+        if(!sc.hasNextInt()) throw new Error("No room size, instead: "+sc.next());
+        this.height = sc.nextInt();
+
         String curString;
-        layout = new Tile[ROOM_WIDTH][ROOM_HEIGHT];
-        for(int i = 0; i < ROOM_WIDTH; i++) {
-            for(int j = 0; j < ROOM_HEIGHT; j++) {
+        layout = new Tile[height][width];
+        for(int i = 0; i < height; i++) {
+            for(int j = 0; j < width; j++) {
                 Entity curEntity = null;
                 curString = sc.next();
                 if(curString.matches("[A-Za-z]")) {             //connection to another room
@@ -93,6 +100,10 @@ public class Room {
         return sc;
     }
 
+    /**
+     * returns the player entity
+     * @return PLayer
+     */
     public Player getPlayer() {
         return this.player;
     }
@@ -111,21 +122,38 @@ public class Room {
      */
     private boolean isRoomCleared() {return cleared;}
 
+
+    /**
+     * Gets the entity at layout x and y.
+     *
+     * @param x coordinate of entity
+     * @param y coordinate of entity
+     * @return Entity
+     */
     public Entity getEntityAt(int x, int y) {
         return layout[y][x].getEntity();
     }
 
+    /**
+     * Returns whether or not the given entity is within the room
+     * @param enemy to check with
+     * @return true/false boolean
+     */
     public boolean containsEnemy(Entity enemy) {
         return enemies.contains(enemy);
     }
 
+    /**
+     * Returns a list of all enemy entities, including: Enemy and Boss
+     * @return all enemies
+     */
     public List<Entity> getEnemies() {
         return enemies;
     }
 
     /**
      * Removes entity
-     * @param enemy
+     * @param enemy to find and remove
      */
     private void removeEnemy(Entity enemy) {
         enemies.remove(enemy);
@@ -163,13 +191,13 @@ public class Room {
                 if (y - 1 < 0) throw new Error("Cannot move entity " + direction.name());
                 return new Point(x, y - 1);
             case Right:
-                if (x + 1 >= ROOM_WIDTH) throw new Error("Cannot move entity " + direction.name());
+                if (x + 1 >= width) throw new Error("Cannot move entity " + direction.name());
                 return new Point(x + 1, y);
             case Left:
                 if (x - 1 < 0) throw new Error("Cannot move entity " + direction.name());
                 return new Point(x - 1, y);
             case Down:
-                if ((y +1) >= ROOM_HEIGHT) throw new Error("Cannot move entity " + direction.name()+" x: "+(x+1)+" y: "+y);
+                if ((y +1) >= height) throw new Error("Cannot move entity " + direction.name()+" x: "+(x+1)+" y: "+y);
                 return new Point(x, y + 1);
         }
         throw new Error("Unknown direction: "+ direction.name());
@@ -226,27 +254,16 @@ public class Room {
         int destX = destP.x;
         int destY = destP.y;
 
-        Entity defender = layout[destX][destY].getEntity();
+        Entity defender = layout[destY][destX].getEntity();
         entity.attack(defender);
         if(defender.isDead()) {
             removeEnemy(defender);
-            layout[destX][destY].setEntity(new Nothing());
+            layout[destY][destX].setEntity(new Nothing());
         }
     }
 
-    /**
-     * Gets the image file name at layout x and y for tile.
-     *
-     * @param x coordinate of layout
-     * @param y coordinate of layout
-     * @return String of file name
-     */
-    public String getImageFileNameAt(int x, int y) {
-        return layout[x][y].getImageName();
-    }
-
     public String toString() {
-        String str = name+" "+level;
+        String str = name+" "+level + "\n"+width+" "+height;
         for (Tile[] aLayout : layout) {
             str += "\n";
             for (Tile anALayout : aLayout) {
