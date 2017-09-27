@@ -248,6 +248,10 @@ public class Room {
         }
     }
 
+    public Tile getTileAtLocation(int x, int y){
+        return layout[y][x];
+    }
+
     /**
      * Attacks and damages the entity in the given direction if possible.
      *

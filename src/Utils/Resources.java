@@ -18,6 +18,22 @@ public class Resources {
     public static Dimension WINDOW_SIZE = new Dimension(1024,720);
 
     public static Image getImage(String imgDesc){
+        if(imgDesc.equals("border")){
+            String temp = "Decor/";
+            temp += imgDesc;
+            imgDesc = temp;
+        }
+        else if(imgDesc.contains("wall")){
+
+        }
+        else if(imgDesc.contains("floor")){
+
+        }
+        else{   //an icon
+            String temp = "Icons/";
+            temp += imgDesc;
+            imgDesc = temp;
+        }
         Image img = null;
 
         try {

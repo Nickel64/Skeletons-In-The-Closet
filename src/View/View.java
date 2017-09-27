@@ -98,6 +98,7 @@ public class View extends JComponent implements Observer{
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D gg = (Graphics2D) g;
+        this.drawWorld(gg);
         this.drawRoom(gg, model.getCurrentRoom());
         this.drawInterface(gg);
     }
@@ -147,7 +148,8 @@ public class View extends JComponent implements Observer{
      * @param g the graphics2D object to draw to
      */
     public void drawWorld(Graphics2D g){
-
+        g.setColor(new Color(32,39,32));
+        g.fillRect(0,0, this.getWidth(), this.getHeight());
     }
 
 
@@ -159,13 +161,13 @@ public class View extends JComponent implements Observer{
      * @param g the graphics2D object to draw to
      */
     public void drawRoom(Graphics2D g, Room r){
-        for(int y = 0; y < 10; y++){
-            for(int x = 0; x < 14; x++){
+        for(int y = 0; y < r.getHieght(); y++){
+            for(int x = 0; x < r.getWidth(); x++){
                 //just a visual thing
                 //14x10 seems good to me
                 g.setColor(Color.black);
                 g.drawRect(startX+(50*x),startY+(tileSize*y),tileSize,tileSize);
-                //drawTile(g, model.getCurrentRoom().getTileAtLocation(x,y), x, y);
+                drawTile(g, model.getCurrentRoom().getTileAtLocation(x,y), x, y);
             }
         }
     }
