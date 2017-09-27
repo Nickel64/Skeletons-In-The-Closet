@@ -3,6 +3,7 @@ package Controller;
 import Entities.Entity;
 import Model.*;
 
+import javax.swing.*;
 import java.awt.event.*;
 
 /** * * * * * * * * * * * * *
@@ -45,7 +46,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
             model.moveEntity(model.getPlayer(), Entity.Direction.Right);
         }
         else if(code == KeyEvent.VK_SPACE) {
-            model.getPlayer().attack();
+            model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
         }
     }
 
@@ -78,6 +79,30 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         //used for buttons
+        if(JButton.class.isInstance(e.getSource())) {
+            String buttonName = ((JButton)e.getSource()).getAccessibleContext().getAccessibleName();
+            switch(buttonName) {
+                case "Up":
+                    model.moveEntity(model.getPlayer(), Entity.Direction.Up);
+                    break;
+                case "Down":
+                    model.moveEntity(model.getPlayer(), Entity.Direction.Down);
+                    break;
+                case "Left":
+                    model.moveEntity(model.getPlayer(), Entity.Direction.Left);
+                    break;
+                case "Right":
+                    model.moveEntity(model.getPlayer(), Entity.Direction.Right);
+                    break;
+                case "Attack":
+                    model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
+                    break;
+                case "Defend":
+                    break;
+                case "AOE":
+                    break;
+            }
+        }
     }
 
     /* END OF MOUSE LISTENER METHODS */

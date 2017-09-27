@@ -39,6 +39,8 @@ public class Player extends Observable implements Entity {
    // public int getSpeed(){return speed;}
     public Image getSprite(){return sprite;}
 
+    public Direction getDir() { return dir; }
+
     public void setHealth(int Health){ health = Health;}
     public void  setDamage(int Damage){ damage = Damage;}
     //public void  setSpeed(int Speed){speed = Speed;}
