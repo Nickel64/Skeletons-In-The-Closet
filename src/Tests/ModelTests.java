@@ -15,10 +15,6 @@ import static org.junit.Assert.fail;
  * Created by nambalg on 27/09/17.
  */
 public class ModelTests {
-    /**
-     * Created by nambalg on 21/09/17.
-     */
-    public class ModelTest {
 
         @Test
         public void test_initialise_1() {
@@ -62,13 +58,12 @@ public class ModelTests {
             m.read(sc);
             Room r = m.getCurrentRoom();
             Entity e = r.getEntityAt(4, 1);
-            assertEquals(2+"", e.toString());
+            assertEquals(2 + "", e.toString());
             m.moveEntity(e, Entity.Direction.Down);
             assertEquals(e, r.getEntityAt(4, 2));
         } catch (Error e) {
             e.printStackTrace();
             fail(e.getMessage());
         }
-    }
     }
 }
