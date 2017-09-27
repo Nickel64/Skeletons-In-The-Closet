@@ -161,7 +161,7 @@ public class View extends JComponent implements Observer{
      * @param g the graphics2D object to draw to
      */
     public void drawRoom(Graphics2D g, Room r){
-        for(int y = 0; y < r.getHieght(); y++){
+        for(int y = 0; y < r.getHeight(); y++){
             for(int x = 0; x < r.getWidth(); x++){
                 //just a visual thing
                 //14x10 seems good to me
