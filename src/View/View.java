@@ -86,7 +86,6 @@ public class View extends JComponent implements Observer{
 
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
         Graphics2D gg = (Graphics2D) g;
         this.drawRoom(gg, model.getCurrentRoom());
         this.drawInterface(gg);
@@ -118,6 +117,7 @@ public class View extends JComponent implements Observer{
 
     public void drawInterface(Graphics2D g){
         g.drawImage(Resources.getImage("border"), 0, this.getHeight()-Resources.getImage("border").getHeight(null), null);
+        playerStats.repaint();
     }
 
     /**
@@ -148,7 +148,14 @@ public class View extends JComponent implements Observer{
      * @param g the graphics2D object to draw to
      */
     public void drawRoom(Graphics2D g, Room r){
-
+        int startX = 165;
+        int startY = 30;
+        int tileSize = 50;
+        for(int y = 0; y < 10; y++){
+            for(int x = 0; x < 14; x++){
+                g.drawRect(startX+(50*x),startY+(tileSize*y),tileSize,tileSize);
+            }
+        }
     }
 
     /**
