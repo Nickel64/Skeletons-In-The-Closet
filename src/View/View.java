@@ -58,6 +58,7 @@ public class View extends JComponent implements Observer{
     public View(Model m) {
 
         this.model = m;
+        controller = new Controller(m, this);
 
         //setting up the frame
         frame = new JFrame(Resources.TITLE);
@@ -158,13 +159,13 @@ public class View extends JComponent implements Observer{
      * @param g the graphics2D object to draw to
      */
     public void drawRoom(Graphics2D g, Room r){
-        for(int y = 0; y < r.ROOM_HEIGHT; y++){
-            for(int x = 0; x < r.ROOM_WIDTH; x++){
+        for(int y = 0; y < 10; y++){
+            for(int x = 0; x < 14; x++){
                 //just a visual thing
                 //14x10 seems good to me
-                //g.setColor(Color.black);
-                //g.drawRect(startX+(50*x),startY+(tileSize*y),tileSize,tileSize);
-                drawTile(g, model.getCurrentRoom().getTileAtLocation(x,y), x, y);
+                g.setColor(Color.black);
+                g.drawRect(startX+(50*x),startY+(tileSize*y),tileSize,tileSize);
+                //drawTile(g, model.getCurrentRoom().getTileAtLocation(x,y), x, y);
             }
         }
     }

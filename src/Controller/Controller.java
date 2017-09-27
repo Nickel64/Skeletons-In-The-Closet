@@ -2,6 +2,7 @@ package Controller;
 
 import Entities.Entity;
 import Model.*;
+import View.*;
 
 import java.awt.event.*;
 
@@ -13,9 +14,11 @@ import java.awt.event.*;
 
 public class Controller implements KeyListener, MouseListener, ActionListener {
     private Model model;
+    private View view;
 
-    public Controller(Model model) {
+    public Controller(Model model, View view) {
         this.model = model;
+        this.view = view;
     }
 
     /* KEY LISTENER METHODS */
