@@ -120,6 +120,17 @@ public class Room {
      */
     private boolean isRoomCleared() {return cleared;}
 
+    /**
+     * Returns the width of the room
+     * @return int of width
+     */
+    public int getWidth() {return this.width;}
+
+    /**
+     * Returns the height of the room
+     * @return int of hieght
+     */
+    public int getHieght() {return this.height;}
 
     /**
      * Gets the entity at layout x and y.
