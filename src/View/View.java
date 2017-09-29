@@ -97,6 +97,8 @@ public class View extends JComponent implements Observer{
 
     @Override
     protected void paintComponent(Graphics g) {
+
+
         Graphics2D gg = (Graphics2D) g;
         this.drawWorld(gg);
         this.drawRoom(gg, model.getCurrentRoom());
@@ -153,7 +155,7 @@ public class View extends JComponent implements Observer{
     }
 
 
-    /**
+    /**w
      * Will draw any given room to the graphics pane.
      * Should scale depending on size of window (Maybe)
      * Good for testing
@@ -167,7 +169,7 @@ public class View extends JComponent implements Observer{
                 //14x10 seems good to me
                 g.setColor(Color.black);
                 g.drawRect(startX+(50*x),startY+(tileSize*y),tileSize,tileSize);
-                drawTile(g, model.getCurrentRoom().getTileAtLocation(x,y), x, y);
+                drawTile(g, model.getCurrentRoom().getTileAtLocation(x,y), (x*50)+this.startX, (y*50)+this.startY);
             }
         }
     }
@@ -181,14 +183,16 @@ public class View extends JComponent implements Observer{
      * @param t the tile to be drawn
      */
     public void drawTile(Graphics2D g, Tile t, int x, int y){
-        //TODO implement with actual images
         if(t instanceof DoorTile){
             g.setColor(Color.GRAY);
         }
         else if(t instanceof FloorTile){
             g.setColor(Color.cyan);
         }
-        g.fillRect(startX+(50*x),startY+(tileSize*y),tileSize,tileSize);
+        g.fillRect(x,y,tileSize,tileSize);
+        Image img = Resources.getImage(t.getImageName());
+        g.drawImage(img, x,y,null);
+
         if(t.getEntity() != null){
             drawEntity(g, t.getEntity(), x,y);
         }

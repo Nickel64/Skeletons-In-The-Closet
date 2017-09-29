@@ -17,6 +17,8 @@ public interface Tile {
     String getImageName();
 
 
+    public int getLevel();
+
     /**
      * Returns whether or not tile is occupied
      * @return whether this tile is occupied

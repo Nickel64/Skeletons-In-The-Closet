@@ -23,11 +23,20 @@ public class Resources {
             temp += imgDesc;
             imgDesc = temp;
         }
-        else if(imgDesc.contains("wall")){
-
+        else if(imgDesc.contains("Wall")){
+            String temp = "Floors/";
+            temp += imgDesc;
+            imgDesc = temp;
         }
-        else if(imgDesc.contains("floor")){
-
+        else if(imgDesc.contains("Floor")){
+            String temp = "Floors/";
+            temp += imgDesc;
+            imgDesc = temp;
+        }
+        else if(imgDesc.contains("Door")){
+            String temp = "Doors/";
+            temp += imgDesc;
+            imgDesc = temp;
         }
         else{   //an icon
             String temp = "Icons/";

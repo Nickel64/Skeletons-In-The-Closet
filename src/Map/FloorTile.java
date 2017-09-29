@@ -9,10 +9,19 @@ import Entities.*;
  */
 public class FloorTile implements Tile {
 
+    private int level;
+
+    @Override
+    public int getLevel() {
+        return level;
+    }
+
     private String imgName;     //image file name for the given tile
     private Entity entity;
 
-    FloorTile(Entity e) {
+    FloorTile(Entity e, int level) {
+        this.level = level;
+        imgName = "Floor"+level;
         entity = e;
     }
 

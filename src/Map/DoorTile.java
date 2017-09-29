@@ -4,12 +4,20 @@ import Entities.Entity;
 
 public class DoorTile implements Tile {
 
-    private String filename = "door.png";
+    private String filename;
     private String connectedRoomName;
     private Entity entity;
+    private int level;
 
-    DoorTile(String connectedRoomName, Entity entity) {
+    @Override
+    public int getLevel() {
+        return level;
+    }
+
+    DoorTile(String connectedRoomName, Entity entity, int level) {
+        this.level = level;
         this.connectedRoomName = connectedRoomName;
+        filename = "Door"+level;
     }
 
     @Override

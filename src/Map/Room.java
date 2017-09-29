@@ -57,7 +57,7 @@ public class Room {
                 curString = sc.next();
                 if(curString.matches("[A-Za-z]")) {             //connection to another room
                     curEntity = new Nothing();
-                    DoorTile door = new DoorTile(curString, curEntity);
+                    DoorTile door = new DoorTile(curString, curEntity, this.level);
                     layout[i][j] = door;
                 } else {
                     if(curString.matches("\\.")) {              //open space
@@ -88,7 +88,7 @@ public class Room {
                         }
                         enemies.add(curEntity);
                     }
-                    layout[i][j] = new FloorTile(curEntity);
+                    layout[i][j] = new FloorTile(curEntity, this.level);
                 }
                 if(curEntity == null) throw new Error("Entity is invalid+"+curString);
                 System.out.print(curString);
