@@ -191,6 +191,8 @@ public class View extends JComponent implements Observer{
         }
         g.fillRect(x,y,tileSize,tileSize);
         Image img = Resources.getImage(t.getImageName());
+        if(img == null)
+            return;
         g.drawImage(img, x,y,null);
 
         if(t.getEntity() != null){
