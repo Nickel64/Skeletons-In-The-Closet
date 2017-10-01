@@ -28,6 +28,11 @@ public class Enemy extends Observable implements Entity {
         this.damage = damage;
         this.speed = speed;
     }
+
+    public String getImageName(){
+        return null;
+    }
+
     /**
      * Calculates whether the enemy is in range to attack the player
      * @return inRange

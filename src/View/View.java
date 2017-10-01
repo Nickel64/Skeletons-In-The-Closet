@@ -190,7 +190,6 @@ public class View extends JComponent implements Observer{
         else if(t instanceof FloorTile){
             g.setColor(Color.cyan);
         }
-        g.fillRect(x,y,tileSize,tileSize);
         Image img = Resources.getImage(t.getImageName());
         if(img == null)
             return;
@@ -209,20 +208,21 @@ public class View extends JComponent implements Observer{
      */
 
     public void drawEntity(Graphics2D g, Entity e, int x, int y){
-        //TODO I'm gonna do this smarter I promise
         if(e instanceof Nothing)
             return;
         else if(e instanceof Player){
             g.setColor(Color.blue);
-            g.fillOval(startX + tileSize/4+(50*x),startY+tileSize/4+(tileSize*y),tileSize/2,tileSize/2);
+            g.fillOval( (tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
         }
         else if(e instanceof  Wall){
-            g.setColor(Color.darkGray);
-            g.fillRect(startX+(50*x),startY+(tileSize*y),tileSize,tileSize);
+            Image img = Resources.getImage(e.getImageName());
+            if(img == null)
+                return;
+            g.drawImage(img, x,y,null);
         }
         else if(e instanceof Enemy){
             g.setColor(Color.red);
-            g.fillOval(startX + tileSize/4+(50*x),startY+tileSize/4+(tileSize*y),tileSize/2,tileSize/2);
+            g.fillOval((tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
         }
     }
 

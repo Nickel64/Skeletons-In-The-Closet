@@ -63,7 +63,7 @@ public class Room {
                     if(curString.matches("\\.")) {              //open space
                         curEntity = new Nothing();
                     } else if(curString.matches("\\*")) {         //wall
-                        curEntity = new Wall();
+                        curEntity = new Wall(this.level);
 
                     } else if(curString.matches("\\+")) {       //player
                         this.player = new Player();

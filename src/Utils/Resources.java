@@ -24,7 +24,7 @@ public class Resources {
             imgDesc = temp;
         }
         else if(imgDesc.contains("Wall")){
-            String temp = "Floors/";
+            String temp = "Walls/";
             temp += imgDesc;
             imgDesc = temp;
         }

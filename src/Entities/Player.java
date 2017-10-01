@@ -53,6 +53,10 @@ public class Player extends Observable implements Entity {
         }
     }
 
+    public String getImageName(){
+        return null;
+    }
+
     public boolean isDead(){
         if (health<=0){
             return true;
