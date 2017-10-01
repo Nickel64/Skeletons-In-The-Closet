@@ -179,6 +179,7 @@ public class View extends JComponent implements Observer{
      * Good for testing
      * Should scale based on size of window(maybe)
      *
+     *
      * @param g the graphics2D object to draw to
      * @param t the tile to be drawn
      */
