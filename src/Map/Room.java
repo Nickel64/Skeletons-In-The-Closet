@@ -7,9 +7,8 @@ import Entities.Entity.Direction;
 import Model.*;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Room containing room layout of Tiles
@@ -21,6 +20,7 @@ import java.util.Scanner;
 public class Room {
 
     private Tile[][] layout;
+    private Map<String, DoorTile> doors;
     private List<Entity> enemies;
     private Player player;
     private String name;
@@ -41,6 +41,7 @@ public class Room {
     public Scanner initialise(Scanner sc) {
         cleared = false;
         enemies = new ArrayList<>();
+        doors = new HashMap<String, DoorTile>();
         if(!sc.hasNextInt()) throw new Error("No room level, instead: "+sc.next());
         this.level = sc.nextInt();
 
@@ -58,6 +59,7 @@ public class Room {
                 if(curString.matches("[A-Za-z]")) {             //connection to another room
                     curEntity = new Nothing();
                     DoorTile door = new DoorTile(curString, curEntity, this.level);
+                    doors.put(curString, door);
                     layout[i][j] = door;
                 } else {
                     if(curString.matches("\\.")) {              //open space
@@ -90,7 +92,7 @@ public class Room {
                     }
                     layout[i][j] = new FloorTile(curEntity, this.level);
                 }
-                if(curEntity == null) throw new Error("Entity is invalid+"+curString);
+                if(curEntity == null) throw new Error("Entity is invalid "+curString);
                 System.out.print(curString);
             }
             System.out.println();
@@ -115,10 +117,14 @@ public class Room {
         }
     }
 
+    public void setRoomClearedTo(boolean b) {
+        cleared = b;
+    }
+
     /**
      * @return whether or not the room is cleared and player can progress
      */
-    private boolean isRoomCleared() {return cleared;}
+    public boolean isRoomCleared() {return cleared;}
 
     /**
      * Returns the width of the room
@@ -144,12 +150,21 @@ public class Room {
     }
 
     /**
-     * Returns whether or not the given entity is within the room
+     * Returns whether or not the given enemy is within the room
      * @param enemy to check with
      * @return true/false boolean
      */
     public boolean containsEnemy(Entity enemy) {
         return enemies.contains(enemy);
+    }
+
+    /**
+     * Returns whether or not the given entity is within the room
+     * @param entity to check with
+     * @return true/false boolean
+     */
+    public boolean containsEntity(Entity entity) {
+        return (enemies.contains(entity) || player == entity);
     }
 
     /**
@@ -230,22 +245,46 @@ public class Room {
         int destX = destP.x;
         int destY = destP.y;
 
-        System.out.println("to move onto coord "+destX+", "+destY);
-        System.out.println("where :"+layout[destY][destX].getEntity().toString());
-
         if(!layout[destY][destX].canMoveOnto()) throw new Error("Cannot move onto tile in "+direction.name());
         if(layout[destY][destX] instanceof DoorTile) {
             if(!(entity instanceof Player)) throw new Error("An entity other than player cannot move from room to room");
-            if(!isRoomCleared()) throw new Error("Player cannot progress to next room until room is cleared");
-            DoorTile door = (DoorTile) layout[destX][destY];        //finds the next room and changes models cur room
-            model.changeCurrentRoom(model.getRoom(door.nameOfNextRoom()));
+            if(!isRoomCleared()) {
+                swap(p, destP);
+                throw new Error("Player cannot progress to next room until room is cleared");
+            }
+            swap(p, destP);
+            DoorTile door = (DoorTile) layout[destY][destX];        //finds the next room and changes models cur room
+
+            Room next = model.getRoom(door.nameOfNextRoom());
+
+            DoorTile entryDoor = next.getDoorNamed(name);
+
+            Entity temp = entryDoor.getEntity();
+            entryDoor.setEntity(door.getEntity());
+            door.setEntity(temp);
+            model.changeCurrentRoom(next);
         } else {
-            System.out.println("Swapping tiles from "+x+", "+y+" to "+destX+", "+destY);
-            System.out.println("swap"+layout[y][x].getEntity().toString()+" and "+layout[destY][destX].getEntity().toString());
-            Entity temp = layout[y][x].getEntity();     //finds the two movable tile entities and swaps them
-            layout[y][x].setEntity(layout[destY][destX].getEntity());
-            layout[destY][destX].setEntity(temp);
+            swap(p, destP);
         }
+    }
+
+    /**
+     * Swaps the entities of the two given points
+     * @param start point of entity
+     * @param end point of entity
+     */
+    public void swap(Point start, Point end) {
+        Entity temp = layout[start.y][start.x].getEntity();     //finds the two movable tile entities and swaps them
+        layout[start.y][start.x].setEntity(layout[end.y][end.x].getEntity());
+        layout[end.y][end.x].setEntity(temp);
+    }
+
+    public boolean doesDoorExist(String name) {
+        return doors.containsKey(name);
+    }
+
+    public DoorTile getDoorNamed(String name) {
+        return doors.get(name);
     }
 
     public Tile getTileAtLocation(int x, int y){

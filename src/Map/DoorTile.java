@@ -16,6 +16,7 @@ public class DoorTile implements Tile {
 
     DoorTile(String connectedRoomName, Entity entity, int level) {
         this.level = level;
+        this.entity = entity;
         this.connectedRoomName = connectedRoomName;
         filename = "Door"+level;
     }
@@ -52,7 +53,7 @@ public class DoorTile implements Tile {
 
     @Override
     public void setEntity(Entity entity) {
-        throw new Error("Cannot set entity to anything other than entity at door tile");
+        this.entity = entity;
     }
 
     String nameOfNextRoom() {
