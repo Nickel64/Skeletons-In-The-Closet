@@ -738,4 +738,77 @@ public class TestAll {
         } catch (Error error) {
             assertFalse(r.containsEnemy(e));}
     }
+
+    @Test
+    public void test_model_move_teleport_1() {
+        //tests that when model moves player entity on to door and room is not cleared player is moved however
+        //current room is not changed.
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * + . . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+        Room r = m.getCurrentRoom();
+        Entity player = r.getEntityAt(2, 3);
+        try {
+            r.setRoomClearedTo(false);
+            assertFalse(r.isRoomCleared());
+            m.moveEntity(player, Entity.Direction.Down);
+            fail();
+        } catch (Error error) {
+            assertEquals(m.getRoom("A"), m.getCurrentRoom());
+            assertEquals(r, m.getCurrentRoom());
+            assertEquals(player, r.getEntityAt(2, 4));
+        }
+    }
+
+    @Test
+    public void test_model_move_teleport_2() {
+        //tests that when model moves player entity on to door the current room of the model is changed and player is
+        //at new room start position
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * + . . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+        Room r = m.getCurrentRoom();
+        Entity player = r.getEntityAt(2, 3);
+        try {
+            r.setRoomClearedTo(true);
+            assertEquals(m.getRoom("A"), m.getCurrentRoom());
+            m.moveEntity(player, Entity.Direction.Down);
+            assertEquals(m.getRoom("B"), m.getCurrentRoom());
+            assertNotEquals(r, m.getCurrentRoom());
+            assertEquals(player, m.getCurrentRoom().getDoorNamed("A").getEntity());
+        } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
 }

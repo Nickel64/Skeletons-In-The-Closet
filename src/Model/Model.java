@@ -4,9 +4,10 @@ import Entities.Entity;
 import Entities.Entity.Direction;
 import Entities.Player;
 import Map.Room;
+import Utils.Resources;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -19,7 +20,7 @@ import java.util.Scanner;
  */
 public class Model {
 
-    private static final String fileName = "map.txt";   //will be using txt to create layout of world
+    private static final String fileName = "Utils/map.txt";   //will be using txt to create layout of world
     private Map<String, Room> map;  //map of room names and rooms for easy access when moving room to room
     private Room currentRoom;
 
@@ -30,14 +31,16 @@ public class Model {
     /**
      * Reads the file map.txt into a scanner, precedes to read
      */
-    public void initialise() {
+    public void initialise() throws IOException {
         try {
-            File f = new File(fileName);
-            if (!f.canRead()) throw new Error("file cannot read");
-            Scanner sc = new Scanner(f);
+            ClassLoader classLoader = Utils.Resources.class.getClassLoader();
+            File file = new File(classLoader.getResource(fileName).getFile());
+            Scanner sc;
+            sc = new Scanner(file);
             read(sc);
-        } catch (FileNotFoundException e) {
-            System.out.println("File scan error! " + e.getMessage());
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
     }
 
@@ -68,7 +71,7 @@ public class Model {
      */
     public void moveEntity(Entity entity, Direction dir) {
         //check entity
-        if(!currentRoom.containsEnemy(entity)) throw new Error("Cannot move a nonexistent entity");
+        if(!currentRoom.containsEntity(entity)) throw new Error("Cannot move a nonexistent entity");
         if(!entity.canMove()) throw new Error("Cannot move an unmovable entity");
         currentRoom.moveEntity(entity, dir, this);
     }

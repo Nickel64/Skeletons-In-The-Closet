@@ -3,12 +3,17 @@ import View.*;
 import Model.*;
 
 import javax.swing.*;
+import java.io.IOException;
 
 public class SkeletonsInTheCloset {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Model m = new Model();
-        m.initialise();
+        try {
+            m.initialise();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         SwingUtilities.invokeLater(()->new View(m));
     }
 }
