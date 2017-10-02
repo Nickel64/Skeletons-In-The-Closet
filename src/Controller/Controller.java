@@ -25,31 +25,32 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     /* KEY LISTENER METHODS */
 
     @Override
-    public void keyTyped(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+            model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
+        }
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
         //process input from keyboard
         //e.g. move up, down, left, right, attack
         int code = e.getKeyCode();
-        if(code == KeyEvent.VK_KP_UP || code == KeyEvent.VK_UP) {
+        if(code == KeyEvent.VK_KP_UP || code == KeyEvent.VK_UP || code == KeyEvent.VK_W) {
             //move up
             model.moveEntity(model.getPlayer(), Entity.Direction.Up);
         }
-        else if(code == KeyEvent.VK_KP_DOWN || code == KeyEvent.VK_DOWN) {
+        else if(code == KeyEvent.VK_KP_DOWN || code == KeyEvent.VK_DOWN || code == KeyEvent.VK_S) {
             //move down
             model.moveEntity(model.getPlayer(), Entity.Direction.Down);
         }
-        else if(code == KeyEvent.VK_KP_LEFT || code == KeyEvent.VK_LEFT) {
+        else if(code == KeyEvent.VK_KP_LEFT || code == KeyEvent.VK_LEFT || code == KeyEvent.VK_A) {
             //move left
             model.moveEntity(model.getPlayer(), Entity.Direction.Left);
         }
-        else if(code == KeyEvent.VK_KP_RIGHT || code == KeyEvent.VK_RIGHT) {
+        else if(code == KeyEvent.VK_KP_RIGHT || code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_D) {
             //move right
             model.moveEntity(model.getPlayer(), Entity.Direction.Right);
-        }
-        else if(code == KeyEvent.VK_SPACE) {
-            model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
         }
     }
 
@@ -83,7 +84,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
         //used for buttons
         if(JButton.class.isInstance(e.getSource())) {
-            String buttonName = ((JButton)e.getSource()).getAccessibleContext().getAccessibleName();
+            String buttonName = ((JButton)e.getSource()).getName();
             switch(buttonName) {
                 case "Up":
                     model.moveEntity(model.getPlayer(), Entity.Direction.Up);
