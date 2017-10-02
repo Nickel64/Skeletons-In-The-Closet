@@ -324,6 +324,14 @@ public class View extends JComponent implements Observer{
         left.setName("Left");
         right.setName("Right");
 
+        attack.setRequestFocusEnabled(false);
+        defend.setRequestFocusEnabled(false);
+        AoE.setRequestFocusEnabled(false);
+        up.setRequestFocusEnabled(false);
+        down.setRequestFocusEnabled(false);
+        left.setRequestFocusEnabled(false);
+        right.setRequestFocusEnabled(false);
+
         //setting up the movement buttons
         up.setIcon(new ImageIcon(Resources.getImage("up")));
         up.setBackground(Color.black);
