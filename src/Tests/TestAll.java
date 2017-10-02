@@ -811,4 +811,88 @@ public class TestAll {
             fail(error.getMessage());
         }
     }
+
+    @Test
+    public void test_model_move_teleport_3() {
+        //tests that when model moves player entity on to door the current room of the model is changed and player is
+        //at new room start position, testing that player moves normally after transport to new room
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * + . . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+        Room r = m.getCurrentRoom();
+        Entity player = r.getEntityAt(2, 3);
+        try {
+            r.setRoomClearedTo(true);
+            assertEquals(m.getRoom("A"), m.getCurrentRoom());
+            m.moveEntity(player, Entity.Direction.Down);
+            assertEquals(m.getRoom("B"), m.getCurrentRoom());
+            assertNotEquals(r, m.getCurrentRoom());
+            assertEquals(player, m.getCurrentRoom().getDoorNamed("A").getEntity());
+            m.moveEntity(player, Entity.Direction.Right);
+        } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    @Test
+    public void test_model_move_teleport_4() {
+        //tests that when model moves player entity on to door the current room of the model is changed and player is
+        //at new room start position, testing that player moves normally after transport to new room and then returns
+        //back to room player originated from
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * + . . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+        Room r = m.getCurrentRoom();
+        Entity player = r.getEntityAt(2, 3);
+        try {
+            r.setRoomClearedTo(true);
+            assertEquals(m.getRoom("A"), m.getCurrentRoom());
+            m.moveEntity(player, Entity.Direction.Down);
+            assertEquals(m.getRoom("B"), m.getCurrentRoom());
+            assertNotEquals(r, m.getCurrentRoom());
+            assertEquals(player, m.getCurrentRoom().getDoorNamed("A").getEntity());
+            m.moveEntity(player, Entity.Direction.Right);//moves to the right and then back to door tile to teleport back
+            m.getCurrentRoom().setRoomClearedTo(true);  //must set room to cleared
+            m.moveEntity(player, Entity.Direction.Left);
+            //room is now original room
+            assertEquals(r, m.getCurrentRoom());
+            //is at current room at door tile B
+            assertEquals(player, m.getCurrentRoom().getDoorNamed("B").getEntity());
+            assertTrue(m.getCurrentRoom().isRoomCleared());
+        } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
 }

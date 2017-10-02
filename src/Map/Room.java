@@ -138,6 +138,10 @@ public class Room {
      */
     public int getHeight() {return this.height;}
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
     /**
      * Gets the entity at layout x and y.
      *
@@ -255,7 +259,8 @@ public class Room {
             swap(p, destP);
             DoorTile door = (DoorTile) layout[destY][destX];        //finds the next room and changes models cur room
 
-            Room next = model.getRoom(door.nameOfNextRoom());
+            Room next = model.getRoom(door.nameOfNextRoom());       //finds next room to hold player
+            next.setPlayer(this.player);        //sets the next room up with the current player
 
             DoorTile entryDoor = next.getDoorNamed(name);
 
