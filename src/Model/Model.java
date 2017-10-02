@@ -6,11 +6,14 @@ import Entities.Player;
 import Map.Room;
 import Utils.Resources;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
 import java.util.Scanner;
+
 
 /**
  * Model containing all rooms and game logic
@@ -18,7 +21,7 @@ import java.util.Scanner;
  * Created: 19/9/17
  * @author Balgmi Nam
  */
-public class Model {
+public class Model extends Observable {
 
     private static final String fileName = "Utils/map.txt";   //will be using txt to create layout of world
     private Map<String, Room> map;  //map of room names and rooms for easy access when moving room to room
@@ -44,11 +47,17 @@ public class Model {
         }
     }
 
+    public Point getPlayerLocation(){
+        Point p = this.getCurrentRoom().getPlayerLocation();
+        return p;
+    }
+
     /**
      * Reads from the scanner to initialise rooms until no map information left
      * @param sc Scanner of the map information to read
      */
     public void read(Scanner sc) {
+        setChanged();
         map = new HashMap<String, Room>();
         boolean firstRoom = true;
             while(sc.hasNext()) {
@@ -62,6 +71,7 @@ public class Model {
                 map.put(roomName, curRoom);
                 sc = curRoom.initialise(sc);
             }
+            notifyObservers();
     }
 
     /**

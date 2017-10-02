@@ -17,6 +17,10 @@ public class Resources {
 
     public static Dimension WINDOW_SIZE = new Dimension(1024,720);
 
+    public static Color transparent = new Color(0,0,0,0);
+    public static Color shadowBack = new Color(32,39,32);
+    public static int radius = 700;
+
     public static Image getImage(String imgDesc){
         if(imgDesc.equals("border")){
             String temp = "Decor/";

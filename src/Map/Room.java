@@ -108,6 +108,17 @@ public class Room {
         return this.player;
     }
 
+    public Point getPlayerLocation(){
+        for(int y = 0; y < layout.length; y++){
+            for(int x = 0; x < layout[0].length; x++){
+                if(layout[y][x].getEntity() instanceof Player){
+                    return new Point(x,y);
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * Starts the enemies ping
      */

@@ -59,6 +59,7 @@ public class View extends JComponent implements Observer{
 
         this.model = m;
         controller = new Controller(m, this);
+        model.addObserver(this);
 
         //setting up the frame
         frame = new JFrame(Resources.TITLE);
@@ -93,16 +94,17 @@ public class View extends JComponent implements Observer{
         frame.pack();
         frame.setVisible(true);
         frame.setResizable(false);
+        frame.setFocusable(true);
+        repaint();
+
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-
-
         Graphics2D gg = (Graphics2D) g;
-        this.drawWorld(gg);
-        this.drawRoom(gg, model.getCurrentRoom());
         this.drawInterface(gg);
+        this.drawWorld(gg);
+        drawShadows(gg, model.getPlayerLocation());
     }
 
     @Override
@@ -152,6 +154,7 @@ public class View extends JComponent implements Observer{
     public void drawWorld(Graphics2D g){
         g.setColor(new Color(32,39,32));
         g.fillRect(0,0, this.getWidth(), this.getHeight());
+        this.drawRoom(g, model.getCurrentRoom());
     }
 
 
@@ -184,16 +187,17 @@ public class View extends JComponent implements Observer{
      * @param t the tile to be drawn
      */
     public void drawTile(Graphics2D g, Tile t, int x, int y){
-        if(t instanceof DoorTile){
-            g.setColor(Color.GRAY);
-        }
-        else if(t instanceof FloorTile){
-            g.setColor(Color.cyan);
-        }
+
         Image img = Resources.getImage(t.getImageName());
         if(img == null)
             return;
         g.drawImage(img, x,y,null);
+
+        if(t instanceof DoorTile){
+            g.setColor(new Color(255,0,0,0));
+            g.fillRect(x,y,tileSize,tileSize);
+            return;
+        }
 
         if(t.getEntity() != null){
             drawEntity(g, t.getEntity(), x,y);
@@ -224,6 +228,14 @@ public class View extends JComponent implements Observer{
             g.setColor(Color.red);
             g.fillOval((tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
         }
+    }
+
+    public void drawShadows(Graphics2D g, Point p){
+        float[] dist = {0.0f, 1.0f};
+        Color[] colors = {Resources.transparent, Resources.shadowBack};
+        RadialGradientPaint shadow = new RadialGradientPaint(p, Resources.radius, dist, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE);
+        g.setPaint(shadow);
+        g.fillRect(0,0,this.getWidth(),this.getHeight());
     }
 
     /**
