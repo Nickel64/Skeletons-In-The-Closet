@@ -5,6 +5,7 @@ import Entities.Entity;
 import Entities.Entity.Direction;
 
 import Model.*;
+import Utils.TileSet;
 
 import java.awt.*;
 import java.util.*;
@@ -28,6 +29,7 @@ public class Room {
     private int width;
     private int height;
     private boolean cleared = false;
+    private TileSet tiles;
 
     public Room(String name) {
         this.name = name;
@@ -44,6 +46,7 @@ public class Room {
         doors = new HashMap<String, DoorTile>();
         if(!sc.hasNextInt()) throw new Error("No room level, instead: "+sc.next());
         this.level = sc.nextInt();
+        tiles = new TileSet(level);
 
         if(!sc.hasNextInt()) throw new Error("No room size, instead: "+sc.next());
         this.width = sc.nextInt();
@@ -106,6 +109,10 @@ public class Room {
      */
     public Player getPlayer() {
         return this.player;
+    }
+
+    public TileSet getTileSet(){
+        return tiles;
     }
 
     public Point getPlayerLocation(){

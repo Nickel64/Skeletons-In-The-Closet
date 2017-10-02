@@ -21,24 +21,10 @@ public class Resources {
     public static Color shadowBack = new Color(32,39,32);
     public static int radius = 900;
 
+
     public static Image getImage(String imgDesc){
         if(imgDesc.equals("border")){
             String temp = "Decor/";
-            temp += imgDesc;
-            imgDesc = temp;
-        }
-        else if(imgDesc.contains("Wall")){
-            String temp = "Walls/";
-            temp += imgDesc;
-            imgDesc = temp;
-        }
-        else if(imgDesc.contains("Floor")){
-            String temp = "Floors/";
-            temp += imgDesc;
-            imgDesc = temp;
-        }
-        else if(imgDesc.contains("Door")){
-            String temp = "Doors/";
             temp += imgDesc;
             imgDesc = temp;
         }

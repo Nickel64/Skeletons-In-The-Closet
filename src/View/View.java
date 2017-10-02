@@ -49,6 +49,7 @@ public class View extends JComponent implements Observer{
     //MVC fields
     Controller controller;
     Model model;
+    Resources resources = new Resources();
 
     //visual fields
     int startX = 165;
@@ -96,6 +97,7 @@ public class View extends JComponent implements Observer{
         frame.setResizable(false);
         frame.setFocusable(true);
         this.setDoubleBuffered(true);
+        this.getGraphics().drawImage(Resources.getImage("border"), 0, this.getHeight()-Resources.getImage("border").getHeight(null), null);
     }
 
     @Override
@@ -104,7 +106,6 @@ public class View extends JComponent implements Observer{
         Graphics2D gg = (Graphics2D) g;
         drawWorld(gg);
         drawShadows(gg, model.getPlayerLocation());
-        g.drawImage(Resources.getImage("border"), 0, this.getHeight()-Resources.getImage("border").getHeight(null), null);
         long end = System.currentTimeMillis()-start;
         System.out.println("view update took " + (end) + " milliseconds");
     }
@@ -160,9 +161,7 @@ public class View extends JComponent implements Observer{
     public void drawRoom(Graphics2D g, Room r){
         for(int y = 0; y < r.getHeight(); y++){
             for(int x = 0; x < r.getWidth(); x++){
-                g.setColor(Color.black);
-                g.drawRect(startX+(50*x),startY+(tileSize*y),tileSize,tileSize);
-                drawTile(g, model.getCurrentRoom().getTileAtLocation(x,y), (x*50)+this.startX, (y*50)+this.startY);
+                drawTile(g,r.getTileSet(), model.getCurrentRoom().getTileAtLocation(x,y), (x*50)+this.startX, (y*50)+this.startY);
             }
         }
     }
@@ -174,23 +173,24 @@ public class View extends JComponent implements Observer{
      *
      *
      * @param g the graphics2D object to draw to
-     * @param t the tile to be drawn
+     * @param tileSet the tileset of the current room
+     * @param tile the tile to be drawn
      */
-    public void drawTile(Graphics2D g, Tile t, int x, int y){
+    public void drawTile(Graphics2D g, TileSet tileSet, Tile tile, int x, int y){
 
-        Image img = Resources.getImage(t.getImageName());
+        Image img = tileSet.getFloor();
         if(img == null)
             return;
         g.drawImage(img, x,y,null);
 
-        if(t instanceof DoorTile){
-            g.setColor(new Color(255,0,0,0));
-            g.fillRect(x,y,tileSize,tileSize);
-            return;
+        if(tile instanceof DoorTile){
+            img = tileSet.getDoor();
+            g.drawImage(img, x,y,null);
+
         }
 
-        if(t.getEntity() != null){
-            drawEntity(g, t.getEntity(), x,y);
+        if(tile.getEntity() != null){
+            drawEntity(g, tile.getEntity(), tileSet, x,y);
         }
     }
 
@@ -201,7 +201,7 @@ public class View extends JComponent implements Observer{
      * @param g the graphics2D object to draw to
      */
 
-    public void drawEntity(Graphics2D g, Entity e, int x, int y){
+    public void drawEntity(Graphics2D g, Entity e, TileSet tileSet, int x, int y){
         if(e instanceof Nothing)
             return;
         else if(e instanceof Player){
@@ -209,7 +209,7 @@ public class View extends JComponent implements Observer{
             g.fillOval( (tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
         }
         else if(e instanceof  Wall){
-            Image img = Resources.getImage(e.getImageName());
+            Image img = tileSet.getWall();
             if(img == null)
                 return;
             g.drawImage(img, x,y,null);
