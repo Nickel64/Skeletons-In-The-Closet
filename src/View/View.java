@@ -49,6 +49,7 @@ public class View extends JComponent implements Observer{
     //MVC fields
     Controller controller;
     Model model;
+    Resources resources = new Resources();
 
     //visual fields
     int startX = 165;
@@ -59,6 +60,7 @@ public class View extends JComponent implements Observer{
 
         this.model = m;
         controller = new Controller(m, this);
+        model.addObserver(this);
 
         //setting up the frame
         frame = new JFrame(Resources.TITLE);
@@ -93,16 +95,16 @@ public class View extends JComponent implements Observer{
         frame.pack();
         frame.setVisible(true);
         frame.setResizable(false);
+        frame.setFocusable(true);
+        this.setDoubleBuffered(true);
+        this.getGraphics().drawImage(Resources.getImage("border"), 0, this.getHeight()-Resources.getImage("border").getHeight(null), null);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-
-
         Graphics2D gg = (Graphics2D) g;
-        this.drawWorld(gg);
-        this.drawRoom(gg, model.getCurrentRoom());
-        this.drawInterface(gg);
+        drawWorld(gg);
+        drawShadows(gg, model.getPlayerLocation());
     }
 
     @Override
@@ -123,16 +125,6 @@ public class View extends JComponent implements Observer{
     //Visual methods below//
     ////////////////////////
 
-    /**
-     * Will draw the interface of the game. I.e. Menu bars, stats etc
-     *
-     * @param g the graphics2D object to draw to
-     */
-
-    public void drawInterface(Graphics2D g){
-        g.drawImage(Resources.getImage("border"), 0, this.getHeight()-Resources.getImage("border").getHeight(null), null);
-        playerStats.repaint();
-    }
 
     /**
      * Will be called by a key press or a button, handled by the controller.
@@ -152,6 +144,7 @@ public class View extends JComponent implements Observer{
     public void drawWorld(Graphics2D g){
         g.setColor(new Color(32,39,32));
         g.fillRect(0,0, this.getWidth(), this.getHeight());
+        this.drawRoom(g, model.getCurrentRoom());
     }
 
 
@@ -165,11 +158,7 @@ public class View extends JComponent implements Observer{
     public void drawRoom(Graphics2D g, Room r){
         for(int y = 0; y < r.getHeight(); y++){
             for(int x = 0; x < r.getWidth(); x++){
-                //just a visual thing
-                //14x10 seems good to me
-                g.setColor(Color.black);
-                g.drawRect(startX+(50*x),startY+(tileSize*y),tileSize,tileSize);
-                drawTile(g, model.getCurrentRoom().getTileAtLocation(x,y), (x*50)+this.startX, (y*50)+this.startY);
+                drawTile(g,r.getTileSet(), model.getCurrentRoom().getTileAtLocation(x,y), (x*50)+this.startX, (y*50)+this.startY);
             }
         }
     }
@@ -181,23 +170,24 @@ public class View extends JComponent implements Observer{
      *
      *
      * @param g the graphics2D object to draw to
-     * @param t the tile to be drawn
+     * @param tileSet the tileset of the current room
+     * @param tile the tile to be drawn
      */
-    public void drawTile(Graphics2D g, Tile t, int x, int y){
-        if(t instanceof DoorTile){
-            g.setColor(Color.GRAY);
-        }
-        else if(t instanceof FloorTile){
-            g.setColor(Color.cyan);
-        }
-        g.fillRect(x,y,tileSize,tileSize);
-        Image img = Resources.getImage(t.getImageName());
+    public void drawTile(Graphics2D g, TileSet tileSet, Tile tile, int x, int y){
+
+        Image img = tileSet.getFloor();
         if(img == null)
             return;
         g.drawImage(img, x,y,null);
 
-        if(t.getEntity() != null){
-            drawEntity(g, t.getEntity(), x,y);
+        if(tile instanceof DoorTile){
+            img = tileSet.getDoor();
+            g.drawImage(img, x,y,null);
+
+        }
+
+        if(tile.getEntity() != null){
+            drawEntity(g, tile.getEntity(), tileSet, x,y);
         }
     }
 
@@ -208,22 +198,33 @@ public class View extends JComponent implements Observer{
      * @param g the graphics2D object to draw to
      */
 
-    public void drawEntity(Graphics2D g, Entity e, int x, int y){
-        //TODO I'm gonna do this smarter I promise
+    public void drawEntity(Graphics2D g, Entity e, TileSet tileSet, int x, int y){
         if(e instanceof Nothing)
             return;
         else if(e instanceof Player){
             g.setColor(Color.blue);
-            g.fillOval(startX + tileSize/4+(50*x),startY+tileSize/4+(tileSize*y),tileSize/2,tileSize/2);
+            g.fillOval( (tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
+
         }
         else if(e instanceof  Wall){
-            g.setColor(Color.darkGray);
-            g.fillRect(startX+(50*x),startY+(tileSize*y),tileSize,tileSize);
+            Image img = tileSet.getWall();
+            if(img == null)
+                return;
+            g.drawImage(img, x,y,null);
         }
         else if(e instanceof Enemy){
             g.setColor(Color.red);
-            g.fillOval(startX + tileSize/4+(50*x),startY+tileSize/4+(tileSize*y),tileSize/2,tileSize/2);
+            g.fillOval((tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
         }
+    }
+
+    public void drawShadows(Graphics2D g, Point p){
+        Point centerPoint = new Point((int) (startX+(p.getX()*tileSize) + tileSize/2), (int) ((startY+p.getY()*tileSize)) + tileSize/2);
+        float[] dist = {0.0f, 0.5f, 1.0f};
+        Color[] colors = {Resources.transparent, Resources.transparent, Resources.shadowBack};
+        RadialGradientPaint shadow = new RadialGradientPaint(centerPoint, Resources.radius, dist, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE);
+        g.setPaint(shadow);
+        g.fillRect(0,0,this.getWidth(),this.getHeight());
     }
 
     /**
@@ -320,6 +321,14 @@ public class View extends JComponent implements Observer{
         down.setName("Down");
         left.setName("Left");
         right.setName("Right");
+
+        attack.setRequestFocusEnabled(false);
+        defend.setRequestFocusEnabled(false);
+        AoE.setRequestFocusEnabled(false);
+        up.setRequestFocusEnabled(false);
+        down.setRequestFocusEnabled(false);
+        left.setRequestFocusEnabled(false);
+        right.setRequestFocusEnabled(false);
 
         //setting up the movement buttons
         up.setIcon(new ImageIcon(Resources.getImage("up")));

@@ -20,6 +20,10 @@ public class Nothing implements Entity {
     public void start() {
     }
 
+    public String getImageName(){
+        return null;
+    }
+
     public String toString() {
         return ".";
     }

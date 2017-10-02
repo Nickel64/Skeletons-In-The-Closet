@@ -5,6 +5,7 @@ import Entities.Entity;
 import Entities.Entity.Direction;
 
 import Model.*;
+import Utils.TileSet;
 
 import java.awt.*;
 import java.util.*;
@@ -28,6 +29,7 @@ public class Room {
     private int width;
     private int height;
     private boolean cleared = false;
+    private TileSet tiles;
 
     public Room(String name) {
         this.name = name;
@@ -44,6 +46,7 @@ public class Room {
         doors = new HashMap<String, DoorTile>();
         if(!sc.hasNextInt()) throw new Error("No room level, instead: "+sc.next());
         this.level = sc.nextInt();
+        tiles = new TileSet(level);
 
         if(!sc.hasNextInt()) throw new Error("No room size, instead: "+sc.next());
         this.width = sc.nextInt();
@@ -65,7 +68,7 @@ public class Room {
                     if(curString.matches("\\.")) {              //open space
                         curEntity = new Nothing();
                     } else if(curString.matches("\\*")) {         //wall
-                        curEntity = new Wall();
+                        curEntity = new Wall(this.level);
 
                     } else if(curString.matches("\\+")) {       //player
                         this.player = new Player();
@@ -97,6 +100,7 @@ public class Room {
             }
             System.out.println();
         }
+        setRoomClearedTo(enemies.size() == 0);
         return sc;
     }
 
@@ -106,6 +110,21 @@ public class Room {
      */
     public Player getPlayer() {
         return this.player;
+    }
+
+    public TileSet getTileSet(){
+        return tiles;
+    }
+
+    public Point getPlayerLocation(){
+        for(int y = 0; y < layout.length; y++){
+            for(int x = 0; x < layout[0].length; x++){
+                if(layout[y][x].getEntity() instanceof Player){
+                    return new Point(x,y);
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -243,7 +262,6 @@ public class Room {
         int x = p.x;
         int y = p.y;
 
-        System.out.println("enity is at: "+x+", "+y);
 
         Point destP = movesTo(x, y, direction);
         int destX = destP.x;

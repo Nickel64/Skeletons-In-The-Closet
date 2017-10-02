@@ -6,11 +6,14 @@ import Entities.Player;
 import Map.Room;
 import Utils.Resources;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
 import java.util.Scanner;
+
 
 /**
  * Model containing all rooms and game logic
@@ -18,7 +21,7 @@ import java.util.Scanner;
  * Created: 19/9/17
  * @author Balgmi Nam
  */
-public class Model {
+public class Model extends Observable {
 
     private static final String fileName = "Utils/map.txt";   //will be using txt to create layout of world
     private Map<String, Room> map;  //map of room names and rooms for easy access when moving room to room
@@ -42,6 +45,11 @@ public class Model {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+    }
+
+    public Point getPlayerLocation(){
+        Point p = this.getCurrentRoom().getPlayerLocation();
+        return p;
     }
 
     /**
@@ -74,6 +82,8 @@ public class Model {
         if(!currentRoom.containsEntity(entity)) throw new Error("Cannot move a nonexistent entity");
         if(!entity.canMove()) throw new Error("Cannot move an unmovable entity");
         currentRoom.moveEntity(entity, dir, this);
+        setChanged();
+        notifyObservers();
     }
 
     /**
