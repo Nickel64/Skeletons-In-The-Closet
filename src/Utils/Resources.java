@@ -19,7 +19,7 @@ public class Resources {
 
     public static Color transparent = new Color(0,0,0,0);
     public static Color shadowBack = new Color(32,39,32);
-    public static int radius = 900;
+    public static int radius = 400;
 
 
     public static Image getImage(String imgDesc){

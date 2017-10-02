@@ -118,7 +118,7 @@ public class Player extends Observable implements Entity {
         }
 
         else{
-            System.out.println("Direction not valid");
+            throw new Error("Direction not valid");
         }
     }
 }

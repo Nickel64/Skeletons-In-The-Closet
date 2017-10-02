@@ -100,6 +100,7 @@ public class Room {
             }
             System.out.println();
         }
+        setRoomClearedTo(enemies.size() == 0);
         return sc;
     }
 
@@ -257,7 +258,6 @@ public class Room {
         int x = p.x;
         int y = p.y;
 
-        System.out.println("enity is at: "+x+", "+y);
 
         Point destP = movesTo(x, y, direction);
         int destX = destP.x;

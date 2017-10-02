@@ -22,7 +22,7 @@ public class TileSet {
             floor = ImageIO.read(Resources.class.getResource("ImgResources/Floors/" + "floor" + level + ".png"));
             wall = ImageIO.read(Resources.class.getResource("ImgResources/Walls/" + "wall" + level + ".png"));
             door = ImageIO.read(Resources.class.getResource("ImgResources/Doors/" + "door" + level + ".png"));
-            //decor = ImageIO.read(Resources.class.getResource("ImgResources/Decors/" + "decor" + level + ".png"));
+            //TODO decor = ImageIO.read(Resources.class.getResource("ImgResources/DecorObjects/" + "decor" + level + ".png"));
         }
         catch(IOException e){
             e.printStackTrace();

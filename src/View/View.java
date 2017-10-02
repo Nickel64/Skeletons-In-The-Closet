@@ -102,12 +102,9 @@ public class View extends JComponent implements Observer{
 
     @Override
     protected void paintComponent(Graphics g) {
-        long start = System.currentTimeMillis();
         Graphics2D gg = (Graphics2D) g;
         drawWorld(gg);
         drawShadows(gg, model.getPlayerLocation());
-        long end = System.currentTimeMillis()-start;
-        System.out.println("view update took " + (end) + " milliseconds");
     }
 
     @Override
@@ -207,6 +204,7 @@ public class View extends JComponent implements Observer{
         else if(e instanceof Player){
             g.setColor(Color.blue);
             g.fillOval( (tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
+
         }
         else if(e instanceof  Wall){
             Image img = tileSet.getWall();
@@ -221,10 +219,10 @@ public class View extends JComponent implements Observer{
     }
 
     public void drawShadows(Graphics2D g, Point p){
-        System.out.println(p);
+        Point centerPoint = new Point((int) (startX+(p.getX()*tileSize) + tileSize/2), (int) ((startY+p.getY()*tileSize)) + tileSize/2);
         float[] dist = {0.0f, 0.5f, 1.0f};
         Color[] colors = {Resources.transparent, Resources.transparent, Resources.shadowBack};
-        RadialGradientPaint shadow = new RadialGradientPaint(p, Resources.radius, dist, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE);
+        RadialGradientPaint shadow = new RadialGradientPaint(centerPoint, Resources.radius, dist, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE);
         g.setPaint(shadow);
         g.fillRect(0,0,this.getWidth(),this.getHeight());
     }
