@@ -57,7 +57,6 @@ public class Model extends Observable {
      * @param sc Scanner of the map information to read
      */
     public void read(Scanner sc) {
-        setChanged();
         map = new HashMap<String, Room>();
         boolean firstRoom = true;
             while(sc.hasNext()) {
@@ -71,7 +70,6 @@ public class Model extends Observable {
                 map.put(roomName, curRoom);
                 sc = curRoom.initialise(sc);
             }
-            notifyObservers();
     }
 
     /**
@@ -84,6 +82,8 @@ public class Model extends Observable {
         if(!currentRoom.containsEntity(entity)) throw new Error("Cannot move a nonexistent entity");
         if(!entity.canMove()) throw new Error("Cannot move an unmovable entity");
         currentRoom.moveEntity(entity, dir, this);
+        setChanged();
+        notifyObservers();
     }
 
     /**

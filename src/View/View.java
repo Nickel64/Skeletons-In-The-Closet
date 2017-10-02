@@ -95,16 +95,18 @@ public class View extends JComponent implements Observer{
         frame.setVisible(true);
         frame.setResizable(false);
         frame.setFocusable(true);
-        repaint();
-
+        this.setDoubleBuffered(true);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
+        long start = System.currentTimeMillis();
         Graphics2D gg = (Graphics2D) g;
-        this.drawInterface(gg);
-        this.drawWorld(gg);
+        drawWorld(gg);
         drawShadows(gg, model.getPlayerLocation());
+        g.drawImage(Resources.getImage("border"), 0, this.getHeight()-Resources.getImage("border").getHeight(null), null);
+        long end = System.currentTimeMillis()-start;
+        System.out.println("view update took " + (end) + " milliseconds");
     }
 
     @Override
@@ -125,16 +127,6 @@ public class View extends JComponent implements Observer{
     //Visual methods below//
     ////////////////////////
 
-    /**
-     * Will draw the interface of the game. I.e. Menu bars, stats etc
-     *
-     * @param g the graphics2D object to draw to
-     */
-
-    public void drawInterface(Graphics2D g){
-        g.drawImage(Resources.getImage("border"), 0, this.getHeight()-Resources.getImage("border").getHeight(null), null);
-        playerStats.repaint();
-    }
 
     /**
      * Will be called by a key press or a button, handled by the controller.
@@ -168,8 +160,6 @@ public class View extends JComponent implements Observer{
     public void drawRoom(Graphics2D g, Room r){
         for(int y = 0; y < r.getHeight(); y++){
             for(int x = 0; x < r.getWidth(); x++){
-                //just a visual thing
-                //14x10 seems good to me
                 g.setColor(Color.black);
                 g.drawRect(startX+(50*x),startY+(tileSize*y),tileSize,tileSize);
                 drawTile(g, model.getCurrentRoom().getTileAtLocation(x,y), (x*50)+this.startX, (y*50)+this.startY);
@@ -231,8 +221,9 @@ public class View extends JComponent implements Observer{
     }
 
     public void drawShadows(Graphics2D g, Point p){
-        float[] dist = {0.0f, 1.0f};
-        Color[] colors = {Resources.transparent, Resources.shadowBack};
+        System.out.println(p);
+        float[] dist = {0.0f, 0.5f, 1.0f};
+        Color[] colors = {Resources.transparent, Resources.transparent, Resources.shadowBack};
         RadialGradientPaint shadow = new RadialGradientPaint(p, Resources.radius, dist, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE);
         g.setPaint(shadow);
         g.fillRect(0,0,this.getWidth(),this.getHeight());
