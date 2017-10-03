@@ -175,7 +175,15 @@ public class View extends JComponent implements Observer{
      */
     public void drawTile(Graphics2D g, TileSet tileSet, Tile tile, int x, int y){
 
-        Image img = tileSet.getFloor();
+        Image img;
+
+        int indexY = (y-startY)/50;
+        if(indexY == 0){ //draw wall at the top of the room
+            img = tileSet.getWallTop();
+            g.drawImage(img, x, y-img.getHeight(null), null);
+        }
+
+        img = tileSet.getFloor();
         if(img == null)
             return;
         g.drawImage(img, x,y,null);
@@ -211,6 +219,7 @@ public class View extends JComponent implements Observer{
             if(img == null)
                 return;
             g.drawImage(img, x,y,null);
+
         }
         else if(e instanceof Enemy){
             g.setColor(Color.red);
