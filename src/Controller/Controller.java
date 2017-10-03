@@ -26,9 +26,9 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-            model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
-        }
+        //if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+        //    model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
+        //}
     }
 
     @Override
@@ -55,7 +55,10 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+        model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
+    }}
 
     /* END OF KEY LISTENER METHODS */
 
