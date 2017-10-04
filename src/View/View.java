@@ -99,6 +99,7 @@ public class View extends JComponent implements Observer{
         frame.setResizable(false);
         frame.setFocusable(true);
         this.setDoubleBuffered(true);
+        frame.setLocationRelativeTo(null);
 
         border = Resources.getImage("border");
 
