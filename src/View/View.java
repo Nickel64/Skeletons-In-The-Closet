@@ -114,7 +114,7 @@ public class View extends JComponent implements Observer{
 
         Graphics2D gg = (Graphics2D) g;
         drawWorld(gg);
-        drawShadows(gg, model.getPlayerLocation());
+        //drawShadows(gg, model.getPlayerLocation());
         //drawNewShadows(gg, model.getCurrentRoom());
         g.drawImage(border, 0, this.getHeight()-border.getHeight(null),null);
 
@@ -175,7 +175,7 @@ public class View extends JComponent implements Observer{
         int roomHeight = (r.getHeight()*50);
 
         startX = (this.getWidth()/2)-roomWidth/2;
-        startY = ((this.getHeight()/2)-roomHeight/2)-tileSize/2;
+        startY = ((this.getHeight()/2)-roomHeight/2)-tileSize/3;
         for(int y = 0; y < r.getHeight(); y++){
             for(int x = 0; x < r.getWidth(); x++){
                 drawTile(g,r.getTileSet(), model.getCurrentRoom().getTileAtLocation(x,y), (x*tileSize)+startX, (y*tileSize)+startY);
