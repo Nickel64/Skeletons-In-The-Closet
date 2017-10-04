@@ -19,7 +19,9 @@ public class Resources {
 
     public static Color transparent = new Color(0,0,0,0);
     public static Color shadowBack = new Color(32,39,32);
+    public static Color doorGlow = new Color(255,200,0,50);
     public static int radius = 400;
+    public static int lightRadius = 200;
 
 
     public static Image getImage(String imgDesc){
