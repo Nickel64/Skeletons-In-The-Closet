@@ -53,9 +53,14 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-        model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
-    }}
+        int code = e.getKeyCode();
+        if(code == KeyEvent.VK_SPACE) {
+            model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
+        }
+        else if(code == KeyEvent.VK_ESCAPE){
+            view.pauseMenuToggle();
+        }
+    }
 
     /* END OF KEY LISTENER METHODS */
 

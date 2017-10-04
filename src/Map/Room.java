@@ -59,7 +59,7 @@ public class Room {
             for(int j = 0; j < width; j++) {
                 Entity curEntity = null;
                 curString = sc.next();
-                if(curString.matches("[A-Za-z]")) {             //connection to another room
+                if(curString.matches("[A-Za-z]+")) {             //connection to another room
                     curEntity = new Nothing();
                     DoorTile door = new DoorTile(curString, curEntity);
                     doors.put(curString, door);

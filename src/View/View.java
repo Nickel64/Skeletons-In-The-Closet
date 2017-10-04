@@ -36,9 +36,6 @@ public class View extends JComponent implements Observer{
     JPanel pauseMenu;
 
     //menu buttons
-    JButton menuBtn = new JButton("Menu");
-    JButton helpBtn = new JButton("Help");
-    JButton quitBtn = new JButton("Quit");
     JButton pauseBtn = new JButton("Pause");
 
     //control buttons
@@ -89,9 +86,6 @@ public class View extends JComponent implements Observer{
         buildControls();
 
         //adding the buttons to the menubar
-        menuBar.add(menuBtn);
-        menuBar.add(helpBtn);
-        menuBar.add(quitBtn);
         menuBar.add(pauseBtn);
 
         //adding the components
@@ -159,7 +153,7 @@ public class View extends JComponent implements Observer{
      * Will display a pop-up menu, with buttons on it to save, load, quit and resume.
      */
 
-    public void showPauseMenu(Graphics2D g){
+    private void showPauseMenu(Graphics2D g){
         this.setVisible(false);
 
         pauseMenu = new JPanel();
@@ -170,13 +164,38 @@ public class View extends JComponent implements Observer{
 
         JButton save = new JButton("Save"); save.setAlignmentX(Component.CENTER_ALIGNMENT);
         JButton load = new JButton("Load"); load.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton help = new JButton("Help"); help.setAlignmentX(Component.CENTER_ALIGNMENT);
         JButton quit = new JButton("Quit"); quit.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton resume = new JButton("Resume"); resume.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(frame, "Saving will happen here");
+            }
+        });
+
+        load.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Loading will happen here");
+            }
+        });
+
+        help.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, Resources.HELPDESC);
+            }
+        });
+
+        quit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int ans = JOptionPane.showConfirmDialog(frame, "Are you sure that you want to exit?");
+                if(ans == 0) {
+                    frame.dispose();
+                    System.exit(0);
+                }
             }
         });
 
@@ -187,14 +206,14 @@ public class View extends JComponent implements Observer{
         pauseMenu.add(title);
         pauseMenu.add(save);
         pauseMenu.add(load);
+        pauseMenu.add(help);
         pauseMenu.add(quit);
-        pauseMenu.add(resume);
 
         frame.remove(this);
         frame.add(pauseMenu);
     }
 
-    public void removePauseMenu(){
+    private void removePauseMenu(){
         if(pauseMenu != null){
             frame.remove(pauseMenu);
         }
@@ -203,6 +222,14 @@ public class View extends JComponent implements Observer{
         this.setVisible(true);
         frame.add(this, BorderLayout.CENTER);
     }
+
+    public void pauseMenuToggle(){
+        pauseMenuVisible = !pauseMenuVisible;
+        if(!pauseMenuVisible){ removePauseMenu(); pauseBtn.setText("Pause");}
+        else pauseBtn.setText("Resume");
+        repaint();
+    }
+
 
 
     /**
@@ -418,37 +445,10 @@ public class View extends JComponent implements Observer{
 
     public void buildControls(){
         //custom actionListeners for the menu buttons
-        this.quitBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int check = JOptionPane.showConfirmDialog(frame, "Quit without saving? " +
-                        "(All unsaved progress will be lost");
-                if(check == 0)
-                    frame.dispose();
-                else
-                    return;
-            }
-        });
-        this.helpBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "We'll have some instructions in here one day");
-            }
-        });
-        this.menuBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Steady on, mate");
-            }
-        });
-
         this.pauseBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                pauseMenuVisible = !pauseMenuVisible;
-                if(!pauseMenuVisible){ removePauseMenu(); pauseBtn.setText("Pause");}
-                else pauseBtn.setText("Resume");
-                repaint();
+                pauseMenuToggle();
             }
         });
 
