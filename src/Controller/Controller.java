@@ -16,6 +16,8 @@ import java.awt.event.*;
 public class Controller implements KeyListener, MouseListener, ActionListener {
     private Model model;
     private View view;
+    private static final int COOLDOWN = 250;
+    private long timeLastAction = -COOLDOWN;
 
     public Controller(Model model, View view) {
         this.model = model;
@@ -35,7 +37,8 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     public void keyPressed(KeyEvent e) {
         //process input from keyboard
         //e.g. move up, down, left, right, attack
-        if(view.pauseMenuVisible) return;
+
+        if(view.pauseMenuVisible || System.currentTimeMillis() - timeLastAction < COOLDOWN) return;
         int code = e.getKeyCode();
         if(code == KeyEvent.VK_KP_UP || code == KeyEvent.VK_UP || code == KeyEvent.VK_W) {
             movePlayer(Entity.Direction.Up);
@@ -53,9 +56,12 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+        if(view.pauseMenuVisible || System.currentTimeMillis() - timeLastAction < COOLDOWN) return;
+
         int code = e.getKeyCode();
         if(code == KeyEvent.VK_SPACE) {
             model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
+            timeLastAction = System.currentTimeMillis();
         }
         else if(code == KeyEvent.VK_ESCAPE){
             view.pauseMenuToggle();
@@ -88,7 +94,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         //used for buttons
-        if(view.pauseMenuVisible) return;
+        if(view.pauseMenuVisible || System.currentTimeMillis() - timeLastAction < COOLDOWN) return;
         if(JButton.class.isInstance(e.getSource())) {
             String buttonName = ((JButton)e.getSource()).getName();
             switch(buttonName) {
@@ -112,6 +118,8 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                 case "AOE":
                     break;
             }
+
+            timeLastAction = System.currentTimeMillis();
         }
     }
 
@@ -120,6 +128,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
             model.moveEntity(model.getPlayer(), dir);
         else
             model.getPlayer().setDirection(dir);
+        timeLastAction = System.currentTimeMillis();
     }
 
     /* END OF MOUSE LISTENER METHODS */
