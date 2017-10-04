@@ -15,6 +15,10 @@ public class Resources {
     //A collection of various game resources
     public static String TITLE = "Skeletons In The Closet";
 
+    public static String HELPDESC = "Skeletons in the Closet! \n\n" +
+            "Welcome to our game. More information about this game will be avaliable here\n\n" +
+            "Created by Nick, Morgan, Ben, Rachel, Belle";
+
     public static Dimension WINDOW_SIZE = new Dimension(1024,720);
 
     public static Color transparent = new Color(0,0,0,0);
