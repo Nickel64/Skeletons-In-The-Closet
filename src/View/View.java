@@ -33,6 +33,7 @@ public class View extends JComponent implements Observer{
     JPanel interfacePanel = new JPanel();
     JPanel buttonPanel;
     JMenuBar menuBar = new JMenuBar();
+    JPanel pauseMenu;
 
     //menu buttons
     JButton menuBtn = new JButton("Menu");
@@ -60,6 +61,8 @@ public class View extends JComponent implements Observer{
 
     //other fields
     Image border;
+
+    public boolean pauseMenuVisible = false;
 
     public View(Model m) {
 
@@ -113,10 +116,18 @@ public class View extends JComponent implements Observer{
         long start = System.currentTimeMillis();
 
         Graphics2D gg = (Graphics2D) g;
-        drawWorld(gg);
-        //drawShadows(gg, model.getPlayerLocation());
-        drawNewShadows(gg, model.getCurrentRoom());
+
+        if(!pauseMenuVisible){
+            drawWorld(gg);
+            drawNewShadows(gg, model.getCurrentRoom());
+        }
+        else{
+            showPauseMenu(gg);
+        }
+
         g.drawImage(border, 0, this.getHeight()-border.getHeight(null),null);
+
+        //drawShadows(gg, model.getPlayerLocation());
 
         long end = System.currentTimeMillis()-start;
         System.out.println("View update took ms " + end);
@@ -146,8 +157,49 @@ public class View extends JComponent implements Observer{
      * Will display a pop-up menu, with buttons on it to save, load, quit and resume.
      */
 
-    public void showMenu(){
+    public void showPauseMenu(Graphics2D g){
+        this.setVisible(false);
 
+        pauseMenu = new JPanel();
+        pauseMenu.setLayout(new BoxLayout(pauseMenu, BoxLayout.PAGE_AXIS));
+
+        //graphics.setColor(new Color(32,39,32));
+        //graphics.fillRect(0,0, this.getWidth(), this.getHeight()-border.getHeight(null));
+
+        JButton save = new JButton("Save"); save.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton load = new JButton("Load"); load.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton quit = new JButton("Quit"); quit.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton resume = new JButton("Resume"); resume.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Saving will happen here");
+            }
+        });
+
+        JLabel title = new JLabel("Game Paused");
+        title.setFont(new Font("SansSerif", Font.PLAIN, 25));
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        pauseMenu.add(title);
+        pauseMenu.add(save);
+        pauseMenu.add(load);
+        pauseMenu.add(quit);
+        pauseMenu.add(resume);
+
+        frame.remove(this);
+        frame.add(pauseMenu);
+    }
+
+    public void removePauseMenu(){
+        if(pauseMenu != null){
+            frame.remove(pauseMenu);
+        }
+
+        System.out.println("removing pause menu");
+        this.setVisible(true);
+        frame.add(this, BorderLayout.CENTER);
     }
 
 
@@ -378,7 +430,10 @@ public class View extends JComponent implements Observer{
         this.helpBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "We'll have some instructions in here one day");
+                //JOptionPane.showMessageDialog(frame, "We'll have some instructions in here one day");
+                pauseMenuVisible = !pauseMenuVisible;
+                if(!pauseMenuVisible) removePauseMenu();
+                repaint();
             }
         });
         this.menuBtn.addActionListener(new ActionListener() {
