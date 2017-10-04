@@ -115,7 +115,7 @@ public class View extends JComponent implements Observer{
         Graphics2D gg = (Graphics2D) g;
         drawWorld(gg);
         //drawShadows(gg, model.getPlayerLocation());
-        //drawNewShadows(gg, model.getCurrentRoom());
+        drawNewShadows(gg, model.getCurrentRoom());
         g.drawImage(border, 0, this.getHeight()-border.getHeight(null),null);
 
         long end = System.currentTimeMillis()-start;
@@ -304,7 +304,7 @@ public class View extends JComponent implements Observer{
         float[] lightDist = {0.0f, 1.0f};
         Color[] lightColours = {Resources.doorGlow, Resources.transparent};
         for(Point p : lightSources){
-            Point lightSource = new Point(startX +(int)p.getX()*tileSize + tileSize/2, startY + (int)p.getY()*tileSize + tileSize/2);
+            Point lightSource = new Point( (int)p.getX()*tileSize + tileSize, (int)p.getY()*tileSize + tileSize);
             RadialGradientPaint light = new RadialGradientPaint(lightSource, Resources.lightRadius, lightDist, lightColours, MultipleGradientPaint.CycleMethod.NO_CYCLE);
             overlayGraphics.setPaint(light);
             overlayGraphics.fillRect(0,0,shadowOverlay.getWidth(),shadowOverlay.getHeight());
