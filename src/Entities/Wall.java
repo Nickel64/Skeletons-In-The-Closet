@@ -16,17 +16,17 @@ public class Wall implements Entity {
         this.level = level;
     }
     public boolean inAggroRange(){throw new Error();}
-    public boolean isDead(){throw new Error();}
+    public boolean isDead(){return false;}
 
     public String getImageName(){
         return "Wall" + this.level;
     }
 
     @Override
-    public void attack(Entity entity) {throw new Error();}
+    public void attack(Entity entity) {/*throw new Error();*/}
 
     @Override
-    public void damaged(int damage) {throw new Error();}
+    public void damaged(int damage) {/*throw new Error();*/}
 
     public void start() {}
 

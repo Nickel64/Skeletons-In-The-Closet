@@ -100,6 +100,9 @@ public class Model extends Observable {
         //check entity
         if(!currentRoom.containsEntity(entity)) throw new Error("Cannot initiate attack with a nonexistent entity");
         currentRoom.checkAttack(entity, dir);
+        setChanged();
+        notifyObservers();
+        currentRoom.setRoomClearedTo(currentRoom.getEnemies().size() == 0);
     }
 
     /**

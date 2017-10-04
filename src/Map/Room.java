@@ -287,7 +287,7 @@ public class Room {
         if(layout[destY][destX] instanceof DoorTile) {
             if(!(entity instanceof Player)) throw new Error("An entity other than player cannot move from room to room");
             if(!isRoomCleared()) {
-                swap(p, destP);
+                //swap(p, destP);
                 throw new Error("Player cannot progress to next room until room is cleared");
             }
             swap(p, destP);

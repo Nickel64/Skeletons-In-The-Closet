@@ -35,22 +35,19 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     public void keyPressed(KeyEvent e) {
         //process input from keyboard
         //e.g. move up, down, left, right, attack
+        if(view.pauseMenuVisible) return;
         int code = e.getKeyCode();
         if(code == KeyEvent.VK_KP_UP || code == KeyEvent.VK_UP || code == KeyEvent.VK_W) {
-            //move up
-            model.moveEntity(model.getPlayer(), Entity.Direction.Up);
+            movePlayer(Entity.Direction.Up);
         }
         else if(code == KeyEvent.VK_KP_DOWN || code == KeyEvent.VK_DOWN || code == KeyEvent.VK_S) {
-            //move down
-            model.moveEntity(model.getPlayer(), Entity.Direction.Down);
+            movePlayer(Entity.Direction.Down);
         }
         else if(code == KeyEvent.VK_KP_LEFT || code == KeyEvent.VK_LEFT || code == KeyEvent.VK_A) {
-            //move left
-            model.moveEntity(model.getPlayer(), Entity.Direction.Left);
+            movePlayer(Entity.Direction.Left);
         }
         else if(code == KeyEvent.VK_KP_RIGHT || code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_D) {
-            //move right
-            model.moveEntity(model.getPlayer(), Entity.Direction.Right);
+            movePlayer(Entity.Direction.Right);
         }
     }
 
@@ -86,20 +83,21 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         //used for buttons
+        if(view.pauseMenuVisible) return;
         if(JButton.class.isInstance(e.getSource())) {
             String buttonName = ((JButton)e.getSource()).getName();
             switch(buttonName) {
                 case "Up":
-                    model.moveEntity(model.getPlayer(), Entity.Direction.Up);
+                    movePlayer(Entity.Direction.Up);
                     break;
                 case "Down":
-                    model.moveEntity(model.getPlayer(), Entity.Direction.Down);
+                    movePlayer(Entity.Direction.Down);
                     break;
                 case "Left":
-                    model.moveEntity(model.getPlayer(), Entity.Direction.Left);
+                    movePlayer(Entity.Direction.Left);
                     break;
                 case "Right":
-                    model.moveEntity(model.getPlayer(), Entity.Direction.Right);
+                    movePlayer(Entity.Direction.Right);
                     break;
                 case "Attack":
                     model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
@@ -110,6 +108,13 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                     break;
             }
         }
+    }
+
+    private void movePlayer(Entity.Direction dir) {
+        if(model.getPlayer().getDir() == dir)
+            model.moveEntity(model.getPlayer(), dir);
+        else
+            model.getPlayer().setDirection(dir);
     }
 
     /* END OF MOUSE LISTENER METHODS */
