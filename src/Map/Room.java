@@ -61,7 +61,7 @@ public class Room {
                 curString = sc.next();
                 if(curString.matches("[A-Za-z]")) {             //connection to another room
                     curEntity = new Nothing();
-                    DoorTile door = new DoorTile(curString, curEntity, this.level);
+                    DoorTile door = new DoorTile(curString, curEntity);
                     doors.put(curString, door);
                     layout[i][j] = door;
                 } else {
@@ -93,7 +93,7 @@ public class Room {
                         }
                         enemies.add(curEntity);
                     }
-                    layout[i][j] = new FloorTile(curEntity, this.level);
+                    layout[i][j] = new FloorTile(curEntity);
                 }
                 if(curEntity == null) throw new Error("Entity is invalid "+curString);
                 System.out.print(curString);
@@ -112,10 +112,18 @@ public class Room {
         return this.player;
     }
 
+    /**
+     * Returns the TileSet containing room texture information
+     * @return TileSet with images
+     */
     public TileSet getTileSet(){
         return tiles;
     }
 
+    /**
+     * Returns the point of the player within the room layout, if player is not found return null
+     * @return Point of player in room
+     */
     public Point getPlayerLocation(){
         for(int y = 0; y < layout.length; y++){
             for(int x = 0; x < layout[0].length; x++){
@@ -136,6 +144,10 @@ public class Room {
         }
     }
 
+    /**
+     * Set this room to cleared, Player is able to exit room
+     * @param b
+     */
     public void setRoomClearedTo(boolean b) {
         cleared = b;
     }
@@ -157,6 +169,10 @@ public class Room {
      */
     public int getHeight() {return this.height;}
 
+    /**
+     * Sets the player as the new given player
+     * @param player
+     */
     public void setPlayer(Player player) {
         this.player = player;
     }
@@ -302,16 +318,35 @@ public class Room {
         layout[end.y][end.x].setEntity(temp);
     }
 
+    /**
+     * Returns whether or not the room has a door to the given room name
+     * @param name of next room connected
+     * @return boolean true or false
+     */
     public boolean doesDoorExist(String name) {
         return doors.containsKey(name);
     }
 
+    /**
+     * REturns the given Door leading to the param name
+     * @param name of next room connected
+     * @return DoorTile of
+     */
     public DoorTile getDoorNamed(String name) {
-        return doors.get(name);
+        if(doors.containsKey(name)) return doors.get(name);
+        throw new Error("Door leading to room "+name+" does not exist");
     }
 
+    /**
+     * Returns Tile at the given location
+     * @param x coordinate
+     * @param y coordinate
+     * @return Tile at x and y coordinate of room
+     */
     public Tile getTileAtLocation(int x, int y){
-        return layout[y][x];
+        if(x < this.width && y < this.height) return layout[y][x];
+        throw new ArrayIndexOutOfBoundsException("the coordinate "+x+", "+y+" is out of bounds of the room layout of " +
+                +width+" width and "+height+" height.");
     }
 
     /**

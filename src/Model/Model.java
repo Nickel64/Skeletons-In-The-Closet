@@ -47,6 +47,10 @@ public class Model extends Observable {
         }
     }
 
+    /**
+     * Returns the Point of which the player is located within the 2D floor layout
+     * @return Point of player in relation to Layout
+     */
     public Point getPlayerLocation(){
         Point p = this.getCurrentRoom().getPlayerLocation();
         return p;
@@ -114,19 +118,6 @@ public class Model extends Observable {
     public Room getRoom(String name) {
         if(!map.containsKey(name)) throw new Error("No such element with key "+name+" found");
         return map.get(name);
-    }
-
-    /**
-     * Removes entity given from the current Room that player is in
-     * @param entity: object to be killed/destroyed
-     */
-    public void removeEntity(Entity entity) {}
-
-    /**
-     * prints room, text based
-     */
-    public void printRoom() {
-        System.out.println(currentRoom.toString());
     }
 
     /**

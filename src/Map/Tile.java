@@ -3,22 +3,6 @@ package Map;
 import Entities.Entity;
 
 public interface Tile {
-
-    /**
-     * Sets the tiles image file to the file name given
-     * @param filename: image file name given for this tile
-     */
-    void setImageName(String filename);
-
-    /**
-     * Returns the image name that tile is set with
-     * @return image name of tile
-     */
-    String getImageName();
-
-
-    public int getLevel();
-
     /**
      * Returns whether or not tile is occupied
      * @return whether this tile is occupied
