@@ -39,6 +39,7 @@ public class View extends JComponent implements Observer{
     JButton menuBtn = new JButton("Menu");
     JButton helpBtn = new JButton("Help");
     JButton quitBtn = new JButton("Quit");
+    JButton pauseBtn = new JButton("Pause");
 
     //control buttons
     JButton up = new JButton();
@@ -91,6 +92,7 @@ public class View extends JComponent implements Observer{
         menuBar.add(menuBtn);
         menuBar.add(helpBtn);
         menuBar.add(quitBtn);
+        menuBar.add(pauseBtn);
 
         //adding the components
         frame.setJMenuBar(menuBar);
@@ -430,16 +432,23 @@ public class View extends JComponent implements Observer{
         this.helpBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //JOptionPane.showMessageDialog(frame, "We'll have some instructions in here one day");
-                pauseMenuVisible = !pauseMenuVisible;
-                if(!pauseMenuVisible) removePauseMenu();
-                repaint();
+                JOptionPane.showMessageDialog(frame, "We'll have some instructions in here one day");
             }
         });
         this.menuBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(frame, "Steady on, mate");
+            }
+        });
+
+        this.pauseBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                pauseMenuVisible = !pauseMenuVisible;
+                if(!pauseMenuVisible){ removePauseMenu(); pauseBtn.setText("Pause");}
+                else pauseBtn.setText("Resume");
+                repaint();
             }
         });
 
