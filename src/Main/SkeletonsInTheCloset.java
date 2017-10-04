@@ -8,6 +8,7 @@ import java.io.IOException;
 public class SkeletonsInTheCloset {
 
     public static void main(String[] args) {
+        /**
         Model m = new Model();
         try {
             m.initialise();
@@ -15,5 +16,8 @@ public class SkeletonsInTheCloset {
             e.printStackTrace();
         }
         SwingUtilities.invokeLater(()->new View(m));
+         */
+
+        new Menu();
     }
 }

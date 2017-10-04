@@ -77,7 +77,6 @@ public class View extends JComponent implements Observer{
 
         //setting up the other panels
         playerStats = new PlayerPanel(frame);
-        menu = new Menu(frame);
 
         //build the interface panel
         //a lot of logic in this part
@@ -90,7 +89,6 @@ public class View extends JComponent implements Observer{
 
         //adding the components
         frame.setJMenuBar(menuBar);
-        frame.add(menu, BorderLayout.NORTH);
         frame.add(this, BorderLayout.CENTER);
         frame.add(interfacePanel, BorderLayout.SOUTH);
 
