@@ -111,11 +111,13 @@ public class View extends JComponent implements Observer{
     @Override
     protected void paintComponent(Graphics g) {
         long start = System.currentTimeMillis();
+
         Graphics2D gg = (Graphics2D) g;
         drawWorld(gg);
-        //drawShadows(gg, model.getPlayerLocation());
-        drawNewShadows(gg, model.getCurrentRoom());
+        drawShadows(gg, model.getPlayerLocation());
+        //drawNewShadows(gg, model.getCurrentRoom());
         g.drawImage(border, 0, this.getHeight()-border.getHeight(null),null);
+
         long end = System.currentTimeMillis()-start;
         System.out.println("View update took ms " + end);
     }
@@ -173,7 +175,7 @@ public class View extends JComponent implements Observer{
         int roomHeight = (r.getHeight()*50);
 
         startX = (this.getWidth()/2)-roomWidth/2;
-        startY = (this.getHeight()/2)-roomHeight/2;
+        startY = ((this.getHeight()/2)-roomHeight/2)-tileSize/2;
         for(int y = 0; y < r.getHeight(); y++){
             for(int x = 0; x < r.getWidth(); x++){
                 drawTile(g,r.getTileSet(), model.getCurrentRoom().getTileAtLocation(x,y), (x*tileSize)+startX, (y*tileSize)+startY);
@@ -196,9 +198,24 @@ public class View extends JComponent implements Observer{
         Image img;
 
         int indexY = (y-startY)/tileSize;
-        if(indexY == 0){ //draw wall at the top of the room
-            img = tileSet.getWallTop();
-            g.drawImage(img, x, y-img.getHeight(null), null);
+        int indexX = (x-startX)/tileSize;
+        if(!(model.getCurrentRoom().getTileAtLocation(indexX,indexY) instanceof  DoorTile)){
+            if(indexY == 0){ //draw wall at the top of the room
+                img = tileSet.getWallTop();
+                g.drawImage(img, x, y-img.getHeight(null), null);
+            }
+            if(indexY == model.getCurrentRoom().getHeight()-1){
+               img = tileSet.getWallBottom();
+               g.drawImage(img, x, y+tileSize, null);
+            }
+            if(indexX == 0){
+                img = tileSet.getWallLeft();
+                g.drawImage(img, x-img.getWidth(null), y, null);
+            }
+            if(indexX == model.getCurrentRoom().getWidth()-1){
+                img = tileSet.getWallRight();
+                g.drawImage(img, x+tileSize, y, null);
+            }
         }
 
         img = tileSet.getFloor();
@@ -207,9 +224,11 @@ public class View extends JComponent implements Observer{
         g.drawImage(img, x,y,null);
 
         if(tile instanceof DoorTile){
-            img = tileSet.getDoor();
+            img = tileSet.getFloor();
+            if(img == null)
+                return;
             g.drawImage(img, x,y,null);
-
+          //TODO add the point to a list of light sources
         }
 
         if(tile.getEntity() != null){
@@ -258,8 +277,10 @@ public class View extends JComponent implements Observer{
         BufferedImage shadowOverlay = new BufferedImage((currentRoom.getWidth()*tileSize)+tileSize,
                         (currentRoom.getHeight()*tileSize)+tileSize,BufferedImage.TYPE_INT_ARGB);
 
+        Graphics2D overlayGraphics = shadowOverlay.createGraphics();
+
         Point playerLocation = currentRoom.getPlayerLocation();
-        Point coordinates = new Point(startX +(int)playerLocation.getX()*tileSize + tileSize/2, startY + (int)playerLocation.getY()*tileSize + tileSize/2);
+        Point coordinates = new Point( (int)playerLocation.getX()*tileSize + tileSize/2, (int)playerLocation.getY()*tileSize + tileSize/2);
         ArrayList<Point> lightSources = new ArrayList<>();
 
         if(currentRoom.isRoomCleared()) {
@@ -277,17 +298,19 @@ public class View extends JComponent implements Observer{
         float[] dist = {0.0f, 0.5f, 1.0f};
         Color[] colors = {Resources.transparent, Resources.transparent, Resources.shadowBack};
         RadialGradientPaint shadow = new RadialGradientPaint(coordinates, Resources.radius, dist, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE);
-        g.setPaint(shadow);
-        g.fillRect(startX,startY,currentRoom.getWidth()*tileSize,currentRoom.getHeight()*tileSize);
+        overlayGraphics.setPaint(shadow);
+        overlayGraphics.fillRect(0,0,shadowOverlay.getWidth(),shadowOverlay.getHeight());
 
         float[] lightDist = {0.0f, 1.0f};
         Color[] lightColours = {Resources.doorGlow, Resources.transparent};
         for(Point p : lightSources){
             Point lightSource = new Point(startX +(int)p.getX()*tileSize + tileSize/2, startY + (int)p.getY()*tileSize + tileSize/2);
             RadialGradientPaint light = new RadialGradientPaint(lightSource, Resources.lightRadius, lightDist, lightColours, MultipleGradientPaint.CycleMethod.NO_CYCLE);
-            g.setPaint(light);
-            g.fillRect(startX,startY-tileSize,currentRoom.getWidth()*tileSize,currentRoom.getHeight()*tileSize);
+            overlayGraphics.setPaint(light);
+            overlayGraphics.fillRect(0,0,shadowOverlay.getWidth(),shadowOverlay.getHeight());
         }
+
+        g.drawImage(shadowOverlay, startX-tileSize/2, startY-tileSize/2, null);
 
 
     }
