@@ -20,7 +20,7 @@ public class Menu extends JComponent {
 
     public Menu() {
         frame = new JFrame();
-
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
