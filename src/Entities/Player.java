@@ -24,6 +24,7 @@ public class Player extends Observable implements Entity {
         this.health = health;
         this.maxHealth = health;
         this.damage = damage;
+        dir = Direction.Right;
     }
 
     public Player(){
@@ -102,6 +103,9 @@ public class Player extends Observable implements Entity {
         return "+";
     }
 
+    public void setDirection(Direction dir){
+        this.dir = dir;
+    }
     //change the sprite of the player, can't move the player as it doesn't know its tile
     public void move(Direction dir){
         if(dir==Direction.Up){

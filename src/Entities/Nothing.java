@@ -7,6 +7,12 @@ public class Nothing implements Entity {
     public boolean inAggroRange(){throw new Error();}
     public boolean isDead(){throw new Error();}
     public void damaged(int damage){}
+
+    @Override
+    public void setDirection(Direction dir) {
+
+    }
+
     public void attack(Entity entity){}
 
     public boolean canMove() {

@@ -9,6 +9,7 @@ public interface Entity {
      boolean isDead();
      void attack(Entity entity);
      void damaged(int damage);
+     void setDirection(Direction dir);
 
      public String getImageName();
 

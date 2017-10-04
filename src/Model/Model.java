@@ -85,6 +85,7 @@ public class Model extends Observable {
         //check entity
         if(!currentRoom.containsEntity(entity)) throw new Error("Cannot move a nonexistent entity");
         if(!entity.canMove()) throw new Error("Cannot move an unmovable entity");
+        entity.setDirection(dir);
         currentRoom.moveEntity(entity, dir, this);
         setChanged();
         notifyObservers();
@@ -97,7 +98,7 @@ public class Model extends Observable {
      */
     public void checkAttack(Entity entity, Direction dir) {
         //check entity
-        if(!currentRoom.containsEnemy(entity)) throw new Error("Cannot initiate attack with a nonexistent entity");
+        if(!currentRoom.containsEntity(entity)) throw new Error("Cannot initiate attack with a nonexistent entity");
         currentRoom.checkAttack(entity, dir);
     }
 

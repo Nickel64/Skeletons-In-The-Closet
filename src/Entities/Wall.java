@@ -7,6 +7,11 @@ public class Wall implements Entity {
 
     private int level;
 
+    @Override
+    public void setDirection(Direction dir) {
+
+    }
+
     public Wall(int level){
         this.level = level;
     }

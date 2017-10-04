@@ -33,6 +33,9 @@ public class Enemy extends Observable implements Entity {
         return null;
     }
 
+    public void setDirection(Direction dir){
+        this.dir = dir;
+    }
     /**
      * Calculates whether the enemy is in range to attack the player
      * @return inRange
