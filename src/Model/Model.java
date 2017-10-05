@@ -9,6 +9,7 @@ import Utils.Resources;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
@@ -23,7 +24,7 @@ import java.util.Scanner;
  */
 public class Model extends Observable {
 
-    private static final String fileName = "Utils/map.txt";   //will be using txt to create layout of world
+    private static final String fileName = "map.txt";   //will be using txt to create layout of world
     private Map<String, Room> map;  //map of room names and rooms for easy access when moving room to room
     private Room currentRoom;
 
@@ -36,12 +37,9 @@ public class Model extends Observable {
      */
     public void initialise() throws IOException {
         try {
-            ClassLoader classLoader = Utils.Resources.class.getClassLoader();
-            File file = new File(classLoader.getResource(fileName).getFile());
-            Scanner sc;
-            sc = new Scanner(file);
+            InputStream in = Utils.Resources.class.getResourceAsStream(fileName);
+            Scanner sc = new Scanner(in);
             read(sc);
-
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

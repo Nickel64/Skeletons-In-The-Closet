@@ -25,12 +25,12 @@ public class TileSet {
 
     public TileSet(int level){
         try {
-            floor = read(Resources.class.getResource("ImgResources/Floors/" + "floor" + level + ".png"));
-            wall = read(Resources.class.getResource("ImgResources/Walls/" + "wall" + level + ".png"));
-            wallTop = read(Resources.class.getResource("ImgResources/Walls/" + "wallTop" + level + ".png"));
-            wallBottom = read(Resources.class.getResource("ImgResources/Walls/" + "wallBot" + level + ".png"));
-            wallLeft = read(Resources.class.getResource("ImgResources/Walls/" + "wallLeft" + level + ".png"));
-            wallRight = read(Resources.class.getResource("ImgResources/Walls/" + "wallRight" + level + ".png"));
+            floor = ImageIO.read(Resources.class.getResource("ImgResources/Floors/" + "floor" + level + ".png"));
+            wall = ImageIO.read(Resources.class.getResource("ImgResources/Walls/" + "Wall" + level + ".png"));
+            wallTop = ImageIO.read(Resources.class.getResource("ImgResources/Walls/" + "WallTop" + level + ".png"));
+            wallBottom = ImageIO.read(Resources.class.getResource("ImgResources/Walls/" + "WallBot" + level + ".png"));
+            wallLeft = ImageIO.read(Resources.class.getResource("ImgResources/Walls/" + "WallLeft" + level + ".png"));
+            wallRight = ImageIO.read(Resources.class.getResource("ImgResources/Walls/" + "WallRight" + level + ".png"));
             //door = read(Resources.class.getResource("ImgResources/Doors/" + "door" + level + ".png"));
             //TODO decor = ImageIO.read(Resources.class.getResource("ImgResources/DecorObjects/" + "decor" + level + ".png"));
         }
