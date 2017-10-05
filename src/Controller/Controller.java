@@ -16,7 +16,7 @@ import java.awt.event.*;
 public class Controller implements KeyListener, MouseListener, ActionListener {
     private Model model;
     private View view;
-    private static final int COOLDOWN = 250;
+    private static final int COOLDOWN = 150;
     private long timeLastAction = -COOLDOWN;
 
     public Controller(Model model, View view) {
