@@ -114,7 +114,8 @@ public class View extends JComponent implements Observer{
 
         if(!pauseMenuVisible){
             drawWorld(gg);
-            drawNewShadows(gg, model.getCurrentRoom());
+            //drawNewShadows(gg, model.getCurrentRoom());
+            drawShadows(gg, model.getPlayerLocation());
         }
         else{
             showPauseMenu(gg);
