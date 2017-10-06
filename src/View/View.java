@@ -185,17 +185,11 @@ public class View extends JComponent implements Observer{
         load.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //JOptionPane.showMessageDialog(frame, "Loading will happen here");
                 int result = JOptionPane.showOptionDialog(frame, "Select a Save File to Load", "Load a Saved Game", 0, 0, null, saveLoad.saves.keySet().toArray(), saveLoad.saves.get(saveLoad.saves.keySet().toArray()[0]));
-                Model newModel = saveLoad.load((String) saveLoad.saves.keySet().toArray()[result]);
-                if(newModel != null){
-                    model = newModel;
-                    controller.setModel(newModel);
-                    pauseMenuToggle();
-                }
-                else{
+                if(!replaceModel(saveLoad.load((String) saveLoad.saves.keySet().toArray()[result]))){
                     JOptionPane.showMessageDialog(frame, "Unable to load");
                 }
+                else pauseMenuToggle();
             }
         });
 
@@ -229,6 +223,21 @@ public class View extends JComponent implements Observer{
 
         frame.remove(this);
         frame.add(pauseMenu);
+    }
+
+    /**
+     * Used to allow an event within an ActionListener to set the observer of a model
+     * @param m
+     */
+    private boolean replaceModel(Model m){
+        if(m == null) {
+            return false;
+        }
+
+        model = m;
+        controller.setModel(m);
+        m.addObserver(this);
+        return true;
     }
 
     private void removePauseMenu(){
