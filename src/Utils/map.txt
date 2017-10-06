@@ -1,3 +1,16 @@
+HotConnectionHubWorld 1
+13 9
+. . LvlFourOne . . . LvlFinalOne . . . LvlSixOne . .
+. . . . . . . . . . . . .
+. . . . . . . . . . . . LvlFiveLabyrinth
+. . . . . . . . . . . . .
+LvlTwoOne . + . . . . . . . . . .
+. . . . . . . . . . . . .
+. . . . . . . . . . . . LvlThreeOne
+. . . . . . . . . . . . .
+. . . . . . LvlZThr . . . . . .
+
+
 LvlZero 1
 14 10
 . . . . . . . * . . . . . .
@@ -5,7 +18,7 @@ LvlZero 1
 . . . . . . . * . . . . . .
 . . . . . . . * . . . . . .
 . . . . . . . . . . . . . .
-+ . . . . . . . . . . . . LvlZOne
+. . . . . . . . . . . . . LvlZOne
 . . . . . . . . . . . . . .
 . . . . . . . * . . . . . .
 . . . . . . . * . . . . . .
@@ -47,55 +60,55 @@ LvlZThr 1
 
 
 
-LvlTwoOne 1
+LvlTwoOne 2
 10 7
-. . . . . . . . . .
+. . . . * . . . . .
 . . . . . . . . . .
 LvlTwoAOne . . . . . . . . .
-. . . . . . . . . HotConnectionHubWorld
+. . * . * . * . . HotConnectionHubWorld
 LvlTwoBOne . . . . . . . . .
 . . . . . . . . . .
-. . . . . . . . . .
+. . . . * . . . . .
 
-LvlTwoAOne 1
+LvlTwoAOne 2
 4 4
 . LvlTwoATwo . .
 . . . .
-. . . LvlTwoOne
+. * . LvlTwoOne
 . . . .
 
-LvlTwoATwo 1
+LvlTwoATwo 2
 4 4
 . . . .
-LvlTwoBoss . . .
+LvlTwoBoss . * .
 . . . .
 . . LvlTwoAOne .
 
-LvlTwoBoss 1
+LvlTwoBoss 2
 6 10
 . . . . . .
-. . . . . LvlTwoATwo
-. . . . . .
+. * * * . LvlTwoATwo
+. * . * . .
 . . . . . .
 . 9 . . . .
 . . . . . .
 . . . . . .
-. . . . . .
-. . . . . LvlTwoBTwo
+. * . * . .
+. * * * . LvlTwoBTwo
 . . . . . .
 
-LvlTwoBOne 1
+LvlTwoBOne 2
 4 4
 . . . .
-. . . LvlTwoOne
+. * . LvlTwoOne
 . . . .
 . LvlTwoBTwo . .
 
-LvlTwoBTwo 1
+LvlTwoBTwo 2
 4 4
 . . LvlTwoBOne .
 . . . .
-LvlTwoBoss . . .
+LvlTwoBoss . * .
 . . . .
 
 
@@ -154,62 +167,62 @@ LvlThreeFour 1
 . . . . . . . . . . . . .
 . . LvlThreeThreeA . . . . . . . LvlThreeThreeB . .
 
-LvlFourOne 1
+LvlFourOne 4
 8 4
 . . . . . . . .
 LvlFourTwo . . . . . . .
 . . . . . . . HotConnectionHubWorld
 . . . . . . . .
 
-LvlFourTwo 1
+LvlFourTwo 4
 4 4
 . LvlFourThree . .
 . . . .
 . . . LvlFourOne
 . . . .
 
-LvlFourThree 1
+LvlFourThree 4
 10 10
-LvlFourFourA . . . . . . . . .
-. . . . . . . . .  LvlFourFourE
-. . . . . . . . . .
+* . . . . . . . . .
+LvlFourFourA . . . . . . . . LvlFourFourE
+* . . . . . . * . .
 LvlFourFourB . . . . . . . . .
-. . . . . . . . . .
-. . . . . . . . . .
+* . . . . . . . . .
+* . . . . . . . . .
 LvlFourFourC . . . . . . . . .
-. . . . . . . . . .
-. . . . . . . . . .
-. LvlFourFourD . . . . . . LvlFourTwo .
+* . . . . . . * . .
+LvlFourFourD . . . . . . . . .
+* . . . . . . . LvlFourTwo .
 
-LvlFourFourA 1
+LvlFourFourA 4
 4 4
 . . . .
 . . . .
 . . . .
 . . . LvlFourThree
 
-LvlFourFourB 1
+LvlFourFourB 4
 4 4
 . . . .
 . . . .
 . . . .
 . . . LvlFourThree
 
-LvlFourFourC 1
+LvlFourFourC 4
 4 4
 . . . .
 . . . .
 . . . .
 . . . LvlFourThree
 
-LvlFourFourD 1
+LvlFourFourD 4
 4 4
 . . . .
 . . . .
 . . . .
 . . . LvlFourThree
 
-LvlFourFourE 1
+LvlFourFourE 4
 10 10
 . LvlFourFiveB . . . . . . . .
 . . . . . . . . . .
@@ -230,7 +243,7 @@ LvlFourFiveA 1
 . . . . . . . . . .
 . . . . . . . . . .
 
-LvlFourFiveB 1
+LvlFourFiveB 4
 5 5
 . . . . .
 . . . . .
@@ -238,7 +251,7 @@ LvlFourSix  . . . .
 . . . . .
 . . . LvlFourFourE .
 
-LvlFourSix 1
+LvlFourSix 4
 12 10
 . . . . . . . . . . . .
 . . . . . . . . . . . .
@@ -427,7 +440,7 @@ LvlSixThree 1
 
 
 
-LvlFinalOne 1
+LvlFinalOne 7
 12 5
 . . . . . . . . . . . .
 . . . . . . . . . . . .
@@ -435,7 +448,7 @@ LvlFinalTwo . . . . . . . . . . .
 . . . . . . . . . . . .
 . . . . . . . . . HotConnectionHubWorld . .
 
-LvlFinalTwo 1
+LvlFinalTwo 7
 4 10
 . . LvlFinalThree .
 . . . .
@@ -448,13 +461,13 @@ LvlFinalTwo 1
 . . . LvlFinalOne
 . . . .
 
-LvlFinalThree 1
+LvlFinalThree 7
 10 3
 . . . . . . . . . .
 LvlFinalTwo . . . . . . . . .
 . . . . . . . . LvlFinalFour .
 
-LvlFinalFour 1
+LvlFinalFour 7
 2 10
 LvlFinalThree .
 . .
@@ -467,35 +480,22 @@ LvlFinalThree .
 . .
 . LvlFinalFive
 
-LvlFinalFive 1
+LvlFinalFive 7
 10 1
 LvlFinalFour . . . . . . . . LvlFinalBoss
 
-LvlFinalBoss 1
+LvlFinalBoss 7
 20 10
 . . . . . . . . . . . . . . . . . . . .
+. * * . . . . . . . . . . . . . . * * .
+. * . . . . . . . . . . . . . . . . * .
 . . . . . . . . . . . . . . . . . . . .
 . . . . . . . . . . . . . . . . . . . .
 . . . . . . . . . . . . . . . . . . . .
 . . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . .
+. * . . . . . . . . . . . . . . . . * .
+. * * . . . . . . . . . . . . . . * * .
 . . . . . . . . . LvlFinalFive LvlFinalFive . . . . . . . . .
 
-
-
-HotConnectionHubWorld 1
-13 9
-. . LvlFourOne . . . LvlFinalOne . . . LvlSixOne . .
-. . . . . . . . . . . . .
-. . . . . . . . . . . . LvlFiveLabyrinth
-. . . . . . . . . . . . .
-LvlTwoOne . . . . . . . . . . . .
-. . . . . . . . . . . . .
-. . . . . . . . . . . . LvlThreeOne
-. . . . . . . . . . . . .
-. . . . . . LvlZThr . . . . . .
 
  

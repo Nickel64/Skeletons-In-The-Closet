@@ -38,7 +38,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         //process input from keyboard
         //e.g. move up, down, left, right, attack
 
-        if(view.pauseMenuVisible || System.currentTimeMillis() - timeLastAction < COOLDOWN) return;
+        if(view.pauseMenuVisible) return;
         int code = e.getKeyCode();
         if(code == KeyEvent.VK_KP_UP || code == KeyEvent.VK_UP || code == KeyEvent.VK_W) {
             movePlayer(Entity.Direction.Up);
@@ -56,10 +56,11 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if(view.pauseMenuVisible || System.currentTimeMillis() - timeLastAction < COOLDOWN) return;
 
         int code = e.getKeyCode();
         if(code == KeyEvent.VK_SPACE) {
+            if(view.pauseMenuVisible || System.currentTimeMillis() - timeLastAction < COOLDOWN)
+                return;
             model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
             timeLastAction = System.currentTimeMillis();
         }
@@ -94,7 +95,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         //used for buttons
-        if(view.pauseMenuVisible || System.currentTimeMillis() - timeLastAction < COOLDOWN) return;
+        if(view.pauseMenuVisible) return;
         if(JButton.class.isInstance(e.getSource())) {
             String buttonName = ((JButton)e.getSource()).getName();
             switch(buttonName) {
@@ -110,16 +111,21 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                 case "Right":
                     movePlayer(Entity.Direction.Right);
                     break;
-                case "Attack":
-                    model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
-                    break;
-                case "Defend":
-                    break;
-                case "AOE":
-                    break;
+                default:
+                     if(System.currentTimeMillis() - timeLastAction < COOLDOWN) return;
+                    switch(buttonName) {
+                        case "Attack":
+                            model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
+                            break;
+                        case "Defend":
+                            break;
+                        case "AOE":
+                            break;
+                        default:
+                            return;
+                    }
+                    timeLastAction = System.currentTimeMillis();
             }
-
-            timeLastAction = System.currentTimeMillis();
         }
     }
 
