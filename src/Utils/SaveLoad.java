@@ -32,6 +32,7 @@ public class SaveLoad {
         serialised.append(m.serialise());
         String saveName = new Date().toString();
         if(Resources.DEBUG) System.out.println(saveName + " saved!");
+        System.out.println(serialised.toString());
         saves.put(saveName, serialised.toString());
 
         return true;
@@ -43,11 +44,11 @@ public class SaveLoad {
     public Model load(String saveName){
 
         if(Resources.DEBUG) System.out.println("Loading: " + saveName);
-        saves.get(saveName);
+        String str = saves.get(saveName);
 
         Model newModel = new Model();
         try{
-            newModel.initialise();
+            newModel.initialise(str);
         } catch (IOException e){
             e.printStackTrace();
         }

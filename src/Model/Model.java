@@ -45,6 +45,11 @@ public class Model extends Observable {
         }
     }
 
+    public void initialise(String str) throws IOException{
+        Scanner sc = new Scanner(str);
+        read(sc);
+    }
+
     /**
      * Returns the Point of which the player is located within the 2D floor layout
      * @return Point of player in relation to Layout
@@ -151,6 +156,11 @@ public class Model extends Observable {
     }
 
     public String serialise(){
-        return "Model";
+        StringBuffer buffer = new StringBuffer();
+        //buffer.append("Model: \n");
+        for(String str: map.keySet()){
+            buffer.append(map.get(str).toString());
+        }
+        return buffer.toString();
     }
 }
