@@ -106,6 +106,12 @@ public class Player extends Observable implements Entity {
     public void setDirection(Direction dir){
         this.dir = dir;
     }
+
+    public void attackAOE(Entity[] entities){
+        for(Entity e : entities){
+            attack(e);
+        }
+    }
     //change the sprite of the player, can't move the player as it doesn't know its tile
     public void move(Direction dir){
         if(dir==Direction.Up){

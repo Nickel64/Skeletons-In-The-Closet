@@ -329,7 +329,6 @@ public class View extends JComponent implements Observer{
         else if(e instanceof Player){
             g.setColor(Color.blue);
             g.fillOval( (tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
-
         }
         else if(e instanceof  Wall){
             Image img = tileSet.getWall();
