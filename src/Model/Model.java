@@ -103,6 +103,18 @@ public class Model extends Observable {
         currentRoom.setRoomClearedTo(currentRoom.getEnemies().size() == 0);
     }
 
+    /** Attacks in an AOE
+     * @param entity: object attacking
+     */
+    public void checkAttackAOE(Entity entity) {
+        //check entity
+        if(!currentRoom.containsEntity(entity)) throw new Error("Cannot initiate attack with a nonexistent entity");
+        currentRoom.checkAttackAOE(entity);
+        setChanged();
+        notifyObservers();
+      //  currentRoom.setRoomClearedTo(currentRoom.getEnemies().size() == 0);
+    }
+
     /**
      * Changes the current room to the given parameter
      * @param room to be changes to the current room

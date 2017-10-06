@@ -372,6 +372,47 @@ public class Room {
             layout[destY][destX].setEntity(new Nothing());
         }
     }
+    public void checkAttackAOE(Entity entity) {
+        Point p = findPoint(entity);
+        int x = p.x;
+        int y = p.y;
+
+        Point destP = new Point(x+1,y);
+        Point destP2 = new Point(x,y+1);
+        Point destP3 = new Point(x+1,y+1);
+        Point destP4 = new Point(x-1,y);
+        Point destP5 = new Point(x,y-1);
+        Point destP6 = new Point(x-1,y-1);
+        Point destP7 = new Point(x+1,y-1);
+        Point destP8 = new Point(x-1,y+1);
+
+        ArrayList<Point> points = new ArrayList<>();
+        points.add(destP);
+        points.add(destP2);
+        points.add(destP3);
+        points.add(destP4);
+        points.add(destP5);
+        points.add(destP6);
+        points.add(destP7);
+        points.add(destP8);
+
+        for(Point o: points) {
+            if (o.y - 1 < 0) continue;
+            if (o.x + 1 >= width)  continue;
+            if (o.x - 1 < 0)  continue;
+            if ((o.y +1) >= height)  continue;
+
+            int destX = o.x;
+            int destY = o.y;
+
+            Entity defender = layout[destY][destX].getEntity();
+            entity.attack(defender);
+            if (defender.isDead()) {
+                removeEnemy(defender);
+                layout[destY][destX].setEntity(new Nothing());
+            }
+        }
+    }
 
     public String toString() {
         String str = name+" "+level + "\n"+width+" "+height;
