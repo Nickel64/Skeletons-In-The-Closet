@@ -5,6 +5,7 @@ import Entities.Entity;
 import Entities.Entity.Direction;
 
 import Model.*;
+import Utils.Resources;
 import Utils.TileSet;
 
 import java.awt.*;
@@ -96,9 +97,9 @@ public class Room {
                     layout[i][j] = new FloorTile(curEntity);
                 }
                 if(curEntity == null) throw new Error("Entity is invalid "+curString);
-                System.out.print(curString);
+                if(Resources.DEBUG) System.out.print(curString);
             }
-            System.out.println();
+            if(Resources.DEBUG) System.out.println();
         }
         setRoomClearedTo(enemies.size() == 0);
         return sc;

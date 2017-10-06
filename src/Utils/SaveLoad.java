@@ -2,6 +2,7 @@ package Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import Model.*;
 
 /**
  * Used to store and load game states
@@ -20,8 +21,8 @@ public class SaveLoad {
     /**
      * Method will Take a Model Object, and Serialise it then save to a file
      */
-    public void save(){
-
+    public static boolean save(Model m){
+        return false;
     }
 
     /**

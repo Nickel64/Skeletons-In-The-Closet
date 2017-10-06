@@ -1,6 +1,7 @@
 package View;
 
 import Entities.Player;
+import Utils.Resources;
 
 import javax.swing.*;
 import java.awt.*;
@@ -78,7 +79,7 @@ public class PlayerPanel extends JComponent implements Observer {
 
     public void drawCurExp(Graphics g){
         //player.incExp(40);
-        System.out.println(player.getExp());
+        if(Resources.DEBUG) System.out.println(player.getExp());
         int endX =(int) (((double)barWidth/player.getMaxExp())*player.getExp());
         g.setColor(Color.green.darker());
         g.fillRect(startX + buffer, startY-(dif) + 80, endX, barHeight);

@@ -12,12 +12,18 @@ import java.io.IOException;
  */
 public class Resources {
 
+    public static boolean DEBUG = false; //used to enable/disable debug messages
+
+
     //A collection of various game resources
     public static String TITLE = "Skeletons In The Closet";
 
     public static String HELPDESC = "Skeletons in the Closet! \n\n" +
             "Welcome to our game. More information about this game will be avaliable here\n\n" +
             "Created by Nick, Morgan, Ben, Rachel, Belle";
+
+    public static String SAVE_SUCCESSFUL_MESSAGE = "Game saved successfully";
+    public static String SAVE_UNSUCCESSFUL_MESSAGE = "ERROR: The game was unable to be saved";
 
     public static Dimension WINDOW_SIZE = new Dimension(1024,720);
 

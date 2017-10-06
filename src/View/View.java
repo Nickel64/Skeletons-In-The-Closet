@@ -128,7 +128,7 @@ public class View extends JComponent implements Observer{
         //drawShadows(gg, model.getPlayerLocation());
 
         long end = System.currentTimeMillis()-start;
-        System.out.println("View update took ms " + end);
+        if(Resources.DEBUG) System.out.println("View update took ms " + end);
     }
 
     @Override
@@ -172,7 +172,9 @@ public class View extends JComponent implements Observer{
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Saving will happen here");
+                //JOptionPane.showMessageDialog(frame, "Saving will happen here");
+                if(SaveLoad.save(model)) JOptionPane.showMessageDialog(frame, Resources.SAVE_SUCCESSFUL_MESSAGE);
+                else JOptionPane.showMessageDialog(frame, Resources.SAVE_UNSUCCESSFUL_MESSAGE);
             }
         });
 
@@ -220,7 +222,6 @@ public class View extends JComponent implements Observer{
             frame.remove(pauseMenu);
         }
 
-        System.out.println("removing pause menu");
         this.setVisible(true);
         frame.add(this, BorderLayout.CENTER);
     }
