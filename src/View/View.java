@@ -11,6 +11,8 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -449,6 +451,14 @@ public class View extends JComponent implements Observer{
             @Override
             public void actionPerformed(ActionEvent e) {
                 pauseMenuToggle();
+            }
+        });
+
+        frame.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                super.focusLost(e);
+                frame.requestFocus();
             }
         });
 
