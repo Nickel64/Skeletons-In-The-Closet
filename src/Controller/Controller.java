@@ -24,6 +24,8 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         this.view = view;
     }
 
+    public void setModel(Model m) {this.model = m;}
+
     /* KEY LISTENER METHODS */
 
     @Override

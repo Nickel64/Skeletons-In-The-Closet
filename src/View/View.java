@@ -5,6 +5,7 @@ import Model.*;
 import Utils.*;
 import Entities.*;
 import Controller.*;
+import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -61,6 +62,7 @@ public class View extends JComponent implements Observer{
 
     //other fields
     Image border;
+    SaveLoad saveLoad;
 
     public boolean pauseMenuVisible = false;
 
@@ -69,6 +71,8 @@ public class View extends JComponent implements Observer{
         this.model = m;
         controller = new Controller(m, this);
         model.addObserver(this);
+
+        saveLoad = new SaveLoad();
 
         //setting up the frame
         frame = new JFrame(Resources.TITLE);
@@ -173,7 +177,7 @@ public class View extends JComponent implements Observer{
             @Override
             public void actionPerformed(ActionEvent e) {
                 //JOptionPane.showMessageDialog(frame, "Saving will happen here");
-                if(SaveLoad.save(model)) JOptionPane.showMessageDialog(frame, Resources.SAVE_SUCCESSFUL_MESSAGE);
+                if(saveLoad.save(model)) JOptionPane.showMessageDialog(frame, Resources.SAVE_SUCCESSFUL_MESSAGE);
                 else JOptionPane.showMessageDialog(frame, Resources.SAVE_UNSUCCESSFUL_MESSAGE);
             }
         });
@@ -181,7 +185,17 @@ public class View extends JComponent implements Observer{
         load.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Loading will happen here");
+                //JOptionPane.showMessageDialog(frame, "Loading will happen here");
+                int result = JOptionPane.showOptionDialog(frame, "Select a Save File to Load", "Load a Saved Game", 0, 0, null, saveLoad.saves.keySet().toArray(), saveLoad.saves.get(saveLoad.saves.keySet().toArray()[0]));
+                Model newModel = saveLoad.load((String) saveLoad.saves.keySet().toArray()[result]);
+                if(newModel != null){
+                    model = newModel;
+                    controller.setModel(newModel);
+                    pauseMenuToggle();
+                }
+                else{
+                    JOptionPane.showMessageDialog(frame, "Unable to load");
+                }
             }
         });
 

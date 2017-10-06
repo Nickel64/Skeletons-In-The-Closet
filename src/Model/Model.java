@@ -137,4 +137,8 @@ public class Model extends Observable {
     public Room getCurrentRoom(){
         return this.currentRoom;
     }
+
+    public String serialise(){
+        return "Model";
+    }
 }

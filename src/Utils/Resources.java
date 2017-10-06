@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public class Resources {
 
-    public static boolean DEBUG = false; //used to enable/disable debug messages
+    public static boolean DEBUG = true; //used to enable/disable debug messages
 
 
     //A collection of various game resources
