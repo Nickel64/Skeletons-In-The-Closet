@@ -6,7 +6,7 @@ package Behaviour;
  *
  * @author Morgan French-Stagg
  */
-public class FrustratedStrategy implements BehaviourStrategy{
+public class FrustratedStrategy implements BehaviourStrategy {
 
     public int determineDamageAmount() {
         return 10;

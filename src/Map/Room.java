@@ -31,8 +31,10 @@ public class Room {
     private int height;
     private boolean cleared = false;
     private TileSet tiles;
+    private OneWayExitTeleport exit;
 
     public Room(String name) {
+        this.exit = null;
         this.name = name;
     }
 
@@ -65,13 +67,16 @@ public class Room {
                     DoorTile door = new DoorTile(curString, curEntity);
                     doors.put(curString, door);
                     layout[i][j] = door;
-//                }else if(curString.equals("=")) {       //teleport exit
-//                    curEntity = new Nothing();
-//                    OneWayExitTeleport teleportexit = new OneWayExitTeleport(curEntity);
-//                    layout[i][j] = teleportexit;
-//                } else if(curString.equals("-")) {      //teleport entry
-//                    OneWayEntryTeleport teleportentry = new OneWayEntryTeleport(curEntity);
-//                    layout[i][j] = teleportentry;
+                }else if(curString.equals("=")) {       //teleporter exit
+                    if(this.exit != null) throw new Error("Room cannot have multiple One Way Teleport Exits");
+                    curEntity = new Nothing();
+                    OneWayExitTeleport teleportexit = new OneWayExitTeleport(curEntity);
+                    layout[i][j] = teleportexit;
+                    this.exit = teleportexit;
+                } else if(curString.matches("-[A-Za-z]+")) {      //teleporter entry
+                    curEntity = new Nothing();
+                    OneWayEntryTeleport teleportentry = new OneWayEntryTeleport(curEntity, curString);
+                    layout[i][j] = teleportentry;
                 } else {
                     if(curString.matches("\\.")) {              //open space
                         curEntity = new Nothing();
@@ -108,6 +113,19 @@ public class Room {
         }
         setRoomClearedTo(enemies.size() == 0);
         return sc;
+    }
+
+    /**
+     * Returns whether or not room has teleport exit
+     * @return
+     */
+    private boolean hasTeleportExit() {
+        return this.exit != null;
+    }
+
+    private Tile getTeleportExit() {
+        if(!hasTeleportExit()) throw new Error("Teleport entry does not have a valid destination");
+        return this.exit;
     }
 
     /**
@@ -351,14 +369,16 @@ public class Room {
             }
         }
         Point destP = movesTo(x, y, direction);
+        swap(p, destP);
         if(layout[destP.y][destP.x] instanceof OneWayEntryTeleport && isRoomCleared()) {
             //find teleport exit and updateRoom
-
+            OneWayEntryTeleport entry = (OneWayEntryTeleport) layout[destP.y][destP.x];
+            Room nextRoom = model.getRoom(entry.nameOfNextRoom());
+            updateRoom(model, entry, nextRoom.getTeleportExit(), nextRoom);
         }
-        swap(p, destP);
     }
 
-    private void updateRoom(Model model, DoorTile entry, DoorTile exit, Room nextRoom) {
+    private void updateRoom(Model model, Tile entry, Tile exit, Room nextRoom) {
         if(!isRoomCleared()) {
             throw new Error("Player cannot progress to next room until room is cleared");
         }

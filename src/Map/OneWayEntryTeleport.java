@@ -5,9 +5,12 @@ import Entities.Entity;
 public class OneWayEntryTeleport implements Tile {
 
     private Entity entity;
+    private String connectedRoomName;
 
-    public OneWayEntryTeleport(Entity entity) {
+    public OneWayEntryTeleport(Entity entity, String connectedRoomName) {
         this.entity = entity;
+        this.connectedRoomName = connectedRoomName.substring(1, connectedRoomName.length());
+        System.out.println(connectedRoomName+" to... "+this.connectedRoomName);
     }
 
     @Override
@@ -33,5 +36,9 @@ public class OneWayEntryTeleport implements Tile {
     @Override
     public void setEntity(Entity entity) {
         this.entity = entity;
+    }
+
+    public String nameOfNextRoom() {
+        return connectedRoomName;
     }
 }
