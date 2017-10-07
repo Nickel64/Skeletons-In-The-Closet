@@ -83,6 +83,7 @@ public class View extends JComponent implements Observer{
 
         //setting up the other panels
         playerStats = new PlayerPanel(frame);
+        model.getPlayer().addObserver(playerStats);
 
         //build the interface panel
         //a lot of logic in this part
@@ -354,8 +355,10 @@ public class View extends JComponent implements Observer{
         if(e instanceof Nothing)
             return;
         else if(e instanceof Player){
-            g.setColor(Color.blue);
-            g.fillOval( (tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
+            Player p = (Player) e;
+            //g.setColor(Color.blue);
+            //g.fillOval( (tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
+            g.drawImage(p.getIdle(), x,y,null);
         }
         else if(e instanceof  Wall){
             Image img = tileSet.getWall();
