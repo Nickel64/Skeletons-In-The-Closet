@@ -2,14 +2,12 @@ package Map;
 
 import Entities.Entity;
 
-public class DoorTile implements Tile {
+public class OneWayExitDoorTile implements Tile {
 
-    private String connectedRoomName;
     private Entity entity;
 
-    DoorTile(String connectedRoomName, Entity entity) {
+    public OneWayExitDoorTile(Entity entity) {
         this.entity = entity;
-        this.connectedRoomName = connectedRoomName;
     }
 
     @Override
@@ -19,7 +17,7 @@ public class DoorTile implements Tile {
 
     @Override
     public boolean isEntry() {
-        return true;
+        return false;
     }
 
     @Override
@@ -29,19 +27,11 @@ public class DoorTile implements Tile {
 
     @Override
     public Entity getEntity() {
-        return this.entity;
+        return entity;
     }
 
     @Override
     public void setEntity(Entity entity) {
         this.entity = entity;
-    }
-
-    String nameOfNextRoom() {
-        return connectedRoomName;
-    }
-
-    public String toString() {
-        return connectedRoomName;
     }
 }

@@ -174,7 +174,7 @@ public class Room {
      * Sets the player as the new given player
      * @param player
      */
-    public void setPlayer(Player player) {
+    private void setPlayer(Player player) {
         this.player = player;
     }
 
@@ -268,6 +268,22 @@ public class Room {
     }
 
     /**
+     * Returns the point of the given tile, if tile not found, error is thrown
+     * @param t Tile to search for
+     * @return Point of tiles position
+     */
+    private Point getTilePoint(Tile t) {
+        for(int i = 0; i < layout.length; i++) {
+            for(int j = 0; j < layout[i].length; j++) {
+                if(layout[i][j] == t) {
+                    return new Point(j, i);
+                }
+            }
+        }
+        return new Point(-1, -1);
+    }
+
+    /**
      * Moves the entity in the given direction if possible.
      *
      * @param entity that is to be moved
@@ -280,32 +296,65 @@ public class Room {
         int y = p.y;
 
 
-        Point destP = movesTo(x, y, direction);
-        int destX = destP.x;
-        int destY = destP.y;
-
-        if(!layout[destY][destX].canMoveOnto()) throw new Error("Cannot move onto tile in "+direction.name());
-        if(layout[destY][destX] instanceof DoorTile) {
+        if(layout[y][x] instanceof DoorTile) {      //if entity is currently on door tile, possible room change
             if(!(entity instanceof Player)) throw new Error("An entity other than player cannot move from room to room");
-            if(!isRoomCleared()) {
-                //swap(p, destP);
-                throw new Error("Player cannot progress to next room until room is cleared");
+            DoorTile door = (DoorTile) layout[y][x];        //gets current door tile
+            Room nextRoom = model.getRoom(door.nameOfNextRoom());       //finds next room to hold player
+            DoorTile endDoor = nextRoom.getDoorNamed(this.name);
+            Point destDoorPoint = nextRoom.getTilePoint(endDoor);
+            System.out.println(direction.name()+" at x: "+x+" and y: "+y);
+            switch (direction) {
+                case Down:
+                    if(y+1 >= this.height) {    //checks that direction is going out of room
+                        //check that next room door tile is correctly placed
+                        if(destDoorPoint.y == 0) {
+                            updateRoom(model, door, endDoor, nextRoom);
+                            return;
+                        }
+                        else throw new Error("Cannot move outside of room boundaries in this direction, door is not located here");
+                    } break;
+                case Right:
+                    if(x+1 >= this.width) {    //checks that direction is going out of room
+                        //check that next room door tile is correctly placed
+                        if(destDoorPoint.x == 0) {
+                            updateRoom(model, door, endDoor, nextRoom);
+                            return;
+                        }
+                        else throw new Error("Cannot move outside of room boundaries in this direction, door is not located here");
+                    } break;
+                case Up:
+                    if(y-1 < 0) {    //checks that direction is going out of room
+                        //check that next room door tile is correctly placed
+                        if(destDoorPoint.y == nextRoom.height-1) {
+                            updateRoom(model, door, endDoor, nextRoom);
+                            return;
+                        }
+                        else throw new Error("Cannot move outside of room boundaries in this direction, door is not located here");
+                    } break;
+                case Left:
+                    if(x-1 < 0) {    //checks that direction is going out of room
+                        //check that next room door tile is correctly placed
+                        if(destDoorPoint.x == nextRoom.width-1) {
+                            updateRoom(model, door, endDoor, nextRoom);
+                            return;
+                        }
+                        else throw new Error("Cannot move outside of room boundaries in this direction, door is not located here");
+                    } break;
             }
-            swap(p, destP);
-            DoorTile door = (DoorTile) layout[destY][destX];        //finds the next room and changes models cur room
-
-            Room next = model.getRoom(door.nameOfNextRoom());       //finds next room to hold player
-            next.setPlayer(this.player);        //sets the next room up with the current player
-
-            DoorTile entryDoor = next.getDoorNamed(name);
-
-            Entity temp = entryDoor.getEntity();
-            entryDoor.setEntity(door.getEntity());
-            door.setEntity(temp);
-            model.changeCurrentRoom(next);
-        } else {
-            swap(p, destP);
         }
+        Point destP = movesTo(x, y, direction);
+        swap(p, destP);
+    }
+
+    private void updateRoom(Model model, DoorTile entry, DoorTile exit, Room nextRoom) {
+        if(!isRoomCleared()) {
+            throw new Error("Player cannot progress to next room until room is cleared");
+        }
+        Entity temp = exit.getEntity();
+        exit.setEntity(entry.getEntity());
+        entry.setEntity(temp);
+        model.changeCurrentRoom(nextRoom);
+        nextRoom.setPlayer(this.player);        //sets the next room up with the current player
     }
 
     /**
@@ -313,7 +362,8 @@ public class Room {
      * @param start point of entity
      * @param end point of entity
      */
-    public void swap(Point start, Point end) {
+    private void swap(Point start, Point end) {
+        if(!layout[end.y][end.x].canMoveOnto()) throw new Error("Cannot move onto tile");
         Entity temp = layout[start.y][start.x].getEntity();     //finds the two movable tile entities and swaps them
         layout[start.y][start.x].setEntity(layout[end.y][end.x].getEntity());
         layout[end.y][end.x].setEntity(temp);
@@ -358,59 +408,58 @@ public class Room {
      */
     public void checkAttack(Entity entity, Direction direction) {
         Point p = findPoint(entity);
-        int x = p.x;
-        int y = p.y;
+        Point destP = movesTo(p.x, p.y, direction);
+        attack(p, destP);
+    }
 
-        Point destP = movesTo(x, y, direction);
-        int destX = destP.x;
-        int destY = destP.y;
+    /**
+     * Attacks and damages entities surrounding attacking entity if possible
+     * @param entity that is initialising attack
+     */
+    public void checkAttackAOE(Entity entity) {
+        Point attacker = findPoint(entity);
+        int x = attacker.x;
+        int y = attacker.y;
+        boolean vertUp = false;
+        boolean vertDown = false;
+        boolean horiLeft = false;
+        boolean horiRight = false;
 
-        Entity defender = layout[destY][destX].getEntity();
-        entity.attack(defender);
+        if(y > 0) {             //attack up is viable
+            attack(attacker, new Point(x, y-1));        //attacks up
+            vertUp = true;
+        }
+        if(y < this.height-1) {      //attack down is viable
+            attack(attacker, new Point(x, y+1));        //attacks down
+            vertDown = true;
+        }
+        if(x < this.width-1) {      //attack right is viable
+            attack(attacker, new Point(x+1, y));        //attacks right
+            horiRight = true;
+        }
+        if(x > 0) {             //attack left is viable
+            attack(attacker, new Point(x-1, y));      //attacks left
+            horiLeft = true;
+        }
+        //all done with left/right/up/down cases, onto diagonal
+        if(horiLeft && vertUp) attack(attacker, new Point(x-1, y-1));       //top left
+        if(horiLeft && vertDown) attack(attacker, new Point(x-1, y+1));     //bottom left
+        if(horiRight && vertUp) attack(attacker, new Point(x+1, y-1));      //top right
+        if(horiRight && vertDown) attack(attacker, new Point(x+1, y+1));    //bottom right
+    }
+
+    /**
+     * Attacks defender and checks for death, if there is any death then defender is taken off of layout
+     * @param attack Point of layout where attack occurs
+     * @param defend Point of layout where defender is attacked
+     */
+    private void attack(Point attack, Point defend) {
+        Entity attacker = layout[attack.x][attack.y].getEntity();
+        Entity defender = layout[defend.x][defend.y].getEntity();
+        attacker.attack(defender);
         if(defender.isDead()) {
             removeEnemy(defender);
-            layout[destY][destX].setEntity(new Nothing());
-        }
-    }
-    public void checkAttackAOE(Entity entity) {
-        Point p = findPoint(entity);
-        int x = p.x;
-        int y = p.y;
-
-        Point destP = new Point(x+1,y);
-        Point destP2 = new Point(x,y+1);
-        Point destP3 = new Point(x+1,y+1);
-        Point destP4 = new Point(x-1,y);
-        Point destP5 = new Point(x,y-1);
-        Point destP6 = new Point(x-1,y-1);
-        Point destP7 = new Point(x+1,y-1);
-        Point destP8 = new Point(x-1,y+1);
-
-        ArrayList<Point> points = new ArrayList<>();
-        points.add(destP);
-        points.add(destP2);
-        points.add(destP3);
-        points.add(destP4);
-        points.add(destP5);
-        points.add(destP6);
-        points.add(destP7);
-        points.add(destP8);
-
-        for(Point o: points) {
-            if (o.y - 1 < 0) continue;
-            if (o.x + 1 >= width)  continue;
-            if (o.x - 1 < 0)  continue;
-            if ((o.y +1) >= height)  continue;
-
-            int destX = o.x;
-            int destY = o.y;
-
-            Entity defender = layout[destY][destX].getEntity();
-            entity.attack(defender);
-            if (defender.isDead()) {
-                removeEnemy(defender);
-                layout[destY][destX].setEntity(new Nothing());
-            }
+            layout[defend.x][defend.y].setEntity(new Nothing());
         }
     }
 

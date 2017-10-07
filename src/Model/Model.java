@@ -95,9 +95,9 @@ public class Model extends Observable {
     }
 
     /**
-     * Moves the given entity in the given direction if possible
-     * @param entity: object to be moved
-     * @param dir: direction to be moved in
+     * Checks and attacks whether the attack from the given single entity in the given direction is possible
+     * @param entity: object to attack
+     * @param dir: direction to attack in
      */
     public void checkAttack(Entity entity, Direction dir) {
         //check entity
@@ -108,8 +108,8 @@ public class Model extends Observable {
         currentRoom.setRoomClearedTo(currentRoom.getEnemies().size() == 0);
     }
 
-    /** Attacks in an AOE
-     * @param entity: object attacking
+    /** Attacks the entities around the given entity in all directions
+     * @param entity: object that is attacking
      */
     public void checkAttackAOE(Entity entity) {
         //check entity
@@ -117,7 +117,7 @@ public class Model extends Observable {
         currentRoom.checkAttackAOE(entity);
         setChanged();
         notifyObservers();
-      //  currentRoom.setRoomClearedTo(currentRoom.getEnemies().size() == 0);
+        currentRoom.setRoomClearedTo(currentRoom.getEnemies().size() == 0);
     }
 
     /**
