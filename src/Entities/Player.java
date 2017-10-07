@@ -84,11 +84,13 @@ public class Player extends Observable implements Entity {
      * @param entity
      */
     public void attack(Entity entity){
+        System.out.println("finally attacking "+entity.getClass().getName());
         entity.damaged(this.damage);
-        attack();
+//        attack();
     }
     public void damaged(int damageAmount){
         this.health = this.health - damageAmount;
+        System.out.println(this.health);
     }
     public boolean inAggroRange(){return false;}
 

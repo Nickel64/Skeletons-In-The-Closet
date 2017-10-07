@@ -101,6 +101,7 @@ public class Model extends Observable {
      */
     public void checkAttack(Entity entity, Direction dir) {
         //check entity
+        System.out.println("checking attack...");
         if(!currentRoom.containsEntity(entity)) throw new Error("Cannot initiate attack with a nonexistent entity");
         currentRoom.checkAttack(entity, dir);
         setChanged();

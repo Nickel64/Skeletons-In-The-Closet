@@ -439,8 +439,11 @@ public class Room {
      * @param direction that entity is attacking
      */
     public void checkAttack(Entity entity, Direction direction) {
+        System.out.println("start of attack check in direction: "+direction.name());
         Point p = findPoint(entity);
+        System.out.println("entity attacking is at x: "+p.x+" and y:"+p.y);
         Point destP = movesTo(p.x, p.y, direction);
+        System.out.println("attacking to x: "+destP.x+" and y: "+destP.y);
         attack(p, destP);
     }
 
@@ -486,12 +489,12 @@ public class Room {
      * @param defend Point of layout where defender is attacked
      */
     private void attack(Point attack, Point defend) {
-        Entity attacker = layout[attack.x][attack.y].getEntity();
-        Entity defender = layout[defend.x][defend.y].getEntity();
+        Entity attacker = layout[attack.y][attack.x].getEntity();
+        Entity defender = layout[defend.y][defend.x].getEntity();
         attacker.attack(defender);
         if(defender.isDead()) {
             removeEnemy(defender);
-            layout[defend.x][defend.y].setEntity(new Nothing());
+            layout[defend.y][defend.x].setEntity(new Nothing());
         }
     }
 
