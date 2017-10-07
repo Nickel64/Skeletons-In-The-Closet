@@ -1,13 +1,14 @@
 package Entities;
 
+import Utils.EntitySet;
+
 import java.awt.*;
 import java.util.Observable;
 /**
  * Created by Shlomoburg on 19/09/2017.
  */
 public class Player extends Observable implements Entity {
-    private Direction dir;
-    private Image sprite; //the visual representation of the unit
+    private Direction dir = Direction.Right;
     private int health = 10; // how much health the unit has
     private int maxHealth =10;
     private int maxSpecial = 100;
@@ -20,15 +21,18 @@ public class Player extends Observable implements Entity {
     private int experience;
     private int level = 1;
 
+    private EntitySet images;
+
     public Player(int health, int damage){
         this.health = health;
         this.maxHealth = health;
         this.damage = damage;
-        dir = Direction.Right;
+        images = new EntitySet(true, 0);
+        System.out.println("Player created");
     }
 
     public Player(){
-
+        images = new EntitySet(true, 0);
     }
     public int getMaxHealth(){return maxHealth;}
     public int getHealth(){return health;}
@@ -38,7 +42,6 @@ public class Player extends Observable implements Entity {
     public int getExp(){return exp;}
     public int getDamage(){return damage;}
    // public int getSpeed(){return speed;}
-    public Image getSprite(){return sprite;}
 
     public Direction getDir() { return dir; }
 
@@ -108,9 +111,16 @@ public class Player extends Observable implements Entity {
     }
 
     public void attackAOE(Entity[] entities){
-        for(Entity e : entities){
-            attack(e);
+        setChanged();
+        if(this.special-10 >0){
+            for (Entity e : entities) {
+                attack(e);
+            }
+            this.special -= 10;
+            notifyObservers();
+            return;
         }
+        clearChanged();
     }
     //change the sprite of the player, can't move the player as it doesn't know its tile
     public void move(Direction dir){
@@ -130,5 +140,9 @@ public class Player extends Observable implements Entity {
         else{
             throw new Error("Direction not valid");
         }
+    }
+
+    public Image getIdle(){
+        return images.getIdle(dir.ordinal());
     }
 }

@@ -141,8 +141,10 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     private void movePlayer(Entity.Direction dir) {
         if(model.getPlayer().getDir() == dir)
             model.moveEntity(model.getPlayer(), dir);
-        else
+        else {
             model.getPlayer().setDirection(dir);
+            view.repaint();
+        }
         timeLastAction = System.currentTimeMillis();
     }
 
