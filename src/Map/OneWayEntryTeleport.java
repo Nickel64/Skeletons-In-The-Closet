@@ -2,11 +2,11 @@ package Map;
 
 import Entities.Entity;
 
-public class OneWayExitDoorTile implements Tile {
+public class OneWayEntryTeleport implements Tile {
 
     private Entity entity;
 
-    public OneWayExitDoorTile(Entity entity) {
+    public OneWayEntryTeleport(Entity entity) {
         this.entity = entity;
     }
 
@@ -17,7 +17,7 @@ public class OneWayExitDoorTile implements Tile {
 
     @Override
     public boolean isEntry() {
-        return false;
+        return true;
     }
 
     @Override

@@ -65,16 +65,21 @@ public class Room {
                     DoorTile door = new DoorTile(curString, curEntity);
                     doors.put(curString, door);
                     layout[i][j] = door;
+//                }else if(curString.equals("=")) {       //teleport exit
+//                    curEntity = new Nothing();
+//                    OneWayExitTeleport teleportexit = new OneWayExitTeleport(curEntity);
+//                    layout[i][j] = teleportexit;
+//                } else if(curString.equals("-")) {      //teleport entry
+//                    OneWayEntryTeleport teleportentry = new OneWayEntryTeleport(curEntity);
+//                    layout[i][j] = teleportentry;
                 } else {
                     if(curString.matches("\\.")) {              //open space
                         curEntity = new Nothing();
                     } else if(curString.matches("\\*")) {         //wall
                         curEntity = new Wall(this.level);
-
                     } else if(curString.matches("\\+")) {       //player
                         this.player = new Player();
                         curEntity = this.player;
-
                     } else if(curString.matches("[0-9]")){                 //enemy
                         //TODO: if between 1-3 norm, 4-6 agile, 7-9 strong, 10 BOSS
                         //TODO: CHECK IF APPROPRIATE
@@ -156,7 +161,10 @@ public class Room {
     /**
      * @return whether or not the room is cleared and player can progress
      */
-    public boolean isRoomCleared() {return cleared;}
+    public boolean isRoomCleared() {
+        this.cleared = enemies.isEmpty();
+        return cleared;
+    }
 
     /**
      * Returns the width of the room
@@ -311,7 +319,7 @@ public class Room {
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         }
-                        else throw new Error("Cannot move outside of room boundaries in this direction, door is not located here");
+                        else throw new Error("Cannot move outside of room boundaries in this direction, door is not located here "+name);
                     } break;
                 case Right:
                     if(x+1 >= this.width) {    //checks that direction is going out of room
@@ -320,7 +328,7 @@ public class Room {
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         }
-                        else throw new Error("Cannot move outside of room boundaries in this direction, door is not located here");
+                        else throw new Error("Cannot move outside of room boundaries in this direction, door is not located here "+name);
                     } break;
                 case Up:
                     if(y-1 < 0) {    //checks that direction is going out of room
@@ -329,7 +337,7 @@ public class Room {
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         }
-                        else throw new Error("Cannot move outside of room boundaries in this direction, door is not located here");
+                        else throw new Error("Cannot move outside of room boundaries in this direction, door is not located here "+name);
                     } break;
                 case Left:
                     if(x-1 < 0) {    //checks that direction is going out of room
@@ -338,11 +346,15 @@ public class Room {
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         }
-                        else throw new Error("Cannot move outside of room boundaries in this direction, door is not located here");
+                        else throw new Error("Cannot move outside of room boundaries in this direction, door is not located here "+name);
                     } break;
             }
         }
         Point destP = movesTo(x, y, direction);
+        if(layout[destP.y][destP.x] instanceof OneWayEntryTeleport && isRoomCleared()) {
+            //find teleport exit and updateRoom
+
+        }
         swap(p, destP);
     }
 
