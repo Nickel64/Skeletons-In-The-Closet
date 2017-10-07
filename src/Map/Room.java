@@ -88,20 +88,27 @@ public class Room {
                     } else if(curString.matches("[0-9]")){                 //enemy
                         //TODO: if between 1-3 norm, 4-6 agile, 7-9 strong, 10 BOSS
                         //TODO: CHECK IF APPROPRIATE
-                        int enemyID = Integer.parseInt(curString);
+                        Integer enemyID = Integer.parseInt(curString);
+                        int type = enemyID % 3 + 1;
+                        int lvlbonus = level+(level/2);
+                        Random r = new Random();
                         if(enemyID <= 3 && enemyID >= 1) {
                             //NORMAL ENEMY
-                            curEntity = new Enemy(enemyID, (5+enemyID)* level, 2, 3);
+                            curEntity = new Enemy(enemyID, r.nextInt(type)+3+lvlbonus,
+                                    r.nextInt(type)+2+lvlbonus, r.nextInt(type)+3);
                         } else if(enemyID <= 6 && enemyID >= 4) {
                             //AGILE
-                            curEntity = new Enemy(enemyID, 3* level, 3, (4+enemyID-3)* level);
+                            curEntity = new Enemy(enemyID, r.nextInt(type)+2+lvlbonus,
+                                    r.nextInt(type)+1+lvlbonus, r.nextInt(type)+5);
                         } else if(enemyID <= 9 && enemyID >= 7) {
                             //STRONG
-                            curEntity = new Enemy(enemyID, 4* level, (5+enemyID-6)* level, 2* level);
-                        } else {
+                            curEntity = new Enemy(enemyID, r.nextInt(type)+4+lvlbonus,
+                                    r.nextInt(type)+4+lvlbonus, r.nextInt(type)+1);
+//                            curEntity = new Enemy(enemyID, 4* level, (5+enemyID-6)* level, 2* level);
+                        } else if(enemyID >= 10) {
                             //BOSS
                             curEntity = new Enemy(enemyID, (12+enemyID-6)* level, (8+enemyID-6)* level, (2+enemyID-6)* level);
-                        }
+                        } else throw new Error("Invalid enemy id, must be 1+");
                         enemies.add(curEntity);
                     }
                     layout[i][j] = new FloorTile(curEntity);

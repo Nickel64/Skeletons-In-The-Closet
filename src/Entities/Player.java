@@ -84,7 +84,6 @@ public class Player extends Observable implements Entity {
      * @param entity
      */
     public void attack(Entity entity){
-        System.out.println("finally attacking "+entity.getClass().getName());
         entity.damaged(this.damage);
 //        attack();
     }
