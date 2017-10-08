@@ -46,6 +46,7 @@ public class Player extends Observable implements Entity {
     public Direction getDir() { return dir; }
 
     public void setHealth(int Health){ health = Health;}
+    public void setMaxHealth(int maxHealth){this.maxHealth = maxHealth;}
     public void  setDamage(int Damage){ damage = Damage;}
     //public void  setSpeed(int Speed){speed = Speed;}
     public void setSpecial(int s){special = s;}
