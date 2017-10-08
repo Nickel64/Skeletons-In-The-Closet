@@ -51,7 +51,7 @@ public class Player extends Observable implements Entity {
     //public void  setSpeed(int Speed){speed = Speed;}
     public void setSpecial(int s){special = s;}
 
-    public void setMaxHealth(int Health){maxHealth = Health;}
+
 
     public void incExp(int xp){
         this.exp += xp;
