@@ -10,7 +10,7 @@ public class PowerUpHealth implements PowerUp{
     }
     @Override
     public void increase(Player p) {
-        p.setMaxHealth(2);
+        p.setMaxHealth(p.getMaxHealth()+2);
         p.setHealth(p.getHealth()+2);
     }
 
