@@ -4,14 +4,14 @@ HotConnectionHubWorld 1
 . . . . . . . . . . . . .
 . . . . . . . . . . . . LvlFiveLabyrinth
 . . . . . . . . . . . . .
-LvlTwoOne . + . . . . . . . . . .
+LvlTwoOne . . . . . + . . . . . .
 . . . . . . = . . . . . .
 . . . . . . . . . . . . LvlThreeOne
 . . . . . . . . . . . . .
 . . . . . . LvlZThr . . . . . .
 
 
-LvlZero 1
+LvlZero 2
 14 10
 . . . . . . . * . . . . . .
 . . . . . . . * . . . . . .

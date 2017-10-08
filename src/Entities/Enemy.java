@@ -50,7 +50,7 @@ public class Enemy extends Observable implements Entity {
         return false;
     }
     public void attack(Entity entity){
-
+        entity.damaged(this.damage);
     }
     public void move(){
 
@@ -60,6 +60,9 @@ public class Enemy extends Observable implements Entity {
         if(isDead()){
             //tell view that this entity is dead
         }
+        System.out.println("health: "+health);
+        System.out.println("damaage: "+damage);
+        System.out.println("speed: "+speed);
     }
 
     public void start() {

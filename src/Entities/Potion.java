@@ -59,7 +59,7 @@ public class Potion implements Entity {
     }
 
     public void restore (Player p){
-        p.heal(2);
+       // p.heal(2);
     }
 
 }
