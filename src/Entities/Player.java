@@ -50,6 +50,8 @@ public class Player extends Observable implements Entity {
     //public void  setSpeed(int Speed){speed = Speed;}
     public void setSpecial(int s){special = s;}
 
+    public void setMaxHealth(int Health){maxHealth = Health;}
+
     public void incExp(int xp){
         this.exp += xp;
         if(this.exp >= maxExp){
@@ -141,6 +143,10 @@ public class Player extends Observable implements Entity {
         else{
             throw new Error("Direction not valid");
         }
+    }
+
+    public void increaseAttack(int attack){
+        this.damage = attack + this.damage;
     }
 
     public Image getIdle(){

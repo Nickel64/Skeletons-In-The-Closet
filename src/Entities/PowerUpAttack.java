@@ -3,9 +3,9 @@ package Entities;
 /**
  * Created by Shlomoburg on 8/10/2017.
  */
-public class Potion implements Entity {
+public class PowerUpAttack implements PowerUp {
 
-    Potion (){
+    PowerUpAttack (){
 
     }
 
@@ -58,8 +58,8 @@ public class Potion implements Entity {
         return "~";
     }
 
-    public void restore (Player p){
-       // p.heal(2);
+    public void increase (Player p){
+        p.increaseAttack(1);
     }
 
 }
