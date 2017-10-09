@@ -388,9 +388,9 @@ public class Room {
             updateRoom(model, entry, nextRoom.getTeleportExit(), nextRoom);
         }
         if(layout[destP.y][destP.x] instanceof PowerUp && entity instanceof Player){
-            PowerUp pUp = (PowerUp) layout[y][x];
+            PowerUp pUp = (PowerUp) layout[destP.y][destP.x];
             pUp.increase((Player)entity);
-            layout[y][x].setEntity(new Nothing());
+            layout[destP.y][destP.x].setEntity(new Nothing());
         }
     }
 
