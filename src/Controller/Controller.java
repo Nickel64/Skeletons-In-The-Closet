@@ -2,6 +2,7 @@ package Controller;
 
 import Behaviour.Pathfinder;
 import Entities.Entity;
+import Map.DoorTile;
 import Map.Tile;
 import Model.*;
 import Utils.GameError;
@@ -10,6 +11,7 @@ import View.*;
 import com.sun.javaws.exceptions.ErrorCodeResponseException;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.Queue;
 import java.util.Stack;
@@ -101,10 +103,31 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         Queue<int[]> pathToGo = Pathfinder.findPath(goFrom, toGo, tileGrid);
 
         //use timer to slowly step the player along each of the steps required
-        new Timer(500, new ActionListener(){
+        Timer timer = new Timer(500, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 int[] point = pathToGo.poll();
-                if(point == null) return;
+                if(point == null){
+                    //if finished on a Door tile - take that door!
+                    System.out.println("FINISHED");
+                    Point playerLocation = model.getPlayerLocation();
+                    Tile currentTile = model.getCurrentRoom().getTileAtLocation(playerLocation.x, playerLocation.y);
+                    if(currentTile instanceof DoorTile){
+                        if(playerLocation.y+1 >= model.getCurrentRoom().getHeight()){ //bottom edge - need to move down
+                            movePlayerPathFind(Entity.Direction.Down);
+                        }
+                        else if(playerLocation.y-1 < 0){ //top edge - need to move up
+                            movePlayerPathFind(Entity.Direction.Up);
+                        }
+                        else if(playerLocation.x-1 < 0){ //left edge - need to move left
+                            movePlayerPathFind(Entity.Direction.Left);
+                        }
+                        else if(playerLocation.x+1 >= model.getCurrentRoom().getWidth()){ //right edge - need to move right
+                            movePlayerPathFind(Entity.Direction.Right);
+                        }
+                    }
+                    ((Timer) e.getSource()).stop();
+                    return;
+                }
 
                 int playerX = model.getPlayerLocation().x, playerY = model.getPlayerLocation().y;
                 if(point[0] < playerX) movePlayerPathFind(Entity.Direction.Left);
@@ -112,7 +135,8 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                 else if(point[1] > playerY) movePlayerPathFind(Entity.Direction.Down);
                 else if(point[1] < playerY) movePlayerPathFind(Entity.Direction.Up);
             }
-        }).start();
+        });
+        timer.start();
     }
 
     @Override
