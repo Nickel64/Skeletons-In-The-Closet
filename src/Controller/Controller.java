@@ -104,11 +104,13 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         new Timer(500, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 int[] point = pathToGo.poll();
+                if(point == null) return;
+
                 int playerX = model.getPlayerLocation().x, playerY = model.getPlayerLocation().y;
-                if(point[0] < playerX) movePlayerNoDir(Entity.Direction.Left);
-                else if(point[0] > playerX) movePlayerNoDir(Entity.Direction.Right);
-                else if(point[1] > playerY) movePlayerNoDir(Entity.Direction.Down);
-                else if(point[1] < playerY) movePlayerNoDir(Entity.Direction.Up);
+                if(point[0] < playerX) movePlayerPathFind(Entity.Direction.Left);
+                else if(point[0] > playerX) movePlayerPathFind(Entity.Direction.Right);
+                else if(point[1] > playerY) movePlayerPathFind(Entity.Direction.Down);
+                else if(point[1] < playerY) movePlayerPathFind(Entity.Direction.Up);
             }
         }).start();
     }
@@ -180,7 +182,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         }
     }
 
-    private void movePlayerNoDir(Entity.Direction dir) {
+    private void movePlayerPathFind(Entity.Direction dir) {
         if(!model.getPlayer().getDir().equals(dir)){
             model.getPlayer().setDirection(dir);
             view.repaint();
