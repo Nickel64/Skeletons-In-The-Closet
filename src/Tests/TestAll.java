@@ -17,9 +17,11 @@ import static org.junit.Assert.*;
 public class TestAll {
     public String[] tests = {"ModelTests", "PathfinderTests"};
 
+
     /**
      * Used to test that a path between a point and itself just returns itself (a.k.a no movement)
      */
+    /**
     @Test
     public void test_pathfind_EmptyGridSuccess1(){
         Tile[][] grid = new Tile[10][10];
@@ -27,10 +29,12 @@ public class TestAll {
         Stack<int[]> expected = createExpected(new int[][]{{0,0}});
         checkEmptyGrid(expected, path);
     }
+    **/
 
     /**
      * Tests a path between 0,0 and 2,2 on an empty board
      */
+    /**
     @Test
     public void test_pathfind_EmptyGridSuccess2(){
         Tile[][] grid = new Tile[10][10];
@@ -38,10 +42,12 @@ public class TestAll {
         Stack<int[]> expected = createExpected(new int[][]{{0,0}, {1,0}, {2,0}, {2,1}, {2,2}});
         checkEmptyGrid(expected, path);
     }
+    **/
 
     /**
      * Tests a path between 0,0 and 3,3 on an empty board
      */
+    /**
     @Test
     public void test_pathfind_EmptyGridSuccess3(){
         Tile[][] grid = new Tile[10][10];
@@ -49,10 +55,12 @@ public class TestAll {
         Stack<int[]> expected = createExpected(new int[][]{{0,0}, {1,0}, {2,0}, {3,0}, {3,1}, {3,2}, {3,3}});
         checkEmptyGrid(expected, path);
     }
+    **/
 
     /**
      * Used to test that the pathfinder will not attempt to move into negative positions
      */
+    /**
     @Test
     public void test_pathfind_EmptyGridFail1(){
         Tile[][] grid = new Tile[10][10];
@@ -61,10 +69,12 @@ public class TestAll {
         Stack<int[]> expected = new Stack<>();
         checkEmptyGrid(expected, path);
     }
+    **/
 
     /**
      * Used to check that the pathfinder will not move into positions outside the right edge of the board
      */
+    /**
     @Test
     public void test_pathfind_EmptyGridFail2(){
         Tile[][] grid = new Tile[10][10];
@@ -73,10 +83,12 @@ public class TestAll {
         Stack<int[]> expected = new Stack<>();
         checkEmptyGrid(expected, path);
     }
+    **/
 
     /**
      * Used to check that the pathfinder will not move into positions outside the right edge of the board
      */
+    /**
     @Test
     public void test_pathfind_EmptyGridFail3(){
         Tile[][] grid = new Tile[10][10];
@@ -84,6 +96,7 @@ public class TestAll {
         Stack<int[]> expected = new Stack<>();
         checkEmptyGrid(expected, path);
     }
+    **/
 
     /**
      * Helper method used to compare two Stacks of integer arrays

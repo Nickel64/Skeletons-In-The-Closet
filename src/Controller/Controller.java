@@ -1,13 +1,18 @@
 package Controller;
 
+import Behaviour.Pathfinder;
 import Entities.Entity;
+import Map.Tile;
 import Model.*;
 import Utils.GameError;
 import Utils.Resources;
 import View.*;
+import com.sun.javaws.exceptions.ErrorCodeResponseException;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.Queue;
+import java.util.Stack;
 
 /** * * * * * * * * * * * * *
  * Controller class
@@ -85,9 +90,27 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        // sets movement target (for use by pathfinding algorithms
-        // refer to sokoban assignment
-        // to be implemented later (once people make up their minds about what we're even doing)
+        int x = e.getX(), y = e.getY();
+        int[] toGo = view.getGridCoordsAt(x,y);
+
+        if(toGo[0] == -1 || toGo[1] == -1) throw new Error("Cannot move outside the board");
+        System.out.println("Heading toward x:" + toGo[0] + " y:" + toGo[1]);
+
+        int[] goFrom = new int[] {model.getPlayerLocation().x, model.getPlayerLocation().y};
+        Tile[][] tileGrid = new Tile[model.getCurrentRoom().getWidth()][model.getCurrentRoom().getHeight()];
+        Queue<int[]> pathToGo = Pathfinder.findPath(goFrom, toGo, tileGrid);
+
+        //use timer to slowly step the player along each of the steps required
+        new Timer(500, new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                int[] point = pathToGo.poll();
+                int playerX = model.getPlayerLocation().x, playerY = model.getPlayerLocation().y;
+                if(point[0] < playerX) movePlayerNoDir(Entity.Direction.Left);
+                else if(point[0] > playerX) movePlayerNoDir(Entity.Direction.Right);
+                else if(point[1] > playerY) movePlayerNoDir(Entity.Direction.Down);
+                else if(point[1] < playerY) movePlayerNoDir(Entity.Direction.Up);
+            }
+        }).start();
     }
 
     @Override
@@ -155,6 +178,16 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         } catch(GameError e) {
             Resources.playAudio("bump.wav");
         }
+    }
+
+    private void movePlayerNoDir(Entity.Direction dir) {
+        if(!model.getPlayer().getDir().equals(dir)){
+            model.getPlayer().setDirection(dir);
+            view.repaint();
+        }
+        model.moveEntity(model.getPlayer(), dir);
+        view.repaint();
+        timeLastAction = System.currentTimeMillis();
     }
 
     /* END OF MOUSE LISTENER METHODS */
