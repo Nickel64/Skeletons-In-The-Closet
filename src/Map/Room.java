@@ -82,7 +82,11 @@ public class Room {
                         curEntity = new Nothing();
                     } else if(curString.matches("\\*")) {         //wall
                         curEntity = new Wall(this.level);
-                    } else if(curString.matches("\\+")) {       //player
+                    } else if(curString.matches("~"))  {
+                        curEntity = new PowerUpAttack();
+                    } else if(curString.matches("`"))  {
+                        curEntity = new PowerUpHealth();
+                    }else if(curString.matches("\\+")) {       //player
                         this.player = new Player();
                         curEntity = this.player;
                     } else if(curString.matches("[0-9]")){                 //enemy
@@ -382,6 +386,11 @@ public class Room {
             OneWayEntryTeleport entry = (OneWayEntryTeleport) layout[destP.y][destP.x];
             Room nextRoom = model.getRoom(entry.nameOfNextRoom());
             updateRoom(model, entry, nextRoom.getTeleportExit(), nextRoom);
+        }
+        if(layout[destP.y][destP.x] instanceof PowerUp && entity instanceof Player){
+            PowerUp pUp = (PowerUp) layout[y][x];
+            pUp.increase((Player)entity);
+            layout[y][x].setEntity(new Nothing());
         }
     }
 
