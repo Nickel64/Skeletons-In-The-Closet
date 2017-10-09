@@ -28,6 +28,8 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     private static final int COOLDOWN = 150;
     private long timeLastAction = -COOLDOWN;
 
+    private boolean inAutoMovement = false;
+
     public Controller(Model model, View view) {
         this.model = model;
         this.view = view;
@@ -92,6 +94,15 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {}
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        if(inAutoMovement) return;
         int x = e.getX(), y = e.getY();
         int[] toGo = view.getGridCoordsAt(x,y);
 
@@ -105,6 +116,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         //use timer to slowly step the player along each of the steps required
         Timer timer = new Timer(500, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
+                inAutoMovement = true;
                 int[] point = pathToGo.poll();
                 if(point == null){
                     //if finished on a Door tile - take that door!
@@ -125,6 +137,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                             movePlayerPathFind(Entity.Direction.Right);
                         }
                     }
+                    inAutoMovement = false;
                     ((Timer) e.getSource()).stop();
                     return;
                 }
@@ -136,14 +149,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                 else if(point[1] < playerY) movePlayerPathFind(Entity.Direction.Up);
             }
         });
-        timer.start();
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {}
-
-    @Override
-    public void mouseReleased(MouseEvent e) {}
+        timer.start();}
 
     @Override
     public void mouseEntered(MouseEvent e) {}
