@@ -5,7 +5,7 @@ package Entities;
  */
 public class PowerUpAttack implements PowerUp {
 
-    PowerUpAttack (){
+    public PowerUpAttack (){
 
     }
 

@@ -5,7 +5,7 @@ package Entities;
  */
 public class PowerUpHealth implements PowerUp{
 
-    PowerUpHealth(){
+    public PowerUpHealth(){
 
     }
     @Override
