@@ -2,6 +2,8 @@ package Controller;
 
 import Entities.Entity;
 import Model.*;
+import Utils.GameError;
+import Utils.Resources;
 import View.*;
 
 import javax.swing.*;
@@ -140,13 +142,19 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     }
 
     private void movePlayer(Entity.Direction dir) {
-        if(model.getPlayer().getDir() == dir)
-            model.moveEntity(model.getPlayer(), dir);
-        else {
-            model.getPlayer().setDirection(dir);
-            view.repaint();
+        try {
+            if (model.getPlayer().getDir() == dir) {
+                model.moveEntity(model.getPlayer(), dir);
+                Resources.playAudio("footstep.wav");
+            }
+            else {
+                model.getPlayer().setDirection(dir);
+                view.repaint();
+            }
+            timeLastAction = System.currentTimeMillis();
+        } catch(GameError e) {
+            Resources.playAudio("bump.wav");
         }
-        timeLastAction = System.currentTimeMillis();
     }
 
     /* END OF MOUSE LISTENER METHODS */

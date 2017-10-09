@@ -1,9 +1,13 @@
 package Utils;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * Used to store things
@@ -54,5 +58,19 @@ public class Resources {
             e.printStackTrace();
         }
         return img;
+    }
+
+    /** Plays an audio clip*/
+    public static void playAudio(String name) {
+        try {
+            Clip clip = AudioSystem.getClip();
+            URL localURL = Resources.class.getResource("SoundResources/"+name);
+            AudioInputStream ais = AudioSystem.getAudioInputStream(localURL);
+            clip.open(ais);
+            clip.start();
+        } catch(Exception e) {
+            e.printStackTrace();
+            //throw new Error("Could not play audio");
+        }
     }
 }

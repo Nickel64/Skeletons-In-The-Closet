@@ -5,6 +5,7 @@ import Entities.Entity;
 import Entities.Entity.Direction;
 
 import Model.*;
+import Utils.GameError;
 import Utils.Resources;
 import Utils.TileSet;
 
@@ -289,16 +290,16 @@ public class Room {
     private Point movesTo(int x, int y, Direction direction) {
         switch (direction) {
             case Up:
-                if (y - 1 < 0) throw new Error("Cannot move entity " + direction.name());
+                if (y - 1 < 0) throw new GameError("Cannot move entity " + direction.name());
                 return new Point(x, y - 1);
             case Right:
-                if (x + 1 >= width) throw new Error("Cannot move entity " + direction.name());
+                if (x + 1 >= width) throw new GameError("Cannot move entity " + direction.name());
                 return new Point(x + 1, y);
             case Left:
-                if (x - 1 < 0) throw new Error("Cannot move entity " + direction.name());
+                if (x - 1 < 0) throw new GameError("Cannot move entity " + direction.name());
                 return new Point(x - 1, y);
             case Down:
-                if ((y +1) >= height) throw new Error("Cannot move entity " + direction.name()+" x: "+(x+1)+" y: "+y);
+                if ((y +1) >= height) throw new GameError("Cannot move entity " + direction.name()+" x: "+(x+1)+" y: "+y);
                 return new Point(x, y + 1);
         }
         throw new Error("Unknown direction: "+ direction.name());
@@ -348,7 +349,7 @@ public class Room {
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         }
-                        else throw new Error("Cannot move outside of room boundaries in this direction, door is not located here "+name);
+                        else throw new GameError("Cannot move outside of room boundaries in this direction, door is not located here "+name);
                     } break;
                 case Right:
                     if(x+1 >= this.width) {    //checks that direction is going out of room
@@ -357,7 +358,7 @@ public class Room {
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         }
-                        else throw new Error("Cannot move outside of room boundaries in this direction, door is not located here "+name);
+                        else throw new GameError("Cannot move outside of room boundaries in this direction, door is not located here "+name);
                     } break;
                 case Up:
                     if(y-1 < 0) {    //checks that direction is going out of room
@@ -366,7 +367,7 @@ public class Room {
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         }
-                        else throw new Error("Cannot move outside of room boundaries in this direction, door is not located here "+name);
+                        else throw new GameError("Cannot move outside of room boundaries in this direction, door is not located here "+name);
                     } break;
                 case Left:
                     if(x-1 < 0) {    //checks that direction is going out of room
@@ -375,7 +376,7 @@ public class Room {
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         }
-                        else throw new Error("Cannot move outside of room boundaries in this direction, door is not located here "+name);
+                        else throw new GameError("Cannot move outside of room boundaries in this direction, door is not located here "+name);
                     } break;
             }
         }
@@ -396,7 +397,7 @@ public class Room {
 
     private void updateRoom(Model model, Tile entry, Tile exit, Room nextRoom) {
         if(!isRoomCleared()) {
-            throw new Error("Player cannot progress to next room until room is cleared");
+            throw new GameError("Player cannot progress to next room until room is cleared");
         }
         Entity temp = exit.getEntity();
         exit.setEntity(entry.getEntity());
@@ -411,7 +412,7 @@ public class Room {
      * @param end point of entity
      */
     private void swap(Point start, Point end) {
-        if(!layout[end.y][end.x].canMoveOnto()) throw new Error("Cannot move onto tile");
+        if(!layout[end.y][end.x].canMoveOnto()) throw new GameError("Cannot move onto tile");
         Entity temp = layout[start.y][start.x].getEntity();     //finds the two movable tile entities and swaps them
         layout[start.y][start.x].setEntity(layout[end.y][end.x].getEntity());
         layout[end.y][end.x].setEntity(temp);
