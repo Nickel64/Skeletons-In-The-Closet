@@ -126,6 +126,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                             model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
                             break;
                         case "Defend":
+                            model.getPlayer().toggleGuard();
                             break;
                         case "AOE":
                             model.checkAttackAOE(model.getPlayer());

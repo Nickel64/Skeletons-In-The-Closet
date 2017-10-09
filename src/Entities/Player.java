@@ -15,11 +15,12 @@ public class Player extends Observable implements Entity {
     private int special = 100;
     private int exp = 0;
     private int maxExp = 100;
-    //private int level;
     private int damage = 1; // how much damage the unit deals
     private int speed; // how fast the unit can move
     private int experience;
     private int level = 1;
+
+    private boolean defending;
 
     private EntitySet images;
 
@@ -44,6 +45,7 @@ public class Player extends Observable implements Entity {
    // public int getSpeed(){return speed;}
 
     public Direction getDir() { return dir; }
+
 
     public void setHealth(int Health){ health = Health;}
     public void setMaxHealth(int maxHealth){this.maxHealth = maxHealth;}
@@ -82,6 +84,23 @@ public class Player extends Observable implements Entity {
 
     }
 
+    public void toggleGuard(){
+        //toggling off
+        if(defending) {
+            defending = !defending;
+            //TODO play a sound
+            System.out.println("not blocking damage");
+            return;
+        }
+        //toggling on
+        else if(special > 0){
+            //valid to block
+            this.defending = true;
+            System.out.println("blocking damage");
+
+        }
+    }
+
     /**
      * attack method for when an entity is in the target range, so damage is dealt
      * @param entity
@@ -91,8 +110,19 @@ public class Player extends Observable implements Entity {
 //        attack();
     }
     public void damaged(int damageAmount){
-        this.health = this.health - damageAmount;
-        System.out.println(this.health);
+        if(defending){
+            int beforeSpecial = special;
+            this.special -= damageAmount;
+            damageAmount = damageAmount-beforeSpecial;
+            if(damageAmount > 0){
+                this.health = this.health - damageAmount;
+                System.out.println("Play a guard breaking sound here");
+            }
+        }
+        else{
+            this.health = this.health - damageAmount;
+            System.out.println(this.health);
+        }
     }
     public boolean inAggroRange(){return false;}
 

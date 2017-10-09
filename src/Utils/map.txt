@@ -267,108 +267,108 @@ LvlFourSix 4
 
 
 
-LvlFiveLabyrinth 1
+LvlFiveLabyrinth 5
 14 8
 . LvlFiveDeadEndOne . . LvlFivePathOne . . . . . . . LvlFiveDeadPathOne .
 . . . . . . . . . . . . . .
 . . . . . . . . . . . . . .
 . . . . . . . . . . . . . .
+HotConnectionHubWorld . . . . . . . . . . . . .
 . . . . . . . . . . . . . .
 . . . . . . . . . . . . . .
 . . . . . . . . . . . . . .
-. . HotConnectionHubWorld . . . . . . . . . . .
 
-LvlFiveDeadEndOne 1
+LvlFiveDeadEndOne 5
 3 3
 . . .
 . . .
 . LvlFiveLabyrinth .
 
-LvlFiveDeadPathOne 1
+LvlFiveDeadPathOne 5
 3 3
 . LvlFiveDeadEndThr .
 LvlFiveDeadEndTwo . .
 . LvlFiveLabyrinth .
 
-LvlFiveDeadEndThr 1
+LvlFiveDeadEndThr 5
 3 3
 . . .
 . . .
 . LvlFiveDeadPathOne .
 
-LvlFiveDeadEndTwo 1
+LvlFiveDeadEndTwo 5
 3 3
 . . .
 . . LvlFiveDeadPathOne
 . . .
 
-LvlFivePathOne 1
+LvlFivePathOne 5
 3 3
 . LvlFivePathTwo .
 . . .
 . LvlFiveLabyrinth .
 
-LvlFivePathTwo 1
+LvlFivePathTwo 5
 3 3
 . . .
 LvlFiveDeadEndFour . LvlFivePathThree
 . LvlFivePathOne .
 
-LvlFiveDeadEndFour 1
+LvlFiveDeadEndFour 5
 3 3
 . . .
 . . LvlFivePathTwo
 . . .
 
-LvlFivePathThree 1
+LvlFivePathThree 5
 3 3
 . LvlFivePathFour .
 LvlFivePathTwo . .
 . . .
 
-LvlFivePathFour 1
+LvlFivePathFour 5
 3 3
 . . .
 LvlFivePathFive . .
 . LvlFivePathThree .
 
-LvlFivePathFive 1
+LvlFivePathFive 5
 3 3
 . LvlFivePathSix .
 LvlFiveDeadPathTwo . LvlFivePathFour
 . . .
 
-LvlFiveDeadPathTwo 1
+LvlFiveDeadPathTwo 5
 3 3
 . LvlFiveDeadEndFive .
 . . LvlFivePathFive
 . . .
 
-LvlFiveDeadEndFive 1
+LvlFiveDeadEndFive 5
 3 3
 . . .
 . . .
 . LvlFiveDeadPathTwo .
 
-LvlFivePathSix 1
+LvlFivePathSix 5
 3 3
 . . .
 . . LvlFivePathSev
 . LvlFivePathFive .
 
-LvlFivePathSev 1
+LvlFivePathSev 5
 3 3
 . . .
 LvlFivePathSix . .
 . LvlFivePathEgt .
 
-LvlFivePathEgt 1
+LvlFivePathEgt 5
 3 3
 . LvlFivePathSev .
 . . LvlFiveAnte
 . . .
 
-LvlFiveAnte 1
+LvlFiveAnte 5
 7 7
 . . . . . . .
 . . . . . . .
@@ -378,7 +378,7 @@ LvlFivePathEgt . . . . . .
 . . . . . . .
 . . . LvlFiveBoss . . .
 
-LvlFiveBoss 1
+LvlFiveBoss 5
 13 10
 . . . . . . LvlFiveAnte . . . . . .
 . . . . . . . . . . . . .
