@@ -359,6 +359,9 @@ public class View extends JComponent implements Observer{
             //g.setColor(Color.blue);
             //g.fillOval( (tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
             g.drawImage(p.getIdle(), x,y,null);
+            if(p.isDefending()){
+                g.drawImage(p.getDefending(), x,y,null);
+            }
         }
         else if(e instanceof  Wall){
             Image img = tileSet.getWall();

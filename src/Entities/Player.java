@@ -10,7 +10,7 @@ import java.util.Observable;
 public class Player extends Observable implements Entity {
     private Direction dir = Direction.Right;
     private int health = 10; // how much health the unit has
-    private int maxHealth =10;
+    private int maxHealth = 10;
     private int maxSpecial = 100;
     private int special = 100;
     private int exp = 0;
@@ -24,7 +24,7 @@ public class Player extends Observable implements Entity {
 
     private EntitySet images;
 
-    public Player(int health, int damage){
+    public Player(int health, int damage) {
         this.health = health;
         this.maxHealth = health;
         this.damage = damage;
@@ -32,68 +32,107 @@ public class Player extends Observable implements Entity {
         System.out.println("Player created");
     }
 
-    public Player(){
+    public Player() {
         images = new EntitySet(true, 0);
     }
-    public int getMaxHealth(){return maxHealth;}
-    public int getHealth(){return health;}
-    public int getMaxSpecial(){return maxSpecial;}
-    public int getSpecial(){return special;}
-    public int getMaxExp(){return maxExp;}
-    public int getExp(){return exp;}
-    public int getDamage(){return damage;}
-   // public int getSpeed(){return speed;}
 
-    public Direction getDir() { return dir; }
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getMaxSpecial() {
+        return maxSpecial;
+    }
+
+    public int getSpecial() {
+        return special;
+    }
+
+    public int getMaxExp() {
+        return maxExp;
+    }
+
+    public int getExp() {
+        return exp;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+    // public int getSpeed(){return speed;}
+
+    public Direction getDir() {
+        return dir;
+    }
 
 
-    public void setHealth(int Health){ health = Health;}
-    public void setMaxHealth(int maxHealth){this.maxHealth = maxHealth;}
-    public void  setDamage(int Damage){ damage = Damage;}
+    public void setHealth(int Health) {
+        health = Health;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    public void setDamage(int Damage) {
+        damage = Damage;
+    }
+
     //public void  setSpeed(int Speed){speed = Speed;}
-    public void setSpecial(int s){special = s;}
+    public void setSpecial(int s) {
+        special = s;
+    }
 
 
-
-    public void incExp(int xp){
+    public void incExp(int xp) {
         this.exp += xp;
-        if(this.exp >= maxExp){
+        if (this.exp >= maxExp) {
             levelUp();
         }
     }
 
-    public String getImageName(){
+    public String getImageName() {
         return null;
     }
 
-    public boolean isDead(){
-        if (health<=0){
+    public boolean isDead() {
+        if (health <= 0) {
             return true;
         }
         return false;
     }
-    public void levelUp(){
+
+    public void levelUp() {
         exp = 0;
         level++;
         damage = damage + 2;
     }
+
     /**
      * attack method for changing the players sprite to attack
      */
-    public void attack(){
+    public void attack() {
 
     }
 
-    public void toggleGuard(){
+    public boolean isDefending() {
+        return defending;
+    }
+
+    public void toggleGuard() {
         //toggling off
-        if(defending) {
+        if (defending) {
             defending = !defending;
             //TODO play a sound
             System.out.println("not blocking damage");
             return;
         }
         //toggling on
-        else if(special > 0){
+        else if (special > 0) {
             //valid to block
             this.defending = true;
             System.out.println("blocking damage");
@@ -103,30 +142,35 @@ public class Player extends Observable implements Entity {
 
     /**
      * attack method for when an entity is in the target range, so damage is dealt
+     *
      * @param entity
      */
-    public void attack(Entity entity){
+    public void attack(Entity entity) {
         entity.damaged(this.damage);
 //        attack();
     }
-    public void damaged(int damageAmount){
-        if(defending){
+
+    public void damaged(int damageAmount) {
+        if (defending) {
             int beforeSpecial = special;
             this.special -= damageAmount;
-            damageAmount = damageAmount-beforeSpecial;
-            if(damageAmount > 0){
+            damageAmount = damageAmount - beforeSpecial;
+            if (damageAmount > 0) {
                 this.health = this.health - damageAmount;
                 System.out.println("Play a guard breaking sound here");
             }
-        }
-        else{
+        } else {
             this.health = this.health - damageAmount;
             System.out.println(this.health);
         }
     }
-    public boolean inAggroRange(){return false;}
 
-    public void start() {}
+    public boolean inAggroRange() {
+        return false;
+    }
+
+    public void start() {
+    }
 
     public boolean canMove() {
         return true;
@@ -140,13 +184,13 @@ public class Player extends Observable implements Entity {
         return "+";
     }
 
-    public void setDirection(Direction dir){
+    public void setDirection(Direction dir) {
         this.dir = dir;
     }
 
-    public void attackAOE(Entity[] entities){
+    public void attackAOE(Entity[] entities) {
         setChanged();
-        if(this.special-10 >0){
+        if (this.special - 10 > 0) {
             for (Entity e : entities) {
                 attack(e);
             }
@@ -156,31 +200,28 @@ public class Player extends Observable implements Entity {
         }
         clearChanged();
     }
+
     //change the sprite of the player, can't move the player as it doesn't know its tile
-    public void move(Direction dir){
-        if(dir==Direction.Up){
-        //be first sprite, update view, be moving sprite update view, be final sprite
-        }
-        else if(dir==Direction.Down){
+    public void move(Direction dir) {
+        if (dir == Direction.Up) {
+            //be first sprite, update view, be moving sprite update view, be final sprite
+        } else if (dir == Direction.Down) {
 
-        }
-        else if(dir==Direction.Left){
+        } else if (dir == Direction.Left) {
 
-        }
-        else if(dir==Direction.Right){
+        } else if (dir == Direction.Right) {
 
-        }
-
-        else{
+        } else {
             throw new Error("Direction not valid");
         }
     }
 
-    public void increaseAttack(int attack){
+    public void increaseAttack(int attack) {
         this.damage = attack + this.damage;
     }
 
-    public Image getIdle(){
+    public Image getIdle() {
         return images.getIdle(dir.ordinal());
     }
+    public Image getDefending(){return images.getDefending();}
 }
