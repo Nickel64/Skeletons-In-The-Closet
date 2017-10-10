@@ -381,6 +381,11 @@ public class Room {
             }
         }
         Point destP = movesTo(x, y, direction);
+        if((layout[destP.y][destP.x].getEntity() instanceof PowerUp) && (entity instanceof Player) ){
+            PowerUp pUp = (PowerUp) layout[destP.y][destP.x].getEntity();
+            pUp.increase((Player)entity);
+            layout[destP.y][destP.x].setEntity(new Nothing());
+        }
         swap(p, destP);
         if(layout[destP.y][destP.x] instanceof OneWayEntryTeleport && isRoomCleared()) {
             //find teleport exit and updateRoom
@@ -388,11 +393,7 @@ public class Room {
             Room nextRoom = model.getRoom(entry.nameOfNextRoom());
             updateRoom(model, entry, nextRoom.getTeleportExit(), nextRoom);
         }
-        if(layout[destP.y][destP.x] instanceof PowerUp && entity instanceof Player){
-            PowerUp pUp = (PowerUp) layout[destP.y][destP.x];
-            pUp.increase((Player)entity);
-            layout[destP.y][destP.x].setEntity(new Nothing());
-        }
+
     }
 
     private void updateRoom(Model model, Tile entry, Tile exit, Room nextRoom) {
