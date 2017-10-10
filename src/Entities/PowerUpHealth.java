@@ -5,7 +5,7 @@ package Entities;
  */
 public class PowerUpHealth implements PowerUp{
 
-    PowerUpHealth(){
+    public PowerUpHealth(){
 
     }
     @Override
@@ -57,5 +57,8 @@ public class PowerUpHealth implements PowerUp{
     @Override
     public boolean canStepOn() {
         return true;
+    }
+    public String toString() {
+        return "`";
     }
 }
