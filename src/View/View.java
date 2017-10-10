@@ -359,6 +359,9 @@ public class View extends JComponent implements Observer{
             //g.setColor(Color.blue);
             //g.fillOval( (tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
             g.drawImage(p.getIdle(), x,y,null);
+            if(p.isDefending()){
+                g.drawImage(p.getDefending(), x,y,null);
+            }
         }
         else if(e instanceof  Wall){
             Image img = tileSet.getWall();
@@ -576,5 +579,18 @@ public class View extends JComponent implements Observer{
         interfacePanel.add(buttonPanel, BorderLayout.WEST);
         interfacePanel.add(playerStats, BorderLayout.EAST);
 
+    }
+
+    public int[] getGridCoordsAt(int mouseX, int mouseY){
+        Room r = model.getCurrentRoom();
+        for(int y = 0; y <= r.getHeight(); y++){
+            for(int x = 0; x <= r.getWidth(); x++){
+                int drawX = (x*tileSize)+startX, drawY = (y*tileSize)+startY;
+                if(drawX >= mouseX && drawX <= mouseX + tileSize && drawY >= mouseY && drawY <= mouseY + tileSize){
+                    return new int[] {x-1,y-1};
+                }
+            }
+        }
+        return new int[] {-1, -1};
     }
 }

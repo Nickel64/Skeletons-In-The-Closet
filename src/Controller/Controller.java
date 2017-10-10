@@ -1,11 +1,20 @@
 package Controller;
 
+import Behaviour.Pathfinder;
 import Entities.Entity;
+import Map.DoorTile;
+import Map.Tile;
 import Model.*;
+import Utils.GameError;
+import Utils.Resources;
 import View.*;
+import com.sun.javaws.exceptions.ErrorCodeResponseException;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
+import java.util.Queue;
+import java.util.Stack;
 
 /** * * * * * * * * * * * * *
  * Controller class
@@ -18,6 +27,8 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     private View view;
     private static final int COOLDOWN = 150;
     private long timeLastAction = -COOLDOWN;
+
+    private boolean inAutoMovement = false;
 
     public Controller(Model model, View view) {
         this.model = model;
@@ -83,16 +94,62 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        // sets movement target (for use by pathfinding algorithms
-        // refer to sokoban assignment
-        // to be implemented later (once people make up their minds about what we're even doing)
+
     }
 
     @Override
     public void mousePressed(MouseEvent e) {}
 
     @Override
-    public void mouseReleased(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {
+        if(inAutoMovement) return;
+        int x = e.getX(), y = e.getY();
+        int[] toGo = view.getGridCoordsAt(x,y);
+
+        if(toGo[0] == -1 || toGo[1] == -1) throw new Error("Cannot move outside the board");
+        System.out.println("Heading toward x:" + toGo[0] + " y:" + toGo[1]);
+
+        int[] goFrom = new int[] {model.getPlayerLocation().x, model.getPlayerLocation().y};
+        Tile[][] tileGrid = new Tile[model.getCurrentRoom().getWidth()][model.getCurrentRoom().getHeight()];
+        Queue<int[]> pathToGo = Pathfinder.findPath(goFrom, toGo, tileGrid);
+
+        //use timer to slowly step the player along each of the steps required
+        Timer timer = new Timer(500, new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                inAutoMovement = true;
+                int[] point = pathToGo.poll();
+                if(point == null){
+                    //if finished on a Door tile - take that door!
+                    System.out.println("FINISHED");
+                    Point playerLocation = model.getPlayerLocation();
+                    Tile currentTile = model.getCurrentRoom().getTileAtLocation(playerLocation.x, playerLocation.y);
+                    if(currentTile instanceof DoorTile){
+                        if(playerLocation.y+1 >= model.getCurrentRoom().getHeight()){ //bottom edge - need to move down
+                            movePlayerPathFind(Entity.Direction.Down);
+                        }
+                        else if(playerLocation.y-1 < 0){ //top edge - need to move up
+                            movePlayerPathFind(Entity.Direction.Up);
+                        }
+                        else if(playerLocation.x-1 < 0){ //left edge - need to move left
+                            movePlayerPathFind(Entity.Direction.Left);
+                        }
+                        else if(playerLocation.x+1 >= model.getCurrentRoom().getWidth()){ //right edge - need to move right
+                            movePlayerPathFind(Entity.Direction.Right);
+                        }
+                    }
+                    inAutoMovement = false;
+                    ((Timer) e.getSource()).stop();
+                    return;
+                }
+
+                int playerX = model.getPlayerLocation().x, playerY = model.getPlayerLocation().y;
+                if(point[0] < playerX) movePlayerPathFind(Entity.Direction.Left);
+                else if(point[0] > playerX) movePlayerPathFind(Entity.Direction.Right);
+                else if(point[1] > playerY) movePlayerPathFind(Entity.Direction.Down);
+                else if(point[1] < playerY) movePlayerPathFind(Entity.Direction.Up);
+            }
+        });
+        timer.start();}
 
     @Override
     public void mouseEntered(MouseEvent e) {}
@@ -126,6 +183,8 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                             model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
                             break;
                         case "Defend":
+                            model.getPlayer().toggleGuard();
+                            view.repaint();
                             break;
                         case "AOE":
                             model.checkAttackAOE(model.getPlayer());
@@ -139,12 +198,28 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     }
 
     private void movePlayer(Entity.Direction dir) {
-        if(model.getPlayer().getDir() == dir)
-            model.moveEntity(model.getPlayer(), dir);
-        else {
+        try {
+            if (model.getPlayer().getDir() == dir) {
+                model.moveEntity(model.getPlayer(), dir);
+                Resources.playAudio("footstep.wav");
+            }
+            else {
+                model.getPlayer().setDirection(dir);
+                view.repaint();
+            }
+            timeLastAction = System.currentTimeMillis();
+        } catch(GameError e) {
+            Resources.playAudio("bump.wav");
+        }
+    }
+
+    private void movePlayerPathFind(Entity.Direction dir) {
+        if(!model.getPlayer().getDir().equals(dir)){
             model.getPlayer().setDirection(dir);
             view.repaint();
         }
+        model.moveEntity(model.getPlayer(), dir);
+        view.repaint();
         timeLastAction = System.currentTimeMillis();
     }
 

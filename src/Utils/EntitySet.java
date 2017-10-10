@@ -12,6 +12,8 @@ public class EntitySet {
     private Image[] idle = new Image[4];
     private Image[][] movements;
     private Image[][] attacks = new Image[4][6];
+    Image defending;
+    Image AoE;
 
     public EntitySet(boolean player, int enemyType){
         //if the entitySet belongs to a player
@@ -25,6 +27,8 @@ public class EntitySet {
                         //attacks[n][i] = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/Player/PlayerAttack" +2+"_"+ i + ".png"));
                    // }
                 }
+                defending = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/Player/shield.png"));
+                AoE = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/Player/AoE.png"));
             }
             //otherwise, it must be an enemy
             else {
@@ -39,6 +43,8 @@ public class EntitySet {
     public Image getIdle(int direction){
         return idle[direction];
     }
+
+    public Image getDefending(){return defending;}
 
     public Image[] getMoveSequence(int direction){
         return movements[direction];

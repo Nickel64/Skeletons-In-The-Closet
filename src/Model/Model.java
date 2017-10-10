@@ -4,6 +4,7 @@ import Entities.Entity;
 import Entities.Entity.Direction;
 import Entities.Player;
 import Map.Room;
+import Utils.GameError;
 import Utils.Resources;
 
 import java.awt.*;
@@ -70,10 +71,10 @@ public class Model extends Observable {
                 String roomName = sc.next();
                 Room curRoom = new Room(roomName);
                 if(firstRoom) {
-                    if(curRoom.getPlayer() != null) throw new Error("There requires a player <+> placed in first room");
+                    if(curRoom.getPlayer() != null) throw new GameError("There requires a player <+> placed in first room");
                     firstRoom = false;
                     currentRoom = curRoom;
-                } else if(curRoom.getPlayer() != null) throw new Error("There is a player start position found outside of first room");
+                } else if(curRoom.getPlayer() != null) throw new GameError("There is a player start position found outside of first room");
                 map.put(roomName, curRoom);
                 sc = curRoom.initialise(sc);
             }
@@ -86,8 +87,8 @@ public class Model extends Observable {
      */
     public void moveEntity(Entity entity, Direction dir) {
         //check entity
-        if(!currentRoom.containsEntity(entity)) throw new Error("Cannot move a nonexistent entity");
-        if(!entity.canMove()) throw new Error("Cannot move an unmovable entity");
+        if(!currentRoom.containsEntity(entity)) throw new GameError("Cannot move a nonexistent entity");
+        if(!entity.canMove()) throw new GameError("Cannot move an unmovable entity");
         entity.setDirection(dir);
         currentRoom.moveEntity(entity, dir, this);
         setChanged();
@@ -101,7 +102,7 @@ public class Model extends Observable {
      */
     public void checkAttack(Entity entity, Direction dir) {
         //check entity
-        if(!currentRoom.containsEntity(entity)) throw new Error("Cannot initiate attack with a nonexistent entity");
+        if(!currentRoom.containsEntity(entity)) throw new GameError("Cannot initiate attack with a nonexistent entity");
         currentRoom.checkAttack(entity, dir);
         setChanged();
         notifyObservers();
@@ -113,7 +114,7 @@ public class Model extends Observable {
      */
     public void checkAttackAOE(Entity entity) {
         //check entity
-        if(!currentRoom.containsEntity(entity)) throw new Error("Cannot initiate attack with a nonexistent entity");
+        if(!currentRoom.containsEntity(entity)) throw new GameError("Cannot initiate attack with a nonexistent entity");
         currentRoom.checkAttackAOE(entity);
         setChanged();
         notifyObservers();
@@ -135,7 +136,7 @@ public class Model extends Observable {
      * @return Room correlated with name
      */
     public Room getRoom(String name) {
-        if(!map.containsKey(name)) throw new Error("No such element with key "+name+" found");
+        if(!map.containsKey(name)) throw new GameError("No such element with key "+name+" found");
         return map.get(name);
     }
 

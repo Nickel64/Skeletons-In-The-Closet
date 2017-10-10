@@ -29,20 +29,46 @@ public class Pathfinder {
      *          should be at that point.
      *      NOTE: Also includes starting and ending positions
      */
-    public static Stack<int[]> findPath(int[] pointA, int[] pointB, Tile[][] map) {
+    public static Queue<int[]> findPath(int[] pointA, int[] pointB, Tile[][] map) {
         //INPUT CHECKING
-        if(pointA.equals(pointB)) return new Stack<>(); //Already at ending position
-        if(pointA[0] < 0 || pointA[1] < 0 || pointB[0] < 0 || pointB[1] < 0) return new Stack<>(); //Position outside the left of board (negative)
+        if(pointA.equals(pointB)) return new LinkedList<>(); //Already at ending position
+        if(pointA[0] < 0 || pointA[1] < 0 || pointB[0] < 0 || pointB[1] < 0) return new LinkedList<>(); //Position outside the left of board (negative)
 
         int sizeX = map.length - 1, sizeY = map[0].length - 1;
-        if(pointA[0] > sizeX || pointA[1] > sizeY || pointB[0] > sizeX || pointB[1] > sizeY) return new Stack<>(); //position outside right of board
+        if(pointA[0] > sizeX || pointA[1] > sizeY || pointB[0] > sizeX || pointB[1] > sizeY) return new LinkedList<>(); //position outside right of board
 
         //OUTPUT STACK
-        Stack<int[]> out = new Stack<>();
-        out.push(pointA);
+        //Stack<int[]> out = new Stack<>();
+        Queue<int[]> out = new LinkedList<>();
+        out.add(pointA);
 
         //FOR EMPTY TILE MAPS:
         if(emptyMap(map)) {
+            int[] current = new int[]{pointA[0], pointA[1]}; //used to store position as moved
+            //System.out.println(current[0] + " " + current[1]);
+
+            while (current[0] != pointB[0]) {
+                if (pointA[0] - pointB[0] < 0) {
+                    current[0] += 1;
+                } else {
+                    current[0] -= 1;
+                }
+                System.out.println(current[0] + " " + current[1]);
+                out.add(new int[]{current[0], current[1]});
+            }
+
+            while (current[1] != pointB[1]) {
+                if (pointA[1] - pointB[1] < 0) {
+                    current[1] += 1;
+                } else {
+                    current[1] -= 1;
+                }
+                System.out.println(current[0] + " " + current[1]);
+                out.add(new int[]{current[0], current[1]});
+            }
+        }
+        //FOR NON-EMPTY TILE MAPS (gonna have to avoid some stuff):
+        else{
             int[] current = new int[]{pointA[0], pointA[1]}; //used to store position as moved
             System.out.println(current[0] + " " + current[1]);
 
@@ -53,7 +79,7 @@ public class Pathfinder {
                     current[0] -= 1;
                 }
                 System.out.println(current[0] + " " + current[1]);
-                out.push(new int[]{current[0], current[1]});
+                out.add(new int[]{current[0], current[1]});
             }
 
             while (current[1] != pointB[1]) {
@@ -63,12 +89,8 @@ public class Pathfinder {
                     current[1] -= 1;
                 }
                 System.out.println(current[0] + " " + current[1]);
-                out.push(new int[]{current[0], current[1]});
+                out.add(new int[]{current[0], current[1]});
             }
-        }
-        //FOR NON-EMPTY TILE MAPS (gonna have to avoid some stuff):
-        else{
-            //do other stuff
         }
 
         return out;
