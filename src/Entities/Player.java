@@ -141,7 +141,9 @@ public class Player extends Observable implements Entity {
 
         }
     }
-
+    public int getLevel(){
+        return level;
+    }
     /**
      * attack method for when an entity is in the target range, so damage is dealt
      *

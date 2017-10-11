@@ -8,7 +8,10 @@ public class PowerUpAttack implements PowerUp {
     public PowerUpAttack (){
 
     }
-
+    @Override
+    public int getLevel() {
+        return 0;
+    }
     @Override
     public boolean inAggroRange() {
         return false;
