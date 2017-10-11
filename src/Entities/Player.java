@@ -9,8 +9,8 @@ import java.util.Observable;
  */
 public class Player extends Observable implements Entity {
     private Direction dir = Direction.Right;
-    private int health = 10; // how much health the unit has
-    private int maxHealth = 10;
+    private int health = 100; // how much health the unit has
+    private int maxHealth = 100;
     private int maxSpecial = 100;
     private int special = 100;
     private int exp = 0;
@@ -88,10 +88,12 @@ public class Player extends Observable implements Entity {
 
 
     public void incExp(int xp) {
+        setChanged();
         this.exp += xp;
         if (this.exp >= maxExp) {
             levelUp();
         }
+        notifyObservers();
     }
 
     public String getImageName() {
@@ -138,7 +140,9 @@ public class Player extends Observable implements Entity {
 
         }
     }
-
+    public int getLevel(){
+        return level;
+    }
     /**
      * attack method for when an entity is in the target range, so damage is dealt
      *
@@ -147,14 +151,19 @@ public class Player extends Observable implements Entity {
     public void attack(Entity entity) {
         entity.damaged(this.damage);
 //        attack();
+        if(entity.isDead()){
+            incExp(10);
+        }
     }
 
     public void damaged(int damageAmount) {
+        setChanged();
         if (defending) {
             int beforeSpecial = special;
             this.special -= damageAmount;
             damageAmount = damageAmount - beforeSpecial;
-            if (damageAmount > 0) {
+            if (damageAmount > 0) { //defence broken
+                defending = false;
                 this.health = this.health - damageAmount;
                 System.out.println("Play a guard breaking sound here");
             }
@@ -162,6 +171,7 @@ public class Player extends Observable implements Entity {
             this.health = this.health - damageAmount;
             System.out.println(this.health);
         }
+        notifyObservers();
     }
 
     public boolean inAggroRange() {
@@ -189,6 +199,7 @@ public class Player extends Observable implements Entity {
         this.dir = dir;
     }
 
+    public void attackAOE() {
     @Override
     public int getAttack() {
         return damage;
@@ -196,15 +207,7 @@ public class Player extends Observable implements Entity {
 
     public void attackAOE(Entity[] entities) {
         setChanged();
-        if (this.special - 10 > 0) {
-            for (Entity e : entities) {
-                attack(e);
-            }
-            this.special -= 10;
-            notifyObservers();
-            return;
-        }
-        clearChanged();
+        notifyObservers();
     }
 
     //change the sprite of the player, can't move the player as it doesn't know its tile

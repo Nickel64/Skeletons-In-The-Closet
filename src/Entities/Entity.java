@@ -10,6 +10,7 @@ public interface Entity {
      void attack(Entity entity);
      void damaged(int damage);
      void setDirection(Direction dir);
+     int getLevel();
 
     /**
      * current entity attack

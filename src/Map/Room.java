@@ -119,7 +119,9 @@ public class Room {
                     layout[i][j] = new FloorTile(curEntity);
                 }
                 if(curEntity == null) throw new Error("Entity is invalid "+curString);
+                if(Resources.DEBUG) System.out.print(curString);
             }
+            if(Resources.DEBUG) System.out.println();
         }
         setRoomClearedTo(enemies.size() == 0);
         return sc;
@@ -167,6 +169,15 @@ public class Room {
             }
         }
         return null;
+    }
+
+    /**
+     * Starts the enemies ping
+     */
+    public void startEnemies() {
+        for(Entity e: enemies) {
+            e.start();
+        }
     }
 
     /**
@@ -329,6 +340,7 @@ public class Room {
             Room nextRoom = model.getRoom(door.nameOfNextRoom());       //finds next room to hold player
             DoorTile endDoor = nextRoom.getDoorNamed(this.name);
             Point destDoorPoint = nextRoom.getTilePoint(endDoor);
+            System.out.println(direction.name()+" at x: "+x+" and y: "+y);
             switch (direction) {
                 case Down:
                     if(y+1 >= this.height) {    //checks that direction is going out of room
@@ -457,13 +469,15 @@ public class Room {
      * @param entity that is initialising attack
      */
     public void checkAttackAOE(Entity entity) {
-        Point attacker = findPoint(entity);
-        int x = attacker.x;
-        int y = attacker.y;
-        boolean vertUp = false;
-        boolean vertDown = false;
-        boolean horiLeft = false;
-        boolean horiRight = false;
+        if (getPlayer().getSpecial() - 10 > 0) {
+            getPlayer().setSpecial(getPlayer().getSpecial()-10);
+            Point attacker = findPoint(entity);
+            int x = attacker.x;
+            int y = attacker.y;
+            boolean vertUp = false;
+            boolean vertDown = false;
+            boolean horiLeft = false;
+            boolean horiRight = false;
 
         if(y > 0) {             //attack up is viable
             attack(attacker, new Point(x, y-1));        //attacks up
@@ -514,12 +528,47 @@ public class Room {
         return str;
     }
 
-    /**
-     * Starts the enemies ping
-     */
-    public void ping() {
+    public void ping(Model m) {
         for(Entity entity : getEnemies()) {
-                entity.ping();
+            String message = "atk";
+            Point p = findPoint(entity);
+            if(p.x > 0 && getEntityAt(p.x-1,p.y) instanceof Player)
+                checkAttack(getEntityAt(p.x, p.y), Direction.Left);
+            else if(p.x+1 < getWidth() && getEntityAt(p.x+1,p.y) instanceof Player)
+                checkAttack(getEntityAt(p.x,p.y),Direction.Right);
+            else if(p.y > 0 && getEntityAt(p.x,p.y-1) instanceof Player)
+                checkAttack(getEntityAt(p.x, p.y), Direction.Up);
+            else if(p.y+1 < getHeight() && getEntityAt(p.x,p.y+1) instanceof Player)
+                checkAttack(getEntityAt(p.x,p.y), Direction.Down);
+            else {
+                message ="";
+                Queue<int[]> path = Pathfinder.findPath(new int[]{p.x, p.y},
+                        new int[]{getPlayerLocation().x, getPlayerLocation().y},
+                        this);
+                if (path == null || path.isEmpty())
+                    return;
+                if (path.peek()[0] == p.x && path.peek()[1] == p.y) {
+                    path.poll();
+                }
+                int[] nextPos = path.poll();
+
+                Direction dir = Direction.Left;
+                if (p.x > nextPos[0])
+                    dir = Direction.Left;
+                else if (p.x < nextPos[0])
+                    dir = Direction.Right;
+                else if (p.y > nextPos[1])
+                    dir = Direction.Up;
+                else if (p.y < nextPos[1])
+                    dir = Direction.Down;
+                moveEntity(entity, dir, m);
+            }
+
+            System.out.println(message);
         }
+
+        //for(Entity entity : getEnemies()) {
+          //  entity.ping();
+        //}
     }
 }

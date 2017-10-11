@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Queue;
+import java.util.Stack;
 
 /** * * * * * * * * * * * * *
  * Controller class
@@ -31,10 +32,16 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     public Controller(Model model, View view) {
         this.model = model;
         this.view = view;
+        startLoop();
+    }
 
-        new Timer(150, (e) -> {
-            this.model.getCurrentRoom().ping();
-        });
+    private void startLoop() {
+        new Timer(300, (e) -> {
+            if(!view.pauseMenuVisible) {
+                this.model.getCurrentRoom().ping(model);
+                view.repaint();
+            }
+        }).start();
     }
 
     public void setModel(Model m) {this.model = m;}
@@ -113,13 +120,14 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
         int[] goFrom = new int[] {model.getPlayerLocation().x, model.getPlayerLocation().y};
         Tile[][] tileGrid = new Tile[model.getCurrentRoom().getWidth()][model.getCurrentRoom().getHeight()];
-        Queue<int[]> pathToGo = Pathfinder.findPath(goFrom, toGo, tileGrid);
+        Queue<int[]> pathToGo = Pathfinder.findPath(goFrom, toGo, model.getCurrentRoom());
 
         //use timer to slowly step the player along each of the steps required
         Timer timer = new Timer(500, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 inAutoMovement = true;
                 int[] point = pathToGo.poll();
+
                 if(point == null){
                     //if finished on a Door tile - take that door!
                     System.out.println("FINISHED");
@@ -143,6 +151,8 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                     ((Timer) e.getSource()).stop();
                     return;
                 }
+
+                System.out.println("x:" + point[0] + " y:" + point[1]);
 
                 int playerX = model.getPlayerLocation().x, playerY = model.getPlayerLocation().y;
                 if(point[0] < playerX) movePlayerPathFind(Entity.Direction.Left);
@@ -190,6 +200,9 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                             break;
                         case "AOE":
                             model.checkAttackAOE(model.getPlayer());
+                            if(Resources.DEBUG){
+                                System.out.println(model.getPlayer().getSpecial());
+                            }
                             break;
                         default:
                             return;
@@ -216,13 +229,8 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     }
 
     private void movePlayerPathFind(Entity.Direction dir) {
-        if(!model.getPlayer().getDir().equals(dir)){
-            model.getPlayer().setDirection(dir);
-            view.repaint();
-        }
-        model.moveEntity(model.getPlayer(), dir);
-        view.repaint();
-        timeLastAction = System.currentTimeMillis();
+        model.getPlayer().setDirection(dir);
+        movePlayer(dir);
     }
 
     /* END OF MOUSE LISTENER METHODS */

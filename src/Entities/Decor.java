@@ -1,17 +1,9 @@
 package Entities;
 
 /**
- * Created by Shlomoburg on 8/10/2017.
+ * Created by nicks on 12/10/2017.
  */
-public class PowerUpAttack implements PowerUp {
-
-    public PowerUpAttack (){
-
-    }
-    @Override
-    public int getLevel() {
-        return 0;
-    }
+public class Decor implements Entity {
     @Override
     public boolean inAggroRange() {
         return false;
@@ -38,18 +30,8 @@ public class PowerUpAttack implements PowerUp {
     }
 
     @Override
-    public int getAttack() {
-        return -1;
-    }
-
-    @Override
-    public int getHealth() {
-        return -1;
-    }
-
-    @Override
-    public int getMaxHealth() {
-        return -1;
+    public int getLevel() {
+        return 0;
     }
 
     @Override
@@ -58,8 +40,13 @@ public class PowerUpAttack implements PowerUp {
     }
 
     @Override
+    public void start() {
+
+    }
+
+    @Override
     public void ping() {
-        //do nothing
+
     }
 
     @Override
@@ -69,15 +56,6 @@ public class PowerUpAttack implements PowerUp {
 
     @Override
     public boolean canStepOn() {
-        return true;
+        return false;
     }
-
-    public String toString() {
-        return "~";
-    }
-
-    public void increase (Player p){
-        p.increaseAttack(1);
-    }
-
 }

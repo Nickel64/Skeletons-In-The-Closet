@@ -19,8 +19,9 @@ public class TileSet {
     private Image wallBottom;
     private Image wallLeft;
     private Image wallRight;
-    //private Image door;
-    private Image decor;
+    private Image OneWayEntry;
+    private Image OneWayExit;
+    private Image[] decor = new Image[5];
 
 
     public TileSet(int level){
@@ -31,8 +32,9 @@ public class TileSet {
             wallBottom = ImageIO.read(Resources.class.getResource("ImgResources/Walls/" + "WallBot" + level + ".png"));
             wallLeft = ImageIO.read(Resources.class.getResource("ImgResources/Walls/" + "WallLeft" + level + ".png"));
             wallRight = ImageIO.read(Resources.class.getResource("ImgResources/Walls/" + "WallRight" + level + ".png"));
-            //door = read(Resources.class.getResource("ImgResources/Doors/" + "door" + level + ".png"));
-            //TODO decor = ImageIO.read(Resources.class.getResource("ImgResources/DecorObjects/" + "decor" + level + ".png"));
+            OneWayEntry = read(Resources.class.getResource("ImgResources/Doors/" + "OneWayEntry.png"));
+            OneWayExit = read(Resources.class.getResource("ImgResources/Doors/" + "OneWayExit.png"));
+            //TODO decor = ImageIO.read(Resources.class.getResource("ImgResources/DecorObjects/" + "decor_" + level + "_"+n + ".png"));
         }
         catch(IOException e){
             e.printStackTrace();
@@ -45,12 +47,15 @@ public class TileSet {
     public Image getWall(){
         return wall;
     }
-    //public Image getDoor(){
-    //return door;
-    //}
-    public Image getDecor(){
-        return decor;
+    public Image getEntry(){
+        return OneWayEntry;
     }
+    public Image getExit(){
+        return OneWayExit;
+    }
+    //public Image getDecor(){
+        //return decor;
+    //}
     public Image getWallTop(){return wallTop;}
     public Image getWallBottom(){return wallBottom;}
     public Image getWallLeft() {return wallLeft;}

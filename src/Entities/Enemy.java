@@ -1,5 +1,7 @@
 package Entities;
 
+import Behaviour.Pathfinder;
+
 import java.awt.*;
 import java.util.Observable;
 import java.util.StringJoiner;
@@ -16,6 +18,7 @@ public class Enemy extends Observable implements Entity {
     private int damage; // how much damage the unit deals
     private int speed; // how fast the unit can move
     private boolean inRange;
+    private int level;
 
     public int getHealth(){return health;}
     public int getMaxHealth(){return maxHealth;}
@@ -24,14 +27,17 @@ public class Enemy extends Observable implements Entity {
     public Image getSprite(){return sprite;}
 
     //name will determine the sprite or something
-    public Enemy(int name, int health, int damage, int speed){
-        this.name = name;
+    public Enemy(int level, int health, int damage, int speed){
+        this.level = level;
         this.health = health;
         this.maxHealth = health;
         this.damage = damage;
         this.speed = speed;
     }
 
+    public int getLevel(){
+        return level;
+    }
     public String getImageName(){
         return null;
     }
@@ -39,12 +45,6 @@ public class Enemy extends Observable implements Entity {
     public void setDirection(Direction dir){
         this.dir = dir;
     }
-
-    @Override
-    public int getAttack() {
-        return damage;
-    }
-
     /**
      * Calculates whether the enemy is in range to attack the player
      * @return inRange
@@ -60,6 +60,9 @@ public class Enemy extends Observable implements Entity {
     }
     public void attack(Entity entity){
         entity.damaged(this.damage);
+        if(isDead()){
+
+        }
     }
     public void move(){
 

@@ -82,7 +82,7 @@ public class View extends JComponent implements Observer{
         frame.setFocusable(true);
 
         //setting up the other panels
-        playerStats = new PlayerPanel(frame);
+        playerStats = new PlayerPanel(frame, model.getPlayer());
         model.getPlayer().addObserver(playerStats);
 
         //build the interface panel
@@ -335,6 +335,21 @@ public class View extends JComponent implements Observer{
             img = tileSet.getFloor();
             if(img == null)
                 return;
+            g.drawImage(img, x,y,null);
+        }
+
+        if(tile instanceof OneWayEntryTeleport){
+            if(model.getCurrentRoom().isRoomCleared()){
+                img = tileSet.getExit();
+            }
+            else{
+                img = tileSet.getEntry();
+            }
+            g.drawImage(img, x,y,null);
+        }
+
+        if(tile instanceof OneWayExitTeleport){
+            img = tileSet.getEntry();
             g.drawImage(img, x,y,null);
         }
 

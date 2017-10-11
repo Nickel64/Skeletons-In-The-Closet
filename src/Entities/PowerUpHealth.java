@@ -13,7 +13,10 @@ public class PowerUpHealth implements PowerUp{
         p.setMaxHealth(p.getMaxHealth()+2);
         p.setHealth(p.getHealth()+2);
     }
-
+    @Override
+    public int getLevel() {
+        return 0;
+    }
     @Override
     public boolean inAggroRange() {
         return false;

@@ -27,6 +27,10 @@ public class Wall implements Entity {
         return -1;
     }
 
+    @Override
+    public int getLevel() {
+        return 0;
+    }
     public Wall(int level){
         this.level = level;
     }
