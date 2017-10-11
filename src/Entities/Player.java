@@ -89,10 +89,12 @@ public class Player extends Observable implements Entity {
 
 
     public void incExp(int xp) {
+        setChanged();
         this.exp += xp;
         if (this.exp >= maxExp) {
             levelUp();
         }
+        notifyObservers();
     }
 
     public String getImageName() {
@@ -111,9 +113,7 @@ public class Player extends Observable implements Entity {
         level++;
         damage = damage + 2;
     }
-    public int getLevel(){
-        return level;
-    }
+
     /**
      * attack method for changing the players sprite to attack
      */
@@ -151,7 +151,7 @@ public class Player extends Observable implements Entity {
         entity.damaged(this.damage);
 //        attack();
         if(entity.isDead()){
-            incExp(entity.getLevel()*10);
+            incExp(10);
         }
     }
 
@@ -198,17 +198,9 @@ public class Player extends Observable implements Entity {
         this.dir = dir;
     }
 
-    public void attackAOE(Entity[] entities) {
+    public void attackAOE() {
         setChanged();
-        if (this.special - 10 > 0) {
-            for (Entity e : entities) {
-                attack(e);
-            }
-            this.special -= 10;
-            notifyObservers();
-            return;
-        }
-        clearChanged();
+        notifyObservers();
     }
 
     //change the sprite of the player, can't move the player as it doesn't know its tile
