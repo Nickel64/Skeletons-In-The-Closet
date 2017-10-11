@@ -470,35 +470,39 @@ public class Room {
      * @param entity that is initialising attack
      */
     public void checkAttackAOE(Entity entity) {
-        Point attacker = findPoint(entity);
-        int x = attacker.x;
-        int y = attacker.y;
-        boolean vertUp = false;
-        boolean vertDown = false;
-        boolean horiLeft = false;
-        boolean horiRight = false;
+        if (getPlayer().getSpecial() - 10 > 0) {
+            getPlayer().setSpecial(getPlayer().getSpecial()-10);
+            Point attacker = findPoint(entity);
+            int x = attacker.x;
+            int y = attacker.y;
+            boolean vertUp = false;
+            boolean vertDown = false;
+            boolean horiLeft = false;
+            boolean horiRight = false;
 
-        if(y > 0) {             //attack up is viable
-            attack(attacker, new Point(x, y-1));        //attacks up
-            vertUp = true;
+            if (y > 0) {             //attack up is viable
+                attack(attacker, new Point(x, y - 1));        //attacks up
+                vertUp = true;
+            }
+            if (y < this.height - 1) {      //attack down is viable
+                attack(attacker, new Point(x, y + 1));        //attacks down
+                vertDown = true;
+            }
+            if (x < this.width - 1) {      //attack right is viable
+                attack(attacker, new Point(x + 1, y));        //attacks right
+                horiRight = true;
+            }
+            if (x > 0) {             //attack left is viable
+                attack(attacker, new Point(x - 1, y));      //attacks left
+                horiLeft = true;
+            }
+            //all done with left/right/up/down cases, onto diagonal
+            if (horiLeft && vertUp) attack(attacker, new Point(x - 1, y - 1));       //top left
+            if (horiLeft && vertDown) attack(attacker, new Point(x - 1, y + 1));     //bottom left
+            if (horiRight && vertUp) attack(attacker, new Point(x + 1, y - 1));      //top right
+            if (horiRight && vertDown) attack(attacker, new Point(x + 1, y + 1));    //bottom right
+            getPlayer().attackAOE();
         }
-        if(y < this.height-1) {      //attack down is viable
-            attack(attacker, new Point(x, y+1));        //attacks down
-            vertDown = true;
-        }
-        if(x < this.width-1) {      //attack right is viable
-            attack(attacker, new Point(x+1, y));        //attacks right
-            horiRight = true;
-        }
-        if(x > 0) {             //attack left is viable
-            attack(attacker, new Point(x-1, y));      //attacks left
-            horiLeft = true;
-        }
-        //all done with left/right/up/down cases, onto diagonal
-        if(horiLeft && vertUp) attack(attacker, new Point(x-1, y-1));       //top left
-        if(horiLeft && vertDown) attack(attacker, new Point(x-1, y+1));     //bottom left
-        if(horiRight && vertUp) attack(attacker, new Point(x+1, y-1));      //top right
-        if(horiRight && vertDown) attack(attacker, new Point(x+1, y+1));    //bottom right
     }
 
     /**

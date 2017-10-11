@@ -82,7 +82,7 @@ public class View extends JComponent implements Observer{
         frame.setFocusable(true);
 
         //setting up the other panels
-        playerStats = new PlayerPanel(frame);
+        playerStats = new PlayerPanel(frame, model.getPlayer());
         model.getPlayer().addObserver(playerStats);
 
         //build the interface panel

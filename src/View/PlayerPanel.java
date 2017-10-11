@@ -28,9 +28,9 @@ public class PlayerPanel extends JComponent implements Observer {
     int barHeight = 20;
     int dif = 15;
 
-    public PlayerPanel(JFrame parent) {
+    public PlayerPanel(JFrame parent, Player player) {
         this.parent = parent;
-        player = new Player(100,50);
+        this.player = player;
     }
 
     @Override

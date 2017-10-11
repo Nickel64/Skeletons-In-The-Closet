@@ -190,6 +190,9 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                             break;
                         case "AOE":
                             model.checkAttackAOE(model.getPlayer());
+                            if(Resources.DEBUG){
+                                System.out.println(model.getPlayer().getSpecial());
+                            }
                             break;
                         default:
                             return;
