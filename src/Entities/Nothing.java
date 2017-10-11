@@ -40,4 +40,8 @@ public class Nothing implements Entity {
     }
     //update view, then view calls model;
 
+    @Override
+    public int getLevel() {
+        return 0;
+    }
 }
