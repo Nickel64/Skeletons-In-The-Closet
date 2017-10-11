@@ -908,4 +908,40 @@ public class TestAll {
             fail(error.getMessage());
         }
     }
+    @Test
+    public void test_entity_1() {
+        //tests that when model moves player entity on to door the current room of the model is changed and player is
+        //at new room start position, testing that player moves normally after transport to new room and then returns
+        //back to room player originated from
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * + . . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+        Room r = m.getCurrentRoom();
+        Player player = (Player)r.getEntityAt(2, 3);
+        try {
+            assertTrue(player.getDamage()==1);
+            assertTrue(player.canMove()==true);
+            assertTrue(player.getHealth()==10&&player.getMaxHealth()==10);
+
+        } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
 }
