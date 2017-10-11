@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Queue;
+import java.util.Stack;
 
 /** * * * * * * * * * * * * *
  * Controller class
@@ -126,6 +127,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
             public void actionPerformed(ActionEvent e) {
                 inAutoMovement = true;
                 int[] point = pathToGo.poll();
+
                 if(point == null){
                     //if finished on a Door tile - take that door!
                     System.out.println("FINISHED");
@@ -149,6 +151,8 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                     ((Timer) e.getSource()).stop();
                     return;
                 }
+
+                System.out.println("x:" + point[0] + " y:" + point[1]);
 
                 int playerX = model.getPlayerLocation().x, playerY = model.getPlayerLocation().y;
                 if(point[0] < playerX) movePlayerPathFind(Entity.Direction.Left);
