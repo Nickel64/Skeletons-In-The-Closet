@@ -33,7 +33,8 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         this.view = view;
 
         new Timer(150, (e) -> {
-            this.model.getCurrentRoom().ping();
+            if(!view.pauseMenuVisible)
+                this.model.getCurrentRoom().ping();
         });
     }
 
@@ -220,9 +221,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
     private void movePlayerPathFind(Entity.Direction dir) {
         model.getPlayer().setDirection(dir);
-        model.moveEntity(model.getPlayer(), dir);
-        view.repaint();
-        timeLastAction = System.currentTimeMillis();
+        movePlayer(dir);
     }
 
     /* END OF MOUSE LISTENER METHODS */

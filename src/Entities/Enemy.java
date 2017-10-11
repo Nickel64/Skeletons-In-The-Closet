@@ -1,5 +1,7 @@
 package Entities;
 
+import Behaviour.Pathfinder;
+
 import java.awt.*;
 import java.util.Observable;
 import java.util.StringJoiner;
@@ -81,7 +83,28 @@ public class Enemy extends Observable implements Entity {
 
     @Override
     public void ping() {
-
+        //TODO: ping somehow
+        //TODO: change depending on strategy (ping method should probably be in strategy)
+        //find path towards player? (just use first step?)
+        //attack player if adjacent
+        /*
+        if(not adjacent to player) {
+            int[] nextPos = Pathfinder.findPath(this.pos, player.pos, currentRoom).poll();
+            Direction dir;
+            if(this.x > nextPos[0])
+                dir = left;
+            else if(this.x < nextPos[0])
+                dir = right;
+            else if(this.y > nextPos[1])
+                dir = up;
+            else if(this.y < nextPos[1])
+                dir = down;
+            model.moveEntity(this, dir);
+        }
+        else {
+            attack player
+        }
+        */
     }
 
     public boolean canMove() {
