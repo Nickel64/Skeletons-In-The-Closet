@@ -13,6 +13,21 @@ public class Nothing implements Entity {
 
     }
 
+    @Override
+    public int getAttack() {
+        return -1;
+    }
+
+    @Override
+    public int getHealth() {
+        return -1;
+    }
+
+    @Override
+    public int getMaxHealth() {
+        return -1;
+    }
+
     public void attack(Entity entity){}
 
     public boolean canMove() {
@@ -23,12 +38,9 @@ public class Nothing implements Entity {
         return true;
     }
 
-    public void start() {
-    }
-
     @Override
     public void ping() {
-
+        //do nothing
     }
 
     public String getImageName(){

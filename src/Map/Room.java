@@ -381,9 +381,11 @@ public class Room {
             }
         }
         Point destP = movesTo(x, y, direction);
-        if((layout[destP.y][destP.x].getEntity() instanceof PowerUp) && (entity instanceof Player) ){
-            PowerUp pUp = (PowerUp) layout[destP.y][destP.x].getEntity();
-            pUp.increase((Player)entity);
+        if(layout[destP.y][destP.x].getEntity() instanceof PowerUp ){
+            if(entity instanceof Player) {
+                PowerUp pUp = (PowerUp) layout[destP.y][destP.x].getEntity();
+                pUp.increase((Player)entity);
+            }
             layout[destP.y][destP.x].setEntity(new Nothing());
         }
         swap(p, destP);
@@ -457,11 +459,8 @@ public class Room {
      * @param direction that entity is attacking
      */
     public void checkAttack(Entity entity, Direction direction) {
-        System.out.println("start of attack check in direction: "+direction.name());
         Point p = findPoint(entity);
-        System.out.println("entity attacking is at x: "+p.x+" and y:"+p.y);
         Point destP = movesTo(p.x, p.y, direction);
-        System.out.println("attacking to x: "+destP.x+" and y: "+destP.y);
         attack(p, destP);
     }
 
@@ -480,29 +479,27 @@ public class Room {
             boolean horiLeft = false;
             boolean horiRight = false;
 
-            if (y > 0) {             //attack up is viable
-                attack(attacker, new Point(x, y - 1));        //attacks up
-                vertUp = true;
-            }
-            if (y < this.height - 1) {      //attack down is viable
-                attack(attacker, new Point(x, y + 1));        //attacks down
-                vertDown = true;
-            }
-            if (x < this.width - 1) {      //attack right is viable
-                attack(attacker, new Point(x + 1, y));        //attacks right
-                horiRight = true;
-            }
-            if (x > 0) {             //attack left is viable
-                attack(attacker, new Point(x - 1, y));      //attacks left
-                horiLeft = true;
-            }
-            //all done with left/right/up/down cases, onto diagonal
-            if (horiLeft && vertUp) attack(attacker, new Point(x - 1, y - 1));       //top left
-            if (horiLeft && vertDown) attack(attacker, new Point(x - 1, y + 1));     //bottom left
-            if (horiRight && vertUp) attack(attacker, new Point(x + 1, y - 1));      //top right
-            if (horiRight && vertDown) attack(attacker, new Point(x + 1, y + 1));    //bottom right
-            getPlayer().attackAOE();
+        if(y > 0) {             //attack up is viable
+            attack(attacker, new Point(x, y-1));        //attacks up
+            vertUp = true;
         }
+        if(y < this.height-1) {      //attack down is viable
+            attack(attacker, new Point(x, y+1));        //attacks down
+            vertDown = true;
+        }
+        if(x < this.width-1) {      //attack right is viable
+            attack(attacker, new Point(x+1, y));        //attacks right
+            horiRight = true;
+        }
+        if(x > 0) {             //attack left is viable
+            attack(attacker, new Point(x-1, y));      //attacks left
+            horiLeft = true;
+        }
+        //all done with left/right/up/down cases, onto diagonal
+        if(horiLeft && vertUp) attack(attacker, new Point(x-1, y-1));       //top left
+        if(horiLeft && vertDown) attack(attacker, new Point(x-1, y+1));     //bottom left
+        if(horiRight && vertUp) attack(attacker, new Point(x+1, y-1));      //top right
+        if(horiRight && vertDown) attack(attacker, new Point(x+1, y+1));    //bottom right
     }
 
     /**
@@ -524,16 +521,54 @@ public class Room {
         String str = name+" "+level + "\n"+width+" "+height;
         for (Tile[] aLayout : layout) {
             str += "\n";
-            for (Tile anALayout : aLayout) {
-                str += anALayout.toString()+" ";
+            for (Tile tile : aLayout) {
+                str += tile.toString()+" ";
             }
         }
         return str;
     }
 
-    public void ping() {
+    public void ping(Model m) {
         for(Entity entity : getEnemies()) {
-            entity.ping();
+            String message = "atk";
+            Point p = findPoint(entity);
+            if(p.x > 0 && getEntityAt(p.x-1,p.y) instanceof Player)
+                checkAttack(getEntityAt(p.x, p.y), Direction.Left);
+            else if(p.x+1 < getWidth() && getEntityAt(p.x+1,p.y) instanceof Player)
+                checkAttack(getEntityAt(p.x,p.y),Direction.Right);
+            else if(p.y > 0 && getEntityAt(p.x,p.y-1) instanceof Player)
+                checkAttack(getEntityAt(p.x, p.y), Direction.Up);
+            else if(p.y+1 < getHeight() && getEntityAt(p.x,p.y+1) instanceof Player)
+                checkAttack(getEntityAt(p.x,p.y), Direction.Down);
+            else {
+                message ="";
+                Queue<int[]> path = Pathfinder.findPath(new int[]{p.x, p.y},
+                        new int[]{getPlayerLocation().x, getPlayerLocation().y},
+                        this);
+                if (path == null || path.isEmpty())
+                    return;
+                if (path.peek()[0] == p.x && path.peek()[1] == p.y) {
+                    path.poll();
+                }
+                int[] nextPos = path.poll();
+
+                Direction dir = Direction.Left;
+                if (p.x > nextPos[0])
+                    dir = Direction.Left;
+                else if (p.x < nextPos[0])
+                    dir = Direction.Right;
+                else if (p.y > nextPos[1])
+                    dir = Direction.Up;
+                else if (p.y < nextPos[1])
+                    dir = Direction.Down;
+                moveEntity(entity, dir, m);
+            }
+
+            System.out.println(message);
         }
+
+        //for(Entity entity : getEnemies()) {
+          //  entity.ping();
+        //}
     }
 }

@@ -347,6 +347,7 @@ public class View extends JComponent implements Observer{
             }
             g.drawImage(img, x,y,null);
         }
+
         if(tile instanceof OneWayExitTeleport){
             img = tileSet.getEntry();
             g.drawImage(img, x,y,null);

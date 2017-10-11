@@ -11,6 +11,22 @@ public class Wall implements Entity {
     public void setDirection(Direction dir) {
 
     }
+
+    @Override
+    public int getAttack() {
+        return -1;
+    }
+
+    @Override
+    public int getHealth() {
+        return -1;
+    }
+
+    @Override
+    public int getMaxHealth() {
+        return -1;
+    }
+
     @Override
     public int getLevel() {
         return 0;
@@ -30,8 +46,6 @@ public class Wall implements Entity {
 
     @Override
     public void damaged(int damage) {/*throw new Error();*/}
-
-    public void start() {}
 
     @Override
     public void ping() {

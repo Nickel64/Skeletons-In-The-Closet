@@ -392,17 +392,17 @@ LvlFiveBoss 5
 . . . . . . -HotConnectionHubWorld . . . . . .
 
 
-LvlSixOne 1
+LvlSixOne 6
 8 7
 . . . LvlSixTwoB . . . .
-. . . . . . . .
+. * * . . * * .
 . . . . . . . .
 . . . . . . . LvlSixTwoA
 . . . . . . . .
 . . . . . . . .
 . . . HotConnectionHubWorld . . . .
 
-LvlSixTwoA 1
+LvlSixTwoA 6
 8 7
 . . . . . . . .
 . . . . . . . .
@@ -412,7 +412,7 @@ LvlSixOne . . . . . . .
 . . . . . . . .
 . . . . . . . .
 
-LvlSixTwoB 1
+LvlSixTwoB 6
 9 10
 . . . . LvlSixThree . . . .
 . . . . . . . . .
@@ -425,7 +425,7 @@ LvlSixTwoB 1
 . . . . . . . . .
 . . . . LvlSixOne . . . .
 
-LvlSixThree 1
+LvlSixThree 6
 9 9
 . . . . . . . . .
 . . . . -HotConnectionHubWorld . . . .

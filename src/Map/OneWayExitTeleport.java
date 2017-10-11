@@ -34,4 +34,8 @@ public class OneWayExitTeleport implements Tile {
     public void setEntity(Entity entity) {
         this.entity = entity;
     }
+
+    public String toString() {
+        return "+";
+    }
 }
