@@ -34,7 +34,7 @@ public class TileSet {
             wallRight = ImageIO.read(Resources.class.getResource("ImgResources/Walls/" + "WallRight" + level + ".png"));
             OneWayEntry = read(Resources.class.getResource("ImgResources/Doors/" + "OneWayEntry.png"));
             OneWayExit = read(Resources.class.getResource("ImgResources/Doors/" + "OneWayExit.png"));
-            //TODO decor = ImageIO.read(Resources.class.getResource("ImgResources/DecorObjects/" + "decor" + level + ".png"));
+            //TODO decor = ImageIO.read(Resources.class.getResource("ImgResources/DecorObjects/" + "decor_" + level + "_"+n + ".png"));
         }
         catch(IOException e){
             e.printStackTrace();
