@@ -16,7 +16,7 @@ public interface Entity {
      * current entity attack
      * @return current attack of entity
      */
-    int getAttack();
+    int getDamage();
 
     /**
      * current entity health

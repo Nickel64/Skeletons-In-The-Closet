@@ -1,5 +1,6 @@
 package Map;
 
+import Behaviour.Pathfinder;
 import Entities.*;
 import Entities.Entity;
 import Entities.Entity.Direction;
@@ -91,8 +92,7 @@ public class Room {
                         this.player = new Player();
                         curEntity = this.player;
                     } else if(curString.matches("[0-9]")){                 //enemy
-                        //TODO: if between 1-3 norm, 4-6 agile, 7-9 strong, 10 BOSS
-                        //TODO: CHECK IF APPROPRIATE
+                        //if between 1-3 norm, 4-6 agile, 7-9 strong, 10 BOSS
                         Integer enemyID = Integer.parseInt(curString);
                         int type = enemyID % 3 + 1;
                         int lvlbonus = level+(level/2);
@@ -169,15 +169,6 @@ public class Room {
             }
         }
         return null;
-    }
-
-    /**
-     * Starts the enemies ping
-     */
-    public void startEnemies() {
-        for(Entity e: enemies) {
-            e.start();
-        }
     }
 
     /**
@@ -470,7 +461,8 @@ public class Room {
      */
     public void checkAttackAOE(Entity entity) {
         if (getPlayer().getSpecial() - 10 > 0) {
-            getPlayer().setSpecial(getPlayer().getSpecial()-10);
+            getPlayer().setSpecial(getPlayer().getSpecial() - 10);
+        }
             Point attacker = findPoint(entity);
             int x = attacker.x;
             int y = attacker.y;
@@ -479,27 +471,27 @@ public class Room {
             boolean horiLeft = false;
             boolean horiRight = false;
 
-        if(y > 0) {             //attack up is viable
-            attack(attacker, new Point(x, y-1));        //attacks up
-            vertUp = true;
-        }
-        if(y < this.height-1) {      //attack down is viable
-            attack(attacker, new Point(x, y+1));        //attacks down
-            vertDown = true;
-        }
-        if(x < this.width-1) {      //attack right is viable
-            attack(attacker, new Point(x+1, y));        //attacks right
-            horiRight = true;
-        }
-        if(x > 0) {             //attack left is viable
-            attack(attacker, new Point(x-1, y));      //attacks left
-            horiLeft = true;
-        }
-        //all done with left/right/up/down cases, onto diagonal
-        if(horiLeft && vertUp) attack(attacker, new Point(x-1, y-1));       //top left
-        if(horiLeft && vertDown) attack(attacker, new Point(x-1, y+1));     //bottom left
-        if(horiRight && vertUp) attack(attacker, new Point(x+1, y-1));      //top right
-        if(horiRight && vertDown) attack(attacker, new Point(x+1, y+1));    //bottom right
+            if (y > 0) {             //attack up is viable
+                attack(attacker, new Point(x, y - 1));        //attacks up
+                vertUp = true;
+            }
+            if (y < this.height - 1) {      //attack down is viable
+                attack(attacker, new Point(x, y + 1));        //attacks down
+                vertDown = true;
+            }
+            if (x < this.width - 1) {      //attack right is viable
+                attack(attacker, new Point(x + 1, y));        //attacks right
+                horiRight = true;
+            }
+            if (x > 0) {             //attack left is viable
+                attack(attacker, new Point(x - 1, y));      //attacks left
+                horiLeft = true;
+            }
+            //all done with left/right/up/down cases, onto diagonal
+            if (horiLeft && vertUp) attack(attacker, new Point(x - 1, y - 1));       //top left
+            if (horiLeft && vertDown) attack(attacker, new Point(x - 1, y + 1));     //bottom left
+            if (horiRight && vertUp) attack(attacker, new Point(x + 1, y - 1));      //top right
+            if (horiRight && vertDown) attack(attacker, new Point(x + 1, y + 1));    //bottom right
     }
 
     /**

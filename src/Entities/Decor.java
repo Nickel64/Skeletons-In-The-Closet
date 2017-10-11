@@ -35,13 +35,23 @@ public class Decor implements Entity {
     }
 
     @Override
-    public String getImageName() {
-        return null;
+    public int getDamage() {
+        return -1;
     }
 
     @Override
-    public void start() {
+    public int getHealth() {
+        return -1;
+    }
 
+    @Override
+    public int getMaxHealth() {
+        return -1;
+    }
+
+    @Override
+    public String getImageName() {
+        return null;
     }
 
     @Override

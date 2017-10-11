@@ -1110,10 +1110,10 @@ public class TestAll {
         Room r = m.getCurrentRoom();
         Entity enemy = r.getEntityAt(3, 1);
         try {
-            int damage = enemy.getAttack();
+            int damage = enemy.getDamage();
             m.moveEntity(enemy, Entity.Direction.Up);
             assertEquals(enemy, r.getEntityAt(3, 0));
-            assertEquals(damage, enemy.getAttack());
+            assertEquals(damage, enemy.getDamage());
         } catch(GameError error) {
             error.printStackTrace();
             fail(error.getMessage());
@@ -1178,10 +1178,10 @@ public class TestAll {
         Room r = m.getCurrentRoom();
         Entity player = r.getEntityAt(3, 1);
         try {
-            int startAttack = player.getAttack();
+            int startAttack = player.getDamage();
             m.moveEntity(player, Entity.Direction.Up);
             assertEquals(player, r.getEntityAt(3, 0));
-            assertEquals(startAttack+1, player.getAttack());
+            assertEquals(startAttack+1, player.getDamage());
         } catch(GameError error) {
             error.printStackTrace();
             fail(error.getMessage());
@@ -1270,9 +1270,7 @@ public class TestAll {
     }
     @Test
     public void test_entity_1() {
-        //tests that when model moves player entity on to door the current room of the model is changed and player is
-        //at new room start position, testing that player moves normally after transport to new room and then returns
-        //back to room player originated from
+        //Testing that player entity is initialised properly
         Model m = new Model();
         String simpleMap =
                 "A 1\n" +
@@ -1297,7 +1295,6 @@ public class TestAll {
             assertTrue(player.getDamage()==1);
             assertTrue(player.canMove()==true);
             assertTrue(player.getHealth()==10&&player.getMaxHealth()==10);
-
 
         } catch (Error error) {
             error.printStackTrace();

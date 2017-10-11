@@ -200,12 +200,6 @@ public class Player extends Observable implements Entity {
     }
 
     public void attackAOE() {
-    @Override
-    public int getAttack() {
-        return damage;
-    }
-
-    public void attackAOE(Entity[] entities) {
         setChanged();
         notifyObservers();
     }

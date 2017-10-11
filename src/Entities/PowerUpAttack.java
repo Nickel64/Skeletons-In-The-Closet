@@ -12,6 +12,12 @@ public class PowerUpAttack implements PowerUp {
     public int getLevel() {
         return 0;
     }
+
+    @Override
+    public int getDamage() {
+        return -1;
+    }
+
     @Override
     public boolean inAggroRange() {
         return false;
@@ -35,11 +41,6 @@ public class PowerUpAttack implements PowerUp {
     @Override
     public void setDirection(Direction dir) {
 
-    }
-
-    @Override
-    public int getAttack() {
-        return -1;
     }
 
     @Override

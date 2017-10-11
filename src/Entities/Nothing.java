@@ -14,7 +14,7 @@ public class Nothing implements Entity {
     }
 
     @Override
-    public int getAttack() {
+    public int getDamage() {
         return -1;
     }
 

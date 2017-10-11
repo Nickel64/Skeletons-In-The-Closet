@@ -13,11 +13,6 @@ public class Wall implements Entity {
     }
 
     @Override
-    public int getAttack() {
-        return -1;
-    }
-
-    @Override
     public int getHealth() {
         return -1;
     }
@@ -31,6 +26,12 @@ public class Wall implements Entity {
     public int getLevel() {
         return 0;
     }
+
+    @Override
+    public int getDamage() {
+        return -1;
+    }
+
     public Wall(int level){
         this.level = level;
     }
