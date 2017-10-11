@@ -338,6 +338,20 @@ public class View extends JComponent implements Observer{
             g.drawImage(img, x,y,null);
         }
 
+        if(tile instanceof OneWayEntryTeleport){
+            if(model.getCurrentRoom().isRoomCleared()){
+                img = tileSet.getExit();
+            }
+            else{
+                img = tileSet.getEntry();
+            }
+            g.drawImage(img, x,y,null);
+        }
+        if(tile instanceof OneWayExitTeleport){
+            img = tileSet.getEntry();
+            g.drawImage(img, x,y,null);
+        }
+
         if(tile.getEntity() != null){
             drawEntity(g, tile.getEntity(), tileSet, x,y);
         }
