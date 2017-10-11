@@ -38,7 +38,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     private void startLoop() {
         new Timer(300, (e) -> {
             if(!view.pauseMenuVisible) {
-                this.model.getCurrentRoom().ping();
+                this.model.getCurrentRoom().ping(model);
                 view.repaint();
             }
         }).start();

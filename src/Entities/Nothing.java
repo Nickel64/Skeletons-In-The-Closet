@@ -26,11 +26,6 @@ public class Nothing implements Entity {
     public void start() {
     }
 
-    @Override
-    public void ping() {
-
-    }
-
     public String getImageName(){
         return null;
     }

@@ -1,5 +1,6 @@
 package Map;
 
+import Behaviour.Pathfinder;
 import Entities.*;
 import Entities.Entity;
 import Entities.Entity.Direction;
@@ -531,22 +532,43 @@ public class Room {
         return str;
     }
 
-    public void ping() {
+    public void ping(Model m) {
         for(Entity entity : getEnemies()) {
+            String message = "atk";
             Point p = findPoint(entity);
-            if(p.x > 0 && getEntityAt(p.x-1,p.y) instanceof Player) {
+            if(p.x > 0 && getEntityAt(p.x-1,p.y) instanceof Player)
                 checkAttack(getEntityAt(p.x, p.y), Direction.Left);
-            }
-            else if(p.x+1 < getWidth() && getEntityAt(p.x+1,p.y) instanceof Player) {
+            else if(p.x+1 < getWidth() && getEntityAt(p.x+1,p.y) instanceof Player)
                 checkAttack(getEntityAt(p.x,p.y),Direction.Right);
-            }
-            else if(p.y > 0 && getEntityAt(p.x,p.y-1) instanceof Player) {
+            else if(p.y > 0 && getEntityAt(p.x,p.y-1) instanceof Player)
                 checkAttack(getEntityAt(p.x, p.y), Direction.Up);
-            }
-            else if(p.y+1 < getHeight() && getEntityAt(p.x,p.y+1) instanceof Player) {
+            else if(p.y+1 < getHeight() && getEntityAt(p.x,p.y+1) instanceof Player)
                 checkAttack(getEntityAt(p.x,p.y), Direction.Down);
+            else {
+                message ="";
+                Queue<int[]> path = Pathfinder.findPath(new int[]{p.x, p.y},
+                        new int[]{getPlayerLocation().x, getPlayerLocation().y},
+                        this);
+                if (path == null || path.isEmpty())
+                    return;
+                if (path.peek()[0] == p.x && path.peek()[1] == p.y) {
+                    path.poll();
+                }
+                int[] nextPos = path.poll();
+
+                Direction dir = Direction.Left;
+                if (p.x > nextPos[0])
+                    dir = Direction.Left;
+                else if (p.x < nextPos[0])
+                    dir = Direction.Right;
+                else if (p.y > nextPos[1])
+                    dir = Direction.Up;
+                else if (p.y < nextPos[1])
+                    dir = Direction.Down;
+                moveEntity(entity, dir, m);
             }
 
+            System.out.println(message);
         }
 
         //for(Entity entity : getEnemies()) {

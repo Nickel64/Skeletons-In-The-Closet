@@ -33,11 +33,6 @@ public class Wall implements Entity {
 
     public void start() {}
 
-    @Override
-    public void ping() {
-        //nothing
-    }
-
     public boolean canMove() {
         return false;
     }
