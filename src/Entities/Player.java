@@ -9,8 +9,8 @@ import java.util.Observable;
  */
 public class Player extends Observable implements Entity {
     private Direction dir = Direction.Right;
-    private int health = 10; // how much health the unit has
-    private int maxHealth = 10;
+    private int health = 100; // how much health the unit has
+    private int maxHealth = 100;
     private int maxSpecial = 100;
     private int special = 100;
     private int exp = 0;
@@ -158,11 +158,13 @@ public class Player extends Observable implements Entity {
     }
 
     public void damaged(int damageAmount) {
+        setChanged();
         if (defending) {
             int beforeSpecial = special;
             this.special -= damageAmount;
             damageAmount = damageAmount - beforeSpecial;
-            if (damageAmount > 0) {
+            if (damageAmount > 0) { //defence broken
+                defending = false;
                 this.health = this.health - damageAmount;
                 System.out.println("Play a guard breaking sound here");
             }
@@ -170,6 +172,7 @@ public class Player extends Observable implements Entity {
             this.health = this.health - damageAmount;
             System.out.println(this.health);
         }
+        notifyObservers();
     }
 
     public boolean inAggroRange() {

@@ -533,7 +533,24 @@ public class Room {
 
     public void ping() {
         for(Entity entity : getEnemies()) {
-            entity.ping();
+            Point p = findPoint(entity);
+            if(p.x > 0 && getEntityAt(p.x-1,p.y) instanceof Player) {
+                checkAttack(getEntityAt(p.x, p.y), Direction.Left);
+            }
+            else if(p.x+1 < getWidth() && getEntityAt(p.x+1,p.y) instanceof Player) {
+                checkAttack(getEntityAt(p.x,p.y),Direction.Right);
+            }
+            else if(p.y > 0 && getEntityAt(p.x,p.y-1) instanceof Player) {
+                checkAttack(getEntityAt(p.x, p.y), Direction.Up);
+            }
+            else if(p.y+1 < getHeight() && getEntityAt(p.x,p.y+1) instanceof Player) {
+                checkAttack(getEntityAt(p.x,p.y), Direction.Down);
+            }
+
         }
+
+        //for(Entity entity : getEnemies()) {
+          //  entity.ping();
+        //}
     }
 }

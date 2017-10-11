@@ -31,11 +31,16 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     public Controller(Model model, View view) {
         this.model = model;
         this.view = view;
+        startLoop();
+    }
 
-        new Timer(150, (e) -> {
-            if(!view.pauseMenuVisible)
+    private void startLoop() {
+        new Timer(300, (e) -> {
+            if(!view.pauseMenuVisible) {
                 this.model.getCurrentRoom().ping();
-        });
+                view.repaint();
+            }
+        }).start();
     }
 
     public void setModel(Model m) {this.model = m;}
