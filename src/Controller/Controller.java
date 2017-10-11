@@ -8,13 +8,11 @@ import Model.*;
 import Utils.GameError;
 import Utils.Resources;
 import View.*;
-import com.sun.javaws.exceptions.ErrorCodeResponseException;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Queue;
-import java.util.Stack;
 
 /** * * * * * * * * * * * * *
  * Controller class
@@ -33,6 +31,10 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     public Controller(Model model, View view) {
         this.model = model;
         this.view = view;
+
+        new Timer(150, (e) -> {
+            this.model.getCurrentRoom().ping();
+        });
     }
 
     public void setModel(Model m) {this.model = m;}

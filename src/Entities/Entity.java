@@ -19,6 +19,11 @@ public interface Entity {
     void start();
 
     /**
+     * pings the entity
+     */
+    public void ping();
+
+    /**
      *
      * @return whether or not the entity is able to move
      */
