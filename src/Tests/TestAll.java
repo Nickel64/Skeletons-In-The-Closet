@@ -938,6 +938,7 @@ public class TestAll {
             assertTrue(player.canMove()==true);
             assertTrue(player.getHealth()==10&&player.getMaxHealth()==10);
 
+
         } catch (Error error) {
             error.printStackTrace();
             fail(error.getMessage());
