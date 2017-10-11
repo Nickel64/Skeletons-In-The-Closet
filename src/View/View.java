@@ -307,7 +307,7 @@ public class View extends JComponent implements Observer{
 
         int indexY = (y-startY)/tileSize;
         int indexX = (x-startX)/tileSize;
-        if(!(model.getCurrentRoom().getTileAtLocation(indexX,indexY) instanceof  DoorTile)){
+        if(!(tile instanceof  DoorTile)){
             if(indexY == 0){ //draw wall at the top of the room
                 img = tileSet.getWallTop();
                 g.drawImage(img, x, y-img.getHeight(null), null);
@@ -336,7 +336,6 @@ public class View extends JComponent implements Observer{
             if(img == null)
                 return;
             g.drawImage(img, x,y,null);
-          //TODO add the point to a list of light sources
         }
 
         if(tile.getEntity() != null){
@@ -356,8 +355,6 @@ public class View extends JComponent implements Observer{
             return;
         else if(e instanceof Player){
             Player p = (Player) e;
-            //g.setColor(Color.blue);
-            //g.fillOval( (tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
             g.drawImage(p.getIdle(), x,y,null);
             if(p.isDefending()){
                 g.drawImage(p.getDefending(), x,y,null);
@@ -373,6 +370,14 @@ public class View extends JComponent implements Observer{
         else if(e instanceof Enemy){
             g.setColor(Color.red);
             g.fillOval((tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
+            g.setColor(Color.black);
+            g.fillRect(x, y-tileSize/6, tileSize, tileSize/6);
+
+            //the enemy HP bar
+            Enemy temp = (Enemy) e;
+            g.setColor(Color.red.darker());
+            int endX =(int) Math.ceil(((double)tileSize/temp.getMaxHealth())*temp.getHealth());
+            g.fillRect(x, y-tileSize/6,endX, tileSize/6);
         }
         else if(e instanceof PowerUp){
             if(e instanceof PowerUpAttack){

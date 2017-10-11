@@ -12,11 +12,13 @@ public class Enemy extends Observable implements Entity {
     private Direction dir;
     private Image sprite; //the visual representation of the unit
     private int health; // how much health the unit has
+    private int maxHealth;  //needed for hp display purposes
     private int damage; // how much damage the unit deals
     private int speed; // how fast the unit can move
     private boolean inRange;
 
     public int getHealth(){return health;}
+    public int getMaxHealth(){return maxHealth;}
     public int getDamage(){return damage;}
     public int getSpeed(){return speed;}
     public Image getSprite(){return sprite;}
@@ -25,6 +27,7 @@ public class Enemy extends Observable implements Entity {
     public Enemy(int name, int health, int damage, int speed){
         this.name = name;
         this.health = health;
+        this.maxHealth = health;
         this.damage = damage;
         this.speed = speed;
     }
