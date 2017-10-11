@@ -45,6 +45,11 @@ public class PowerUpAttack implements PowerUp {
     }
 
     @Override
+    public void ping() {
+
+    }
+
+    @Override
     public boolean canMove() {
         return false;
     }

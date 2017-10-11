@@ -1,5 +1,6 @@
 package Model;
 
+import Entities.Enemy;
 import Entities.Entity;
 import Entities.Entity.Direction;
 import Entities.Player;
@@ -172,7 +173,7 @@ public class Model extends Observable {
         //TODO get player animation from this ping
         //TODO get enemy animation from this
         //Entities that are attacking should (in my mind) have 6 'stages' of attack to go through before the attack is processed. This should be handled here
-        //I.e. only attack once the entity has completed its animation.
+        //i.e. only attack once the entity has completed its animation.
         //Entity can have a counter that will decide what image to return
         //gets reset at the end of the attack
         //death animations, too

@@ -526,4 +526,10 @@ public class Room {
         }
         return str;
     }
+
+    public void ping() {
+        for(Entity entity : getEnemies()) {
+            entity.ping();
+        }
+    }
 }

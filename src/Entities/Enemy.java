@@ -72,6 +72,11 @@ public class Enemy extends Observable implements Entity {
         //TODO: start pinging
     }
 
+    @Override
+    public void ping() {
+
+    }
+
     public boolean canMove() {
         return true;
     }

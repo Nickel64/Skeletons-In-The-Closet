@@ -8,13 +8,11 @@ import Model.*;
 import Utils.GameError;
 import Utils.Resources;
 import View.*;
-import com.sun.javaws.exceptions.ErrorCodeResponseException;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Queue;
-import java.util.Stack;
 
 /** * * * * * * * * * * * * *
  * Controller class
@@ -33,6 +31,10 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     public Controller(Model model, View view) {
         this.model = model;
         this.view = view;
+
+        new Timer(150, (e) -> {
+            this.model.getCurrentRoom().ping();
+        });
     }
 
     public void setModel(Model m) {this.model = m;}
@@ -111,7 +113,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
         int[] goFrom = new int[] {model.getPlayerLocation().x, model.getPlayerLocation().y};
         Tile[][] tileGrid = new Tile[model.getCurrentRoom().getWidth()][model.getCurrentRoom().getHeight()];
-        Queue<int[]> pathToGo = Pathfinder.findPath(goFrom, toGo, tileGrid);
+        Queue<int[]> pathToGo = Pathfinder.findPath(goFrom, toGo, model.getCurrentRoom());
 
         //use timer to slowly step the player along each of the steps required
         Timer timer = new Timer(500, new ActionListener(){
@@ -214,10 +216,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     }
 
     private void movePlayerPathFind(Entity.Direction dir) {
-        if(!model.getPlayer().getDir().equals(dir)){
-            model.getPlayer().setDirection(dir);
-            view.repaint();
-        }
+        model.getPlayer().setDirection(dir);
         model.moveEntity(model.getPlayer(), dir);
         view.repaint();
         timeLastAction = System.currentTimeMillis();

@@ -172,6 +172,11 @@ public class Player extends Observable implements Entity {
     public void start() {
     }
 
+    @Override
+    public void ping() {
+        //do nothing
+    }
+
     public boolean canMove() {
         return true;
     }
