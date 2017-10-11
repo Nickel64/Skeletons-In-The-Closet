@@ -2,6 +2,8 @@ package Map;
 
 import Entities.Entity;
 
+import javax.print.DocFlavor;
+
 public class OneWayEntryTeleport implements Tile {
 
     private Entity entity;
@@ -10,7 +12,6 @@ public class OneWayEntryTeleport implements Tile {
     public OneWayEntryTeleport(Entity entity, String connectedRoomName) {
         this.entity = entity;
         this.connectedRoomName = connectedRoomName.substring(1, connectedRoomName.length());
-        System.out.println(connectedRoomName+" to... "+this.connectedRoomName);
     }
 
     @Override
@@ -40,5 +41,9 @@ public class OneWayEntryTeleport implements Tile {
 
     public String nameOfNextRoom() {
         return connectedRoomName;
+    }
+
+    public String toString() {
+        return "-"+connectedRoomName;
     }
 }

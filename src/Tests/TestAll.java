@@ -4,13 +4,16 @@ import Behaviour.Pathfinder;
 import Entities.Enemy;
 import Entities.Entity;
 import Entities.Player;
+import Entities.PowerUp;
 import Map.Room;
 import Map.Tile;
 import Model.Model;
+import Utils.GameError;
 import org.junit.*;
 
 import java.util.Scanner;
 import java.util.Stack;
+import java.util.StringJoiner;
 
 import static org.junit.Assert.*;
 
@@ -753,7 +756,7 @@ public class TestAll {
     }
 
     @Test
-    public void test_model_move_teleport_1() {
+    public void test_model_move_door_1() {
         //tests that when model moves player entity on to door and room is not cleared player is moved however
         //current room is not changed.
         Model m = new Model();
@@ -789,7 +792,7 @@ public class TestAll {
     }
 
     @Test
-    public void test_model_move_teleport_2() {
+    public void test_model_move_door_2() {
         //tests that when model moves player entity on to door the current room of the model is changed and player is
         //at new room start position
         Model m = new Model();
@@ -797,14 +800,14 @@ public class TestAll {
                 "A 1\n" +
                         "5 5\n" +
                         "* * . . . \n" +
-                        ". 2 . . . \n" +
+                        ". . . . . \n" +
                         ". . . . . \n" +
                         "* * + . . \n" +
                         ". . B . * \n" +
                         "B 1\n" +
                         "5 5\n" +
                         "* * A . . \n" +
-                        ". 2 . . . \n" +
+                        ". . . . . \n" +
                         ". . . . . \n" +
                         "* * * . . \n" +
                         ". . . . * ";
@@ -813,8 +816,8 @@ public class TestAll {
         Room r = m.getCurrentRoom();
         Entity player = r.getEntityAt(2, 3);
         try {
-            r.setRoomClearedTo(true);
             assertEquals(m.getRoom("A"), m.getCurrentRoom());
+            m.moveEntity(player, Entity.Direction.Down);
             m.moveEntity(player, Entity.Direction.Down);
             assertEquals(m.getRoom("B"), m.getCurrentRoom());
             assertNotEquals(r, m.getCurrentRoom());
@@ -826,7 +829,7 @@ public class TestAll {
     }
 
     @Test
-    public void test_model_move_teleport_3() {
+    public void test_model_move_door_3() {
         //tests that when model moves player entity on to door the current room of the model is changed and player is
         //at new room start position, testing that player moves normally after transport to new room
         Model m = new Model();
@@ -834,14 +837,14 @@ public class TestAll {
                 "A 1\n" +
                         "5 5\n" +
                         "* * . . . \n" +
-                        ". 2 . . . \n" +
+                        ". . . . . \n" +
                         ". . . . . \n" +
                         "* * + . . \n" +
                         ". . B . * \n" +
                         "B 1\n" +
                         "5 5\n" +
                         "* * A . . \n" +
-                        ". 2 . . . \n" +
+                        ". . . . . \n" +
                         ". . . . . \n" +
                         "* * * . . \n" +
                         ". . . . * ";
@@ -852,6 +855,7 @@ public class TestAll {
         try {
             r.setRoomClearedTo(true);
             assertEquals(m.getRoom("A"), m.getCurrentRoom());
+            m.moveEntity(player, Entity.Direction.Down);
             m.moveEntity(player, Entity.Direction.Down);
             assertEquals(m.getRoom("B"), m.getCurrentRoom());
             assertNotEquals(r, m.getCurrentRoom());
@@ -864,7 +868,7 @@ public class TestAll {
     }
 
     @Test
-    public void test_model_move_teleport_4() {
+    public void test_model_move_door_4() {
         //tests that when model moves player entity on to door the current room of the model is changed and player is
         //at new room start position, testing that player moves normally after transport to new room and then returns
         //back to room player originated from
@@ -873,14 +877,14 @@ public class TestAll {
                 "A 1\n" +
                         "5 5\n" +
                         "* * . . . \n" +
-                        ". 2 . . . \n" +
+                        ". . . . . \n" +
                         ". . . . . \n" +
                         "* * + . . \n" +
                         ". . B . * \n" +
                         "B 1\n" +
                         "5 5\n" +
                         "* * A . . \n" +
-                        ". 2 . . . \n" +
+                        ". . . . . \n" +
                         ". . . . . \n" +
                         "* * * . . \n" +
                         ". . . . * ";
@@ -892,18 +896,375 @@ public class TestAll {
             r.setRoomClearedTo(true);
             assertEquals(m.getRoom("A"), m.getCurrentRoom());
             m.moveEntity(player, Entity.Direction.Down);
+            m.moveEntity(player, Entity.Direction.Down);
             assertEquals(m.getRoom("B"), m.getCurrentRoom());
             assertNotEquals(r, m.getCurrentRoom());
             assertEquals(player, m.getCurrentRoom().getDoorNamed("A").getEntity());
             m.moveEntity(player, Entity.Direction.Right);//moves to the right and then back to door tile to teleport back
             m.getCurrentRoom().setRoomClearedTo(true);  //must set room to cleared
             m.moveEntity(player, Entity.Direction.Left);
+            m.moveEntity(player, Entity.Direction.Up);
             //room is now original room
             assertEquals(r, m.getCurrentRoom());
             //is at current room at door tile B
             assertEquals(player, m.getCurrentRoom().getDoorNamed("B").getEntity());
             assertTrue(m.getCurrentRoom().isRoomCleared());
         } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    @Test
+    public void test_model_attack_1() {
+        //tests player attack enemy NORTH, EAST, SOUTH and WEST
+        //enemy should take damage
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". . 3 . . \n" +
+                        ". 6 + 9 . \n" +
+                        "* * 1 . . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+        Room r = m.getCurrentRoom();
+        Entity player = r.getEntityAt(2, 2);
+        try {
+            Entity enemy = r.getEntityAt(2, 3);
+            m.checkAttack(player, Entity.Direction.Down);
+            assertTrue(enemy.getMaxHealth()>enemy.getHealth());     //should have a decrease in health
+        } catch(GameError error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+        try {
+            Entity enemy = r.getEntityAt(2, 1);
+            m.checkAttack(player, Entity.Direction.Up);       //attacks door
+            assertTrue(enemy.getMaxHealth()>enemy.getHealth());     //should have a decrease in health
+        } catch(GameError error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+        try {
+            Entity enemy = r.getEntityAt(1, 2);
+            m.checkAttack(player, Entity.Direction.Left);       //attacks door
+            assertTrue(enemy.getMaxHealth()>enemy.getHealth());     //should have a decrease in health
+        } catch(GameError error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+        try {
+            Entity enemy = r.getEntityAt(3, 2);
+            m.checkAttack(player, Entity.Direction.Right);       //attacks door
+            assertTrue(enemy.getMaxHealth()>enemy.getHealth());     //should have a decrease in health
+        } catch(GameError error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    @Test
+    public void test_model_attackAOE_1() {
+        //tests player attack aoe
+        //enemy should take damage if within block of player
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". . 3 . . \n" +
+                        ". 6 + 9 . \n" +
+                        "* * 1 . . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+        Room r = m.getCurrentRoom();
+        Entity player = r.getEntityAt(2, 2);
+        try {
+            Entity enemy = r.getEntityAt(2, 3);
+            m.checkAttackAOE(player);
+            assertTrue(enemy.getMaxHealth()>enemy.getHealth());     //should have a decrease in health
+            enemy = r.getEntityAt(2, 1);
+            assertTrue(enemy.getMaxHealth()>enemy.getHealth());
+            enemy = r.getEntityAt(1, 2);
+            assertTrue(enemy.getMaxHealth()>enemy.getHealth());
+            enemy = r.getEntityAt(3, 2);
+            assertTrue(enemy.getMaxHealth()>enemy.getHealth());
+        } catch(GameError error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    @Test
+    public void test_model_attackAOE_2() {
+        //tests player attack aoe
+        //enemy should take damage if within block of player
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". 1 . 4 . \n" +
+                        ". 6 + . . \n" +
+                        "* * . 7 . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+        Room r = m.getCurrentRoom();
+        Entity player = r.getEntityAt(2, 2);
+        try {
+            Entity enemy = r.getEntityAt(1, 1);
+            m.checkAttackAOE(player);
+            assertTrue(enemy.getMaxHealth()>enemy.getHealth());     //should have a decrease in health
+            enemy = r.getEntityAt(3, 1);
+            assertTrue(enemy.getMaxHealth()>enemy.getHealth());
+            enemy = r.getEntityAt(1, 2);
+            assertTrue(enemy.getMaxHealth()>enemy.getHealth());
+            enemy = r.getEntityAt(3, 3);
+            assertTrue(enemy.getMaxHealth()>enemy.getHealth());
+        } catch(GameError error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    @Test
+    public void test_model_collect_1() {
+        //checks that enemy does not collect the item(health up potion) when walking over item and item is destroyed
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . ` . \n" +
+                        ". . . 4 . \n" +
+                        ". . + . . \n" +
+                        "* * . 7 . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+        Room r = m.getCurrentRoom();
+        Entity enemy = r.getEntityAt(3, 1);
+        try {
+            int startHP = enemy.getMaxHealth();
+            m.moveEntity(enemy, Entity.Direction.Up);
+            assertEquals(enemy, r.getEntityAt(3, 0));
+            assertEquals(startHP, enemy.getMaxHealth());
+        } catch(GameError error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    @Test
+    public void test_model_collect_2() {
+        //checks that enemy does not collect the item(attack up potion) when walking over item and item is destroyed
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . ~ . \n" +
+                        ". . . 4 . \n" +
+                        ". . + . . \n" +
+                        "* * . 7 . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+        Room r = m.getCurrentRoom();
+        Entity enemy = r.getEntityAt(3, 1);
+        try {
+            int damage = enemy.getAttack();
+            m.moveEntity(enemy, Entity.Direction.Up);
+            assertEquals(enemy, r.getEntityAt(3, 0));
+            assertEquals(damage, enemy.getAttack());
+        } catch(GameError error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    @Test
+    public void test_model_collect_3() {
+        //checks that player collect the item(health up potion) when walking over item and stats are increased
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . ` . \n" +
+                        ". . . + . \n" +
+                        ". . 1 . . \n" +
+                        "* * . 7 . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+        Room r = m.getCurrentRoom();
+        Entity player = r.getEntityAt(3, 1);
+        try {
+            int startMaxHealth = player.getMaxHealth();
+            m.moveEntity(player, Entity.Direction.Up);
+            assertEquals(player, r.getEntityAt(3, 0));
+            assertEquals(startMaxHealth+2, player.getMaxHealth());
+        } catch(GameError error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    @Test
+    public void test_model_collect_4() {
+        //checks that player collect the item(power up potion) when walking over item and stats are increased
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . ~ . \n" +
+                        ". . . + . \n" +
+                        ". . 1 . . \n" +
+                        "* * . 7 . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+        Room r = m.getCurrentRoom();
+        Entity player = r.getEntityAt(3, 1);
+        try {
+            int startAttack = player.getAttack();
+            m.moveEntity(player, Entity.Direction.Up);
+            assertEquals(player, r.getEntityAt(3, 0));
+            assertEquals(startAttack+1, player.getAttack());
+        } catch(GameError error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    @Test
+    public void test_model_teleport_1() {
+        //checks that player moves to teleport exit when stepping on teleport entry
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". . . . . \n" +
+                        ". . -C . . \n" +
+                        ". . + . . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . C \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * \n" +
+                        "C 2\n" +
+                        "5 5\n" +
+                        ". . . . . \n" +
+                        "B . = . . \n" +
+                        ". . . . . \n" +
+                        "* * . . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+        Room r = m.getCurrentRoom();
+        Entity player = r.getEntityAt(2, 3);
+        try {
+            m.moveEntity(player, Entity.Direction.Up);
+            assertEquals(m.getRoom("C"), m.getCurrentRoom());
+            assertEquals(player, m.getCurrentRoom().getEntityAt(2, 1));
+        } catch(GameError error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    @Test
+    public void test_model_teleport_2() {
+        //checks that player does not teleport when stepping onto teleport exit
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". . . . . \n" +
+                        ". . = . . \n" +
+                        ". . + . . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . C \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * \n" +
+                        "C 2\n" +
+                        "5 5\n" +
+                        ". . . . . \n" +
+                        "B . -A . . \n" +
+                        ". . . . . \n" +
+                        "* * . . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+        Room r = m.getCurrentRoom();
+        Entity player = r.getEntityAt(2, 3);
+        try {
+            m.moveEntity(player, Entity.Direction.Up);
+            assertNotEquals(m.getRoom("C"), m.getCurrentRoom());
+            assertEquals(m.getRoom("A"), r);
+            assertEquals(player, m.getCurrentRoom().getEntityAt(2, 2));
+        } catch(GameError error) {
             error.printStackTrace();
             fail(error.getMessage());
         }

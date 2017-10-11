@@ -39,6 +39,12 @@ public class Enemy extends Observable implements Entity {
     public void setDirection(Direction dir){
         this.dir = dir;
     }
+
+    @Override
+    public int getAttack() {
+        return damage;
+    }
+
     /**
      * Calculates whether the enemy is in range to attack the player
      * @return inRange
@@ -63,18 +69,11 @@ public class Enemy extends Observable implements Entity {
         if(isDead()){
             //tell view that this entity is dead
         }
-        System.out.println("health: "+health);
-        System.out.println("damaage: "+damage);
-        System.out.println("speed: "+speed);
-    }
-
-    public void start() {
-        //TODO: start pinging
     }
 
     @Override
     public void ping() {
-
+        //TODO: start pinging
     }
 
     public boolean canMove() {

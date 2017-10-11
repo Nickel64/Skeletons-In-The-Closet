@@ -11,20 +11,33 @@ public interface Entity {
      void damaged(int damage);
      void setDirection(Direction dir);
 
-     public String getImageName();
+    /**
+     * current entity attack
+     * @return current attack of entity
+     */
+    int getAttack();
+
+    /**
+     * current entity health
+     * @return current health of entity
+     */
+    int getHealth();
+
+    /**
+     * maximum entity health
+     * @return maximum health of entity
+     */
+    int getMaxHealth();
+
+    String getImageName();
 
     /**
      * Starts the entity pinging
      */
-    void start();
+    void ping();
 
     /**
-     * pings the entity
-     */
-    public void ping();
-
-    /**
-     *
+     * Can entity move
      * @return whether or not the entity is able to move
      */
     boolean canMove();

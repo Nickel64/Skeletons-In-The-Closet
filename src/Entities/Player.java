@@ -29,7 +29,6 @@ public class Player extends Observable implements Entity {
         this.maxHealth = health;
         this.damage = damage;
         images = new EntitySet(true, 0);
-        System.out.println("Player created");
     }
 
     public Player() {
@@ -169,9 +168,6 @@ public class Player extends Observable implements Entity {
         return false;
     }
 
-    public void start() {
-    }
-
     @Override
     public void ping() {
         //do nothing
@@ -191,6 +187,11 @@ public class Player extends Observable implements Entity {
 
     public void setDirection(Direction dir) {
         this.dir = dir;
+    }
+
+    @Override
+    public int getAttack() {
+        return damage;
     }
 
     public void attackAOE(Entity[] entities) {

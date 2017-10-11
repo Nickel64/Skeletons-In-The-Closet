@@ -35,18 +35,28 @@ public class PowerUpAttack implements PowerUp {
     }
 
     @Override
+    public int getAttack() {
+        return -1;
+    }
+
+    @Override
+    public int getHealth() {
+        return -1;
+    }
+
+    @Override
+    public int getMaxHealth() {
+        return -1;
+    }
+
+    @Override
     public String getImageName() {
         return null;
     }
 
     @Override
-    public void start() {
-
-    }
-
-    @Override
     public void ping() {
-
+        //do nothing
     }
 
     @Override

@@ -119,9 +119,7 @@ public class Room {
                     layout[i][j] = new FloorTile(curEntity);
                 }
                 if(curEntity == null) throw new Error("Entity is invalid "+curString);
-                if(Resources.DEBUG) System.out.print(curString);
             }
-            if(Resources.DEBUG) System.out.println();
         }
         setRoomClearedTo(enemies.size() == 0);
         return sc;
@@ -169,15 +167,6 @@ public class Room {
             }
         }
         return null;
-    }
-
-    /**
-     * Starts the enemies ping
-     */
-    public void startEnemies() {
-        for(Entity e: enemies) {
-            e.start();
-        }
     }
 
     /**
@@ -340,7 +329,6 @@ public class Room {
             Room nextRoom = model.getRoom(door.nameOfNextRoom());       //finds next room to hold player
             DoorTile endDoor = nextRoom.getDoorNamed(this.name);
             Point destDoorPoint = nextRoom.getTilePoint(endDoor);
-            System.out.println(direction.name()+" at x: "+x+" and y: "+y);
             switch (direction) {
                 case Down:
                     if(y+1 >= this.height) {    //checks that direction is going out of room
@@ -381,9 +369,11 @@ public class Room {
             }
         }
         Point destP = movesTo(x, y, direction);
-        if((layout[destP.y][destP.x].getEntity() instanceof PowerUp) && (entity instanceof Player) ){
-            PowerUp pUp = (PowerUp) layout[destP.y][destP.x].getEntity();
-            pUp.increase((Player)entity);
+        if(layout[destP.y][destP.x].getEntity() instanceof PowerUp ){
+            if(entity instanceof Player) {
+                PowerUp pUp = (PowerUp) layout[destP.y][destP.x].getEntity();
+                pUp.increase((Player)entity);
+            }
             layout[destP.y][destP.x].setEntity(new Nothing());
         }
         swap(p, destP);
@@ -457,11 +447,8 @@ public class Room {
      * @param direction that entity is attacking
      */
     public void checkAttack(Entity entity, Direction direction) {
-        System.out.println("start of attack check in direction: "+direction.name());
         Point p = findPoint(entity);
-        System.out.println("entity attacking is at x: "+p.x+" and y:"+p.y);
         Point destP = movesTo(p.x, p.y, direction);
-        System.out.println("attacking to x: "+destP.x+" and y: "+destP.y);
         attack(p, destP);
     }
 
@@ -520,16 +507,19 @@ public class Room {
         String str = name+" "+level + "\n"+width+" "+height;
         for (Tile[] aLayout : layout) {
             str += "\n";
-            for (Tile anALayout : aLayout) {
-                str += anALayout.toString()+" ";
+            for (Tile tile : aLayout) {
+                str += tile.toString()+" ";
             }
         }
         return str;
     }
 
+    /**
+     * Starts the enemies ping
+     */
     public void ping() {
         for(Entity entity : getEnemies()) {
-            entity.ping();
+                entity.ping();
         }
     }
 }

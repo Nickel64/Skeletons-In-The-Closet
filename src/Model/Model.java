@@ -129,7 +129,7 @@ public class Model extends Observable {
      */
     public void changeCurrentRoom(Room room) {
         currentRoom = room;
-        room.startEnemies();
+        room.ping();
     }
 
     /**

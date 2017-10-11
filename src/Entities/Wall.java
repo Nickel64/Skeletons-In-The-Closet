@@ -12,6 +12,21 @@ public class Wall implements Entity {
 
     }
 
+    @Override
+    public int getAttack() {
+        return -1;
+    }
+
+    @Override
+    public int getHealth() {
+        return -1;
+    }
+
+    @Override
+    public int getMaxHealth() {
+        return -1;
+    }
+
     public Wall(int level){
         this.level = level;
     }
@@ -27,8 +42,6 @@ public class Wall implements Entity {
 
     @Override
     public void damaged(int damage) {/*throw new Error();*/}
-
-    public void start() {}
 
     @Override
     public void ping() {
