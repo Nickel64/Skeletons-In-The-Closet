@@ -76,11 +76,33 @@ public class Pathfinder {
         }
         //FOR NON-EMPTY TILE MAPS (gonna have to avoid some stuff):
         else{
+
             if(Resources.DEBUG) System.out.println("NON-EMPTY");
             int[] current = new int[]{pointA[0], pointA[1]}; //used to store position as moved
 
             Queue<int[]> path = newPathFind(pointA, pointB, room);
             return path;
+
+
+            /**
+            Tile[][] roomTiles = new Tile[room.getWidth()][room.getHeight()];
+            boolean[][] roomBoolean = new boolean[room.getWidth()][room.getHeight()];
+            for(int i = 0; i < room.getWidth(); i++){
+                for(int g = 0; g < room.getHeight(); g++){
+                    roomTiles[i][g] = room.getTileAtLocation(i,g);
+                    roomBoolean[i][g] = false;
+                }
+            }
+
+            ArrayList<int[]> neighbours = getNeighbours(roomTiles, pointA[0], pointA[1]);
+            ArrayList<int[]> bestNeighbours  = bestNeighbours(neighbours, pointB);
+
+            for(int[] neibour: bestNeighbours){
+                System.out.println("x: " + neibour[0] + " y:" + neibour[1]);
+            }
+             **/
+
+
         }
 
         //return out;
@@ -101,7 +123,7 @@ public class Pathfinder {
 
         boolean found = newPathFind(pointA[0], pointA[1], roomTiles, roomBoolean, pointB, path);
 
-        if(found){
+        //if(found){
             //System.out.println("PATH:");
             Queue<int[]> out = new LinkedList<>();
             Stack<int[]> out2 = new Stack<>();
@@ -116,10 +138,10 @@ public class Pathfinder {
             }
             out.add(pointB);
           return out;
-        }
-        else{
-          throw new GameError("Unable to find suitable path");
-        }
+        //}
+        //else{
+          //throw new GameError("Unable to find suitable path");
+        //}
     }
 
     public static boolean newPathFind(int row, int col, Tile[][] roomTiles, boolean[][] roomBoolean, int[] goal, Stack<int[]> path){
@@ -140,7 +162,7 @@ public class Pathfinder {
 
         System.out.println("Path added to x: " + row + " y:" + col + " Goal: x:" + goal[0] + " y:" + goal[1]);
 
-        for(int[] neighbour: getNeighbours(roomTiles, row, col)){
+        for(int[] neighbour: bestNeighbours(neighbours, goal)){
             boolean found = newPathFind(neighbour[0], neighbour[1], roomTiles, roomBoolean, goal, path);
             if(found) return true;
         }
@@ -178,11 +200,40 @@ public class Pathfinder {
         return false;
     }
 
+    private static ArrayList<int[]> bestNeighbours(ArrayList<int[]> neighbours, int[] goal){
+        if(neighbours == null || goal == null){
+            return null;
+        }
+
+        ArrayList<int[]> newNeighbours = (ArrayList<int[]>) neighbours.clone();
+        for(int[] test: newNeighbours){
+            System.out.println("Unordered x:" + test[0] + " y:" + test[1]);
+        }
+
+        ArrayList<int[]> output = new ArrayList<>();
+        for(int i = 0; i < neighbours.size(); i++) {
+            int[] bestNode = newNeighbours.get(0);
+            for (int[] neighbour : newNeighbours) {
+                double bestNodeDist = Math.sqrt(Math.pow(bestNode[0] - goal[0], 2) + Math.pow(bestNode[1] - goal[1], 2));
+                double thisNodeDist = Math.sqrt(Math.pow(neighbour[0] - goal[0], 2) + Math.pow(neighbour[1] - goal[1], 2));
+
+                if (thisNodeDist < bestNodeDist) {
+                    bestNode = neighbour;
+                }
+            }
+            output.add(bestNode);
+            newNeighbours.remove(bestNode);
+        }
+
+        for(int[] test: output){
+            System.out.println("Ordered x:" + test[0] + " y:" + test[1]);
+        }
+        return output;
+    }
 
     private static boolean emptyRoom(Room room){
         for(int i = 0; i < room.getWidth(); i++){
             for(int g = 0; g < room.getHeight(); g++){
-                //if(map[i][g] != null) return false;
                 if(room.getTileAtLocation(i,g) != null) return false;
             }
         }
