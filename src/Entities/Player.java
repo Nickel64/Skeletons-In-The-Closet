@@ -111,7 +111,9 @@ public class Player extends Observable implements Entity {
         level++;
         damage = damage + 2;
     }
-
+    public int getLevel(){
+        return level;
+    }
     /**
      * attack method for changing the players sprite to attack
      */
@@ -148,6 +150,9 @@ public class Player extends Observable implements Entity {
     public void attack(Entity entity) {
         entity.damaged(this.damage);
 //        attack();
+        if(entity.isDead()){
+            incExp(entity.getLevel()*10);
+        }
     }
 
     public void damaged(int damageAmount) {
