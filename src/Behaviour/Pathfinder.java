@@ -38,7 +38,7 @@ public class Pathfinder {
         //INPUT CHECKING
         int sizeX = room.getWidth(), sizeY = room.getHeight();
         if(pointA.equals(pointB)
-                || (pointA.x < 0 || pointA.y < 0 || pointB.x < 0 || pointB.y < 0)
+                || pointA.x < 0 || pointA.y < 0 || pointB.x < 0 || pointB.y < 0
                 || pointA.x > sizeX || pointA.y > sizeY || pointB.x > sizeX || pointB.y > sizeY)
             return new LinkedList<>(); //Already at ending position
 
@@ -49,7 +49,6 @@ public class Pathfinder {
         boolean[][] roomBoolean = new boolean[room.getWidth()][room.getHeight()];
 
         if(pathFindHelper(pointA, pointB, path, roomBoolean, room)){
-            out.add(pointA);
             out.addAll(path);
             out.add(pointB);
             return out;
@@ -99,7 +98,7 @@ public class Pathfinder {
 
     /**
      * Gets the neighbours for a node,
-     * ordered in order of their pirority (closeness to the goal node)
+     * ordered in order of their priority (closeness to the goal node)
      * @param room
      * @param node
      * @param goal
@@ -108,19 +107,19 @@ public class Pathfinder {
     public static ArrayList<Point> getNeighbours(Room room, Point node, Point goal){
         ArrayList<Point> neighbours = new ArrayList<>();
 
-        if(node.x-1 > 0 && room.getTileAtLocation(node.x-1, node.y).getEntity().canStepOn()){ //left node row - 1, col
+        if(node.x-1 >= 0 && room.getTileAtLocation(node.x-1, node.y).getEntity().canStepOn()){ //left node row - 1, col
             neighbours.add(new Point(node.x-1, node.y));
         }
 
-        if(node.x+1 < room.getWidth() && room.getTileAtLocation(node.x+1, node.y).getEntity().canStepOn()){ //right node row + 1, col
+        if(node.x+1 <= room.getWidth() && room.getTileAtLocation(node.x+1, node.y).getEntity().canStepOn()){ //right node row + 1, col
             neighbours.add(new Point(node.x+1, node.y));
         }
 
-        if(node.y-1 > 0 && room.getTileAtLocation(node.x, node.y-1).getEntity().canStepOn()){ //top node row, col-1
+        if(node.y-1 >= 0 && room.getTileAtLocation(node.x, node.y-1).getEntity().canStepOn()){ //top node row, col-1
             neighbours.add(new Point(node.x, node.y-1));
         }
 
-        if(node.y+1 < room.getHeight() && room.getTileAtLocation(node.x, node.y+1).getEntity().canStepOn()){ //bottom node row, col+1
+        if(node.y+1 <= room.getHeight() && room.getTileAtLocation(node.x, node.y+1).getEntity().canStepOn()){ //bottom node row, col+1
             neighbours.add(new Point(node.x, node.y+1));
         }
 
@@ -132,12 +131,18 @@ public class Pathfinder {
 
             for (Point neighbour : neighbours) {
                 double thisNodeDist = Math.sqrt(Math.pow(neighbour.x - goal.x, 2) + Math.pow(neighbour.y - goal.y, 2));
-                if (thisNodeDist < bestNodeDist) {bestNode = neighbour; bestNodeDist = thisNodeDist;}
+                if (thisNodeDist <= bestNodeDist) {bestNode = neighbour; bestNodeDist = thisNodeDist;}
             }
 
             output.add(bestNode);
             neighbours.remove(bestNode);
         }
+
+        for(Point point: output){
+            System.out.println(" x:" + point.x + " y:" + point.y);
+        }
+
+        if(Resources.DEBUG) System.out.println("Best Node: x:" + output.get(0).x + " Y:" + output.get(0).y);
 
         return output;
     }
