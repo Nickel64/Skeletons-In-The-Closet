@@ -115,20 +115,21 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     public void mouseReleased(MouseEvent e) {
         if(inAutoMovement) return;
         int x = e.getX(), y = e.getY();
-        int[] toGo = view.getGridCoordsAt(x,y);
+        int[] toGoArr = view.getGridCoordsAt(x,y);
+        Point toGo = new Point(toGoArr[0], toGoArr[1]);
 
-        if(toGo[0] == -1 || toGo[1] == -1) throw new Error("Cannot move outside the board");
-        System.out.println("Heading toward x:" + toGo[0] + " y:" + toGo[1]);
+        if(toGo.x == -1 || toGo.y == -1) throw new Error("Cannot move outside the board");
+        System.out.println("Heading toward x:" + toGo.x + " y:" + toGo.y);
 
-        int[] goFrom = new int[] {model.getPlayerLocation().x, model.getPlayerLocation().y};
-        Tile[][] tileGrid = new Tile[model.getCurrentRoom().getWidth()][model.getCurrentRoom().getHeight()];
-        Queue<int[]> pathToGo = Pathfinder.findPath(goFrom, toGo, model.getCurrentRoom());
+        Point goFrom = new Point(model.getPlayerLocation().x, model.getPlayerLocation().y);
+        //Tile[][] tileGrid = new Tile[model.getCurrentRoom().getWidth()][model.getCurrentRoom().getHeight()];
+        Queue<Point> pathToGo = Pathfinder.findPath(goFrom, toGo, model.getCurrentRoom());
 
         //use timer to slowly step the player along each of the steps required
         Timer timer = new Timer(500, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 inAutoMovement = true;
-                int[] point = pathToGo.poll();
+                Point point = pathToGo.poll();
 
                 if(point == null){
                     //if finished on a Door tile - take that door!
@@ -154,13 +155,13 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                     return;
                 }
 
-                System.out.println("x:" + point[0] + " y:" + point[1]);
+                if(Resources.DEBUG) System.out.println("x:" + point.x + " y:" + point.y);
 
                 int playerX = model.getPlayerLocation().x, playerY = model.getPlayerLocation().y;
-                if(point[0] < playerX) movePlayerPathFind(Entity.Direction.Left);
-                else if(point[0] > playerX) movePlayerPathFind(Entity.Direction.Right);
-                else if(point[1] > playerY) movePlayerPathFind(Entity.Direction.Down);
-                else if(point[1] < playerY) movePlayerPathFind(Entity.Direction.Up);
+                if(point.x < playerX) movePlayerPathFind(Entity.Direction.Left);
+                else if(point.x > playerX) movePlayerPathFind(Entity.Direction.Right);
+                else if(point.y > playerY) movePlayerPathFind(Entity.Direction.Down);
+                else if(point.y < playerY) movePlayerPathFind(Entity.Direction.Up);
             }
         });
         timer.start();}

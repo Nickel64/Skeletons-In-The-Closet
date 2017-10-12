@@ -534,24 +534,22 @@ public class Room {
                 checkAttack(getEntityAt(p.x,p.y), Direction.Down);
             else {
                 message ="";
-                Queue<int[]> path = Pathfinder.findPath(new int[]{p.x, p.y},
-                        new int[]{getPlayerLocation().x, getPlayerLocation().y},
-                        this);
+                Queue<Point> path = Pathfinder.findPath(p,getPlayerLocation(),this);
                 if (path == null || path.isEmpty())
                     return;
-                if (path.peek()[0] == p.x && path.peek()[1] == p.y) {
+                if (path.peek().x == p.x && path.peek().y == p.y) {
                     path.poll();
                 }
-                int[] nextPos = path.poll();
+                Point nextPos = path.poll();
 
                 Direction dir = Direction.Left;
-                if (p.x > nextPos[0])
+                if (p.x > nextPos.x)
                     dir = Direction.Left;
-                else if (p.x < nextPos[0])
+                else if (p.x < nextPos.x)
                     dir = Direction.Right;
-                else if (p.y > nextPos[1])
+                else if (p.y > nextPos.y)
                     dir = Direction.Up;
-                else if (p.y < nextPos[1])
+                else if (p.y < nextPos.y)
                     dir = Direction.Down;
                 moveEntity(entity, dir, m);
             }

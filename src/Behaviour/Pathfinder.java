@@ -4,11 +4,10 @@ import Map.Room;
 import Map.Tile;
 import Utils.GameError;
 import Utils.Resources;
+import com.sun.org.apache.regexp.internal.RE;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.awt.*;
+import java.util.*;
 
 /**
  * Used to find the shortest path from pointA to pointB
@@ -33,84 +32,25 @@ public class Pathfinder {
      *          should be at that point.
      *      NOTE: Also includes starting and ending positions
      */
-    public static Queue<int[]> findPath(int[] pointA, int[] pointB, Room room) {
+    public static Queue<Point> findPath(Point pointA, Point pointB, Room room) {
         //INPUT CHECKING
         if(pointA.equals(pointB)) return new LinkedList<>(); //Already at ending position
-        if(pointA[0] < 0 || pointA[1] < 0 || pointB[0] < 0 || pointB[1] < 0) return new LinkedList<>(); //Position outside the left of board (negative)
+        if(pointA.x < 0 || pointA.y < 0 || pointB.x < 0 || pointB.y < 0) return new LinkedList<>(); //Position outside the left of board (negative)
 
-        //int sizeX = map.length - 1, sizeY = map[0].length - 1;
         int sizeX = room.getWidth(), sizeY = room.getHeight();
-        if(pointA[0] > sizeX || pointA[1] > sizeY || pointB[0] > sizeX || pointB[1] > sizeY) return new LinkedList<>(); //position outside right of board
+        if(pointA.x > sizeX || pointA.y > sizeY || pointB.x > sizeX || pointB.y > sizeY) return new LinkedList<>(); //position outside right of board
 
-        //OUTPUT STACK
-        //Stack<int[]> out = new Stack<>();
-        Queue<int[]> out = new LinkedList<>();
+        Queue<Point> out = new LinkedList<>();
         out.add(pointA);
 
-        //FOR EMPTY TILE MAPS:
-        if(emptyRoom(room)) {
-            /**
-            int[] current = new int[]{pointA[0], pointA[1]}; //used to store position as moved
-            //System.out.println(current[0] + " " + current[1]);
+        if(Resources.DEBUG) System.out.println("BEGINNING PATH FIND");
 
-            while (current[0] != pointB[0]) {
-                if (pointA[0] - pointB[0] < 0) {
-                    current[0] += 1;
-                } else {
-                    current[0] -= 1;
-                }
-                System.out.println(current[0] + " " + current[1]);
-                out.add(new int[]{current[0], current[1]});
-            }
-
-            while (current[1] != pointB[1]) {
-                if (pointA[1] - pointB[1] < 0) {
-                    current[1] += 1;
-                } else {
-                    current[1] -= 1;
-                }
-                System.out.println(current[0] + " " + current[1]);
-                out.add(new int[]{current[0], current[1]});
-            }
-             **/
-        }
-        //FOR NON-EMPTY TILE MAPS (gonna have to avoid some stuff):
-        else{
-
-            if(Resources.DEBUG) System.out.println("NON-EMPTY");
-            int[] current = new int[]{pointA[0], pointA[1]}; //used to store position as moved
-
-            Queue<int[]> path = newPathFind(pointA, pointB, room);
-            return path;
-
-
-            /**
-            Tile[][] roomTiles = new Tile[room.getWidth()][room.getHeight()];
-            boolean[][] roomBoolean = new boolean[room.getWidth()][room.getHeight()];
-            for(int i = 0; i < room.getWidth(); i++){
-                for(int g = 0; g < room.getHeight(); g++){
-                    roomTiles[i][g] = room.getTileAtLocation(i,g);
-                    roomBoolean[i][g] = false;
-                }
-            }
-
-            ArrayList<int[]> neighbours = getNeighbours(roomTiles, pointA[0], pointA[1]);
-            ArrayList<int[]> bestNeighbours  = bestNeighbours(neighbours, pointB);
-
-            for(int[] neibour: bestNeighbours){
-                System.out.println("x: " + neibour[0] + " y:" + neibour[1]);
-            }
-             **/
-
-
-        }
-
-        //return out;
-        return null;
+        Queue<Point> path = pathFind(pointA, pointB, room);
+        return path;
     }
 
-    public static Queue<int[]> newPathFind(int[] pointA, int[] pointB, Room room){
-        Stack<int[]> path = new Stack<>();
+    public static Queue<Point> pathFind(Point pointA, Point pointB, Room room){
+        Stack<Point> path = new Stack<>();
 
         Tile[][] roomTiles = new Tile[room.getWidth()][room.getHeight()];
         boolean[][] roomBoolean = new boolean[room.getWidth()][room.getHeight()];
@@ -121,49 +61,49 @@ public class Pathfinder {
             }
         }
 
-        boolean found = newPathFind(pointA[0], pointA[1], roomTiles, roomBoolean, pointB, path);
+        boolean found = pathFind(pointA, roomTiles, roomBoolean, pointB, path);
 
-        //if(found){
+        if(found){
             //System.out.println("PATH:");
-            Queue<int[]> out = new LinkedList<>();
-            Stack<int[]> out2 = new Stack<>();
+            Queue<Point> out = new LinkedList<>();
+            Stack<Point> out2 = new Stack<>();
             while(!path.isEmpty()){
-                int[] point = path.pop();
+                Point point = path.pop();
                 out2.add(point);
             }
-
 
             while(!out2.isEmpty()){
                 out.add(out2.pop());
             }
             out.add(pointB);
           return out;
-        //}
-        //else{
-          //throw new GameError("Unable to find suitable path");
-        //}
+        }
+        else{
+            throw new GameError("Unable to find suitable path");
+        }
     }
 
-    public static boolean newPathFind(int row, int col, Tile[][] roomTiles, boolean[][] roomBoolean, int[] goal, Stack<int[]> path){
+    public static boolean pathFind(Point start, Tile[][] roomTiles, boolean[][] roomBoolean, Point goal, Stack<Point> path){
         //if already checked
+        int row = start.x, col = start.y;
         if(roomBoolean[row][col]) return false;
 
-        ArrayList<int[]> neighbours = getNeighbours(roomTiles, row, col);
+        ArrayList<Point> neighbours = getNeighbours(roomTiles, row, col);
 
         if(containsTile(goal, neighbours)){
-            path.add(new int[] {row,col});
-            System.out.println("Goal found!");
+            path.add(new Point(row,col));
+            if(Resources.DEBUG) System.out.println("Goal found!");
             return true;
         }
 
         roomBoolean[row][col] = true;
 
-        path.add(new int[] {row, col});
+        path.add(new Point(row,col));
 
-        System.out.println("Path added to x: " + row + " y:" + col + " Goal: x:" + goal[0] + " y:" + goal[1]);
+        if(Resources.DEBUG) System.out.println("Path added to x: " + row + " y:" + col + " Goal: x:" + goal.x + " y:" + goal.y);
 
-        for(int[] neighbour: bestNeighbours(neighbours, goal)){
-            boolean found = newPathFind(neighbour[0], neighbour[1], roomTiles, roomBoolean, goal, path);
+        for(Point neighbour: bestNeighbours(neighbours, goal)){
+            boolean found = pathFind(neighbour, roomTiles, roomBoolean, goal, path);
             if(found) return true;
         }
 
@@ -171,51 +111,53 @@ public class Pathfinder {
         return false;
     }
 
-    public static ArrayList<int[]> getNeighbours(Tile[][] roomTiles, int row, int col){
-        ArrayList<int[]> out = new ArrayList<>();
+    public static ArrayList<Point> getNeighbours(Tile[][] roomTiles, int row, int col){
+        ArrayList<Point> out = new ArrayList<>();
 
         if(row-1 > 0 && roomTiles[row-1][col].getEntity().canStepOn()){ //left node row - 1, col
-            out.add(new int[]{row-1, col});
+            out.add(new Point(row-1, col));
         }
 
         if(row+1 < roomTiles.length && roomTiles[row+1][col].getEntity().canStepOn()){ //right node row + 1, col
-            out.add(new int[]{row+1, col});
+            out.add(new Point(row+1, col));
         }
 
         if(col-1 > 0 && roomTiles[row][col-1].getEntity().canStepOn()){ //top node row, col-1
-            out.add(new int[]{row, col-1});
+            out.add(new Point(row, col-1));
         }
 
         if(col+1 < roomTiles[0].length && roomTiles[row][col+1].getEntity().canStepOn()){ //bottom node row, col+1
-            out.add(new int[]{row, col+1});
+            out.add(new Point(row, col+1));
         }
 
         return out;
     }
 
-    private static boolean containsTile(int[] goal, ArrayList<int[]> neighbours){
-        for(int[] neighbour: neighbours){
-            if(neighbour[0] == goal[0] && neighbour[1] == goal[1]) return true;
+    private static boolean containsTile(Point goal, ArrayList<Point> neighbours){
+        for(Point neighbour: neighbours){
+            if(neighbour.x == goal.x && neighbour.y == goal.y) return true;
         }
         return false;
     }
 
-    private static ArrayList<int[]> bestNeighbours(ArrayList<int[]> neighbours, int[] goal){
+    private static ArrayList<Point> bestNeighbours(ArrayList<Point> neighbours, Point goal){
         if(neighbours == null || goal == null){
             return null;
         }
 
-        ArrayList<int[]> newNeighbours = (ArrayList<int[]>) neighbours.clone();
-        for(int[] test: newNeighbours){
-            System.out.println("Unordered x:" + test[0] + " y:" + test[1]);
+        ArrayList<Point> newNeighbours = new ArrayList<>();
+        newNeighbours.addAll(neighbours);
+
+        for(Point test: newNeighbours){
+            if(Resources.DEBUG) System.out.println("Unordered x:" + test.x + " y:" + test.y);
         }
 
-        ArrayList<int[]> output = new ArrayList<>();
+        ArrayList<Point> output = new ArrayList<>();
         for(int i = 0; i < neighbours.size(); i++) {
-            int[] bestNode = newNeighbours.get(0);
-            for (int[] neighbour : newNeighbours) {
-                double bestNodeDist = Math.sqrt(Math.pow(bestNode[0] - goal[0], 2) + Math.pow(bestNode[1] - goal[1], 2));
-                double thisNodeDist = Math.sqrt(Math.pow(neighbour[0] - goal[0], 2) + Math.pow(neighbour[1] - goal[1], 2));
+            Point bestNode = newNeighbours.get(0);
+            for (Point neighbour : newNeighbours) {
+                double bestNodeDist = Math.sqrt(Math.pow(bestNode.x - goal.x, 2) + Math.pow(bestNode.y - goal.y, 2));
+                double thisNodeDist = Math.sqrt(Math.pow(neighbour.x - goal.x, 2) + Math.pow(neighbour.y - goal.y, 2));
 
                 if (thisNodeDist < bestNodeDist) {
                     bestNode = neighbour;
@@ -225,20 +167,10 @@ public class Pathfinder {
             newNeighbours.remove(bestNode);
         }
 
-        for(int[] test: output){
-            System.out.println("Ordered x:" + test[0] + " y:" + test[1]);
+        for(Point test: output){
+            if(Resources.DEBUG) System.out.println("Ordered x:" + test.x + " y:" + test.y);
         }
         return output;
     }
-
-    private static boolean emptyRoom(Room room){
-        for(int i = 0; i < room.getWidth(); i++){
-            for(int g = 0; g < room.getHeight(); g++){
-                if(room.getTileAtLocation(i,g) != null) return false;
-            }
-        }
-        return true;
-    }
-
 }
 
