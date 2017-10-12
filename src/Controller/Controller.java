@@ -60,7 +60,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         //process input from keyboard
         //e.g. move up, down, left, right, attack
 
-        if(view.pauseMenuVisible) return;
+        if(view.pauseMenuVisible || inAutoMovement) return;
         int code = e.getKeyCode();
         if(code == KeyEvent.VK_KP_UP || code == KeyEvent.VK_UP || code == KeyEvent.VK_W) {
             movePlayer(Entity.Direction.Up);
@@ -79,6 +79,8 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     @Override
     public void keyReleased(KeyEvent e) {
 
+        if(inAutoMovement)
+            return;
         int code = e.getKeyCode();
         if(code == KeyEvent.VK_SPACE) {
             if(view.pauseMenuVisible || System.currentTimeMillis() - timeLastAction < COOLDOWN)

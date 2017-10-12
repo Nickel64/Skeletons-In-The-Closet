@@ -178,11 +178,6 @@ public class Player extends Observable implements Entity {
         return false;
     }
 
-    @Override
-    public void ping() {
-        //do nothing
-    }
-
     public boolean canMove() {
         return true;
     }

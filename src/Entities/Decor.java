@@ -55,11 +55,6 @@ public class Decor implements Entity {
     }
 
     @Override
-    public void ping() {
-
-    }
-
-    @Override
     public boolean canMove() {
         return false;
     }

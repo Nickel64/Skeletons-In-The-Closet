@@ -33,11 +33,6 @@ public interface Entity {
     String getImageName();
 
     /**
-     * Starts the entity pinging
-     */
-    void ping();
-
-    /**
      * Can entity move
      * @return whether or not the entity is able to move
      */

@@ -48,11 +48,6 @@ public class Wall implements Entity {
     @Override
     public void damaged(int damage) {/*throw new Error();*/}
 
-    @Override
-    public void ping() {
-        //nothing
-    }
-
     public boolean canMove() {
         return false;
     }
