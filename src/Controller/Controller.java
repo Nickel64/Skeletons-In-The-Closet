@@ -122,8 +122,12 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         if(Resources.DEBUG) System.out.println("Heading toward x:" + toGo.x + " y:" + toGo.y);
 
         Point goFrom = new Point(model.getPlayerLocation().x, model.getPlayerLocation().y);
-        //Tile[][] tileGrid = new Tile[model.getCurrentRoom().getWidth()][model.getCurrentRoom().getHeight()];
         Queue<Point> pathToGo = Pathfinder.findPath(goFrom, toGo, model.getCurrentRoom());
+
+        if(Resources.DEBUG) System.out.println("PATH:");
+        for(Point point: pathToGo){
+            if(Resources.DEBUG) System.out.println(" x:" + point.x + " y:" + point.y);
+        }
 
         //use timer to slowly step the player along each of the steps required
         Timer timer = new Timer(500, new ActionListener(){

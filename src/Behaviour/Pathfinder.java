@@ -12,6 +12,8 @@ import java.util.*;
 /**
  * Used to find the shortest path from pointA to pointB
  *
+ * Uses many ideas from https://stackoverflow.com/a/43851271
+ *
  * @author Morgan French-Stagg
  */
 public class Pathfinder {
@@ -34,76 +36,60 @@ public class Pathfinder {
      */
     public static Queue<Point> findPath(Point pointA, Point pointB, Room room) {
         //INPUT CHECKING
-        if(pointA.equals(pointB)) return new LinkedList<>(); //Already at ending position
-        if(pointA.x < 0 || pointA.y < 0 || pointB.x < 0 || pointB.y < 0) return new LinkedList<>(); //Position outside the left of board (negative)
-
         int sizeX = room.getWidth(), sizeY = room.getHeight();
-        if(pointA.x > sizeX || pointA.y > sizeY || pointB.x > sizeX || pointB.y > sizeY) return new LinkedList<>(); //position outside right of board
-
-        Queue<Point> out = new LinkedList<>();
-        out.add(pointA);
+        if(pointA.equals(pointB)
+                || (pointA.x < 0 || pointA.y < 0 || pointB.x < 0 || pointB.y < 0)
+                || pointA.x > sizeX || pointA.y > sizeY || pointB.x > sizeX || pointB.y > sizeY)
+            return new LinkedList<>(); //Already at ending position
 
         if(Resources.DEBUG) System.out.println("BEGINNING PATH FIND");
 
-        Queue<Point> path = pathFind(pointA, pointB, room);
-        return path;
-    }
-
-    public static Queue<Point> pathFind(Point pointA, Point pointB, Room room){
+        Queue<Point> out = new LinkedList<>();
         Stack<Point> path = new Stack<>();
-
-        Tile[][] roomTiles = new Tile[room.getWidth()][room.getHeight()];
         boolean[][] roomBoolean = new boolean[room.getWidth()][room.getHeight()];
-        for(int i = 0; i < room.getWidth(); i++){
-            for(int g = 0; g < room.getHeight(); g++){
-                roomTiles[i][g] = room.getTileAtLocation(i,g);
-                roomBoolean[i][g] = false;
-            }
-        }
 
-        boolean found = pathFind(pointA, roomTiles, roomBoolean, pointB, path);
-
-        if(found){
-            //System.out.println("PATH:");
-            Queue<Point> out = new LinkedList<>();
-            Stack<Point> out2 = new Stack<>();
-            while(!path.isEmpty()){
-                Point point = path.pop();
-                out2.add(point);
-            }
-
-            while(!out2.isEmpty()){
-                out.add(out2.pop());
-            }
+        if(pathFindHelper(pointA, pointB, path, roomBoolean, room)){
+            out.add(pointA);
+            out.addAll(path);
             out.add(pointB);
-          return out;
+            return out;
         }
         else{
             throw new GameError("Unable to find suitable path");
         }
     }
 
-    public static boolean pathFind(Point start, Tile[][] roomTiles, boolean[][] roomBoolean, Point goal, Stack<Point> path){
-        //if already checked
-        int row = start.x, col = start.y;
-        if(roomBoolean[row][col]) return false;
+    /**
+     * Used to help perform the shortest path algorithm
+     *
+     * @param start
+     * @param goal
+     * @param path
+     * @param roomBoolean
+     * @param room
+     * @return
+     */
+    public static boolean pathFindHelper(Point start, Point goal, Stack<Point> path, boolean[][] roomBoolean, Room room){
+        if(roomBoolean[start.x][start.y]) return false;
 
-        ArrayList<Point> neighbours = getNeighbours(roomTiles, row, col);
+        ArrayList<Point> neighbours = getNeighbours(room, start, goal);
 
-        if(containsTile(goal, neighbours)){
-            path.add(new Point(row,col));
+        //if the goal is a neighbour - then we're there!
+        boolean neighbourContainsGoal = false;
+        for(Point neighbour: neighbours) if(neighbour.x == goal.x && neighbour.y == goal.y) neighbourContainsGoal = true;
+        if(neighbourContainsGoal){
+            path.add(new Point(start.x,start.y));
             if(Resources.DEBUG) System.out.println("Goal found!");
             return true;
         }
 
-        roomBoolean[row][col] = true;
+        roomBoolean[start.x][start.y] = true;
+        path.add(new Point(start.x,start.y));
 
-        path.add(new Point(row,col));
+        if(Resources.DEBUG) System.out.println("Path added to x: " + start.x + " y:" + start.y + " Goal: x:" + goal.x + " y:" + goal.y);
 
-        if(Resources.DEBUG) System.out.println("Path added to x: " + row + " y:" + col + " Goal: x:" + goal.x + " y:" + goal.y);
-
-        for(Point neighbour: bestNeighbours(neighbours, goal)){
-            boolean found = pathFind(neighbour, roomTiles, roomBoolean, goal, path);
+        for(Point neighbour: neighbours){
+            boolean found = pathFindHelper(neighbour, goal, path, roomBoolean, room);
             if(found) return true;
         }
 
@@ -111,65 +97,48 @@ public class Pathfinder {
         return false;
     }
 
-    public static ArrayList<Point> getNeighbours(Tile[][] roomTiles, int row, int col){
-        ArrayList<Point> out = new ArrayList<>();
+    /**
+     * Gets the neighbours for a node,
+     * ordered in order of their pirority (closeness to the goal node)
+     * @param room
+     * @param node
+     * @param goal
+     * @return
+     */
+    public static ArrayList<Point> getNeighbours(Room room, Point node, Point goal){
+        ArrayList<Point> neighbours = new ArrayList<>();
 
-        if(row-1 > 0 && roomTiles[row-1][col].getEntity().canStepOn()){ //left node row - 1, col
-            out.add(new Point(row-1, col));
+        if(node.x-1 > 0 && room.getTileAtLocation(node.x-1, node.y).getEntity().canStepOn()){ //left node row - 1, col
+            neighbours.add(new Point(node.x-1, node.y));
         }
 
-        if(row+1 < roomTiles.length && roomTiles[row+1][col].getEntity().canStepOn()){ //right node row + 1, col
-            out.add(new Point(row+1, col));
+        if(node.x+1 < room.getWidth() && room.getTileAtLocation(node.x+1, node.y).getEntity().canStepOn()){ //right node row + 1, col
+            neighbours.add(new Point(node.x+1, node.y));
         }
 
-        if(col-1 > 0 && roomTiles[row][col-1].getEntity().canStepOn()){ //top node row, col-1
-            out.add(new Point(row, col-1));
+        if(node.y-1 > 0 && room.getTileAtLocation(node.x, node.y-1).getEntity().canStepOn()){ //top node row, col-1
+            neighbours.add(new Point(node.x, node.y-1));
         }
 
-        if(col+1 < roomTiles[0].length && roomTiles[row][col+1].getEntity().canStepOn()){ //bottom node row, col+1
-            out.add(new Point(row, col+1));
+        if(node.y+1 < room.getHeight() && room.getTileAtLocation(node.x, node.y+1).getEntity().canStepOn()){ //bottom node row, col+1
+            neighbours.add(new Point(node.x, node.y+1));
         }
 
-        return out;
-    }
-
-    private static boolean containsTile(Point goal, ArrayList<Point> neighbours){
-        for(Point neighbour: neighbours){
-            if(neighbour.x == goal.x && neighbour.y == goal.y) return true;
-        }
-        return false;
-    }
-
-    private static ArrayList<Point> bestNeighbours(ArrayList<Point> neighbours, Point goal){
-        if(neighbours == null || goal == null){
-            return null;
-        }
-
-        ArrayList<Point> newNeighbours = new ArrayList<>();
-        newNeighbours.addAll(neighbours);
-
-        for(Point test: newNeighbours){
-            if(Resources.DEBUG) System.out.println("Unordered x:" + test.x + " y:" + test.y);
-        }
 
         ArrayList<Point> output = new ArrayList<>();
         for(int i = 0; i < neighbours.size(); i++) {
-            Point bestNode = newNeighbours.get(0);
-            for (Point neighbour : newNeighbours) {
-                double bestNodeDist = Math.sqrt(Math.pow(bestNode.x - goal.x, 2) + Math.pow(bestNode.y - goal.y, 2));
+            Point bestNode = neighbours.get(0);
+            double bestNodeDist = Math.sqrt(Math.pow(bestNode.x - goal.x, 2) + Math.pow(bestNode.y - goal.y, 2));
+
+            for (Point neighbour : neighbours) {
                 double thisNodeDist = Math.sqrt(Math.pow(neighbour.x - goal.x, 2) + Math.pow(neighbour.y - goal.y, 2));
-
-                if (thisNodeDist < bestNodeDist) {
-                    bestNode = neighbour;
-                }
+                if (thisNodeDist < bestNodeDist) {bestNode = neighbour; bestNodeDist = thisNodeDist;}
             }
+
             output.add(bestNode);
-            newNeighbours.remove(bestNode);
+            neighbours.remove(bestNode);
         }
 
-        for(Point test: output){
-            if(Resources.DEBUG) System.out.println("Ordered x:" + test.x + " y:" + test.y);
-        }
         return output;
     }
 }
