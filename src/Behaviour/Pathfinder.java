@@ -111,7 +111,7 @@ public class Pathfinder {
             neighbours.add(new Point(node.x-1, node.y));
         }
 
-        if(node.x+1 <= room.getWidth() && room.getTileAtLocation(node.x+1, node.y).getEntity().canStepOn()){ //right node row + 1, col
+        if(node.x+1 < room.getWidth() && room.getTileAtLocation(node.x+1, node.y).getEntity().canStepOn()){ //right node row + 1, col
             neighbours.add(new Point(node.x+1, node.y));
         }
 
@@ -119,7 +119,7 @@ public class Pathfinder {
             neighbours.add(new Point(node.x, node.y-1));
         }
 
-        if(node.y+1 <= room.getHeight() && room.getTileAtLocation(node.x, node.y+1).getEntity().canStepOn()){ //bottom node row, col+1
+        if(node.y+1 < room.getHeight() && room.getTileAtLocation(node.x, node.y+1).getEntity().canStepOn()){ //bottom node row, col+1
             neighbours.add(new Point(node.x, node.y+1));
         }
 
