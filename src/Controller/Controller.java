@@ -119,7 +119,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         Point toGo = new Point(toGoArr[0], toGoArr[1]);
 
         if(toGo.x == -1 || toGo.y == -1) throw new Error("Cannot move outside the board");
-        System.out.println("Heading toward x:" + toGo.x + " y:" + toGo.y);
+        if(Resources.DEBUG) System.out.println("Heading toward x:" + toGo.x + " y:" + toGo.y);
 
         Point goFrom = new Point(model.getPlayerLocation().x, model.getPlayerLocation().y);
         //Tile[][] tileGrid = new Tile[model.getCurrentRoom().getWidth()][model.getCurrentRoom().getHeight()];
@@ -133,7 +133,6 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
                 if(point == null){
                     //if finished on a Door tile - take that door!
-                    System.out.println("FINISHED");
                     Point playerLocation = model.getPlayerLocation();
                     Tile currentTile = model.getCurrentRoom().getTileAtLocation(playerLocation.x, playerLocation.y);
                     if(currentTile instanceof DoorTile){
@@ -232,8 +231,20 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     }
 
     private void movePlayerPathFind(Entity.Direction dir) {
-        model.getPlayer().setDirection(dir);
-        movePlayer(dir);
+        try {
+            if (model.getPlayer().getDir() == dir) {
+                model.moveEntity(model.getPlayer(), dir);
+                Resources.playAudio("footstep.wav");
+            }
+            else {
+                model.getPlayer().setDirection(dir);
+                model.moveEntity(model.getPlayer(), dir);
+                view.repaint();
+            }
+            timeLastAction = System.currentTimeMillis();
+        } catch(GameError e) {
+            Resources.playAudio("bump.wav");
+        }
     }
 
     /* END OF MOUSE LISTENER METHODS */
