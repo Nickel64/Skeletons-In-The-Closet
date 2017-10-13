@@ -25,20 +25,10 @@ public class SaveLoad {
     public boolean save(Model m){
         if(m == null) return false;
 
-        /**
-        StringBuffer serialised = new StringBuffer();
-
-        serialised.append(m.serialise());
         String saveName = new Date().toString();
-        if(Resources.DEBUG) System.out.println(saveName + " saved!");
-        System.out.println(serialised.toString());
-        saves.put(saveName, serialised.toString());
-        **/
-
-        String saveName = new Date().toString();
+        if(saves.keySet().contains(saveName)) saveName += " ";
 
         try {
-            //FileOutputStream fout = new FileOutputStream("/tmp/save.ser");
             ByteArrayOutputStream fout = new ByteArrayOutputStream();
             ObjectOutputStream oout = new ObjectOutputStream(fout);
 
@@ -48,31 +38,19 @@ public class SaveLoad {
             saves.put(saveName, Base64.getEncoder().encodeToString(fout.toByteArray()));
             if(Resources.DEBUG) System.out.println(saveName + " saved!");
 
+            return true;
+
         } catch(IOException e){
             e.printStackTrace();
-            throw new GameError(e.getMessage());
+            return false;
         }
 
-        return true;
     }
 
     /**
      * Method will take a previously saved game, and load it
      */
     public Model load(String saveName){
-
-        /**
-        if(Resources.DEBUG) System.out.println("Loading: " + saveName);
-        String str = saves.get(saveName);
-
-        Model newModel = new Model();
-        try{
-            newModel.initialise(str);
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-
-         **/
 
         try {
             if(Resources.DEBUG) System.out.println("Loading: " + saveName);

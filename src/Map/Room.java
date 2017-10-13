@@ -567,6 +567,10 @@ public class Room implements java.io.Serializable{
         }
     }
 
+    /**
+     * Used to Reset the TileSet
+     * after this class is Deserialized
+     */
     public void resetTileSet(){
         this.tiles = new TileSet(level);
     }
