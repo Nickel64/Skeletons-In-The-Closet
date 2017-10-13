@@ -1484,15 +1484,9 @@ public class TestAll {
         m.read(sc);
         Room r = m.getCurrentRoom();
         Player player = (Player)r.getEntityAt(2, 3);
-        try {
-            assertTrue(player.getDamage()==1);
-            assertTrue(player.canMove()==true);
-            assertTrue(player.getHealth()==10&&player.getMaxHealth()==10);
-
-        } catch (Error error) {
-            error.printStackTrace();
-            fail(error.getMessage());
-        }
+        assertTrue(player.getDamage()==1);
+        assertTrue(player.canMove()==true);
+        assertTrue(player.getHealth()==100&&player.getMaxHealth()==100);
     }
 
     @Test
