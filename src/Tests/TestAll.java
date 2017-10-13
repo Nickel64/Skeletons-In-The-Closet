@@ -100,7 +100,7 @@ public class TestAll {
     }
 
     /**
-     * Used to test that there is a path between 0,0 and 2,2
+     * Used to test that the pathfinder can avoid obstacles
      */
     @Test
     public void test_pathFind_Success4(){
@@ -127,9 +127,180 @@ public class TestAll {
     }
 
 
+    /**
+     * Used to test that the pathfinder can avoid obstacles
+     */
+    @Test
+    public void test_pathFind_Success5(){
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "6 5\n" +
+                        ". . . . . . \n" +
+                        ". . * . * . \n" +
+                        ". . . . . . \n" +
+                        ". . . . . . \n" +
+                        ". . . . . . ";
+        try {
+            Scanner sc = new Scanner(simpleMap);
+            m.read(sc);
+            Room r = m.getCurrentRoom();
+            Queue<Point> path = Pathfinder.findPath(new Point(1,1), new Point(5,1), r);
+            Queue<Point> expected = createExpected(new Point[] {new Point(1,1), new Point(1,2), new Point(2,2), new Point(3,2), new Point(4,2), new Point(5,2),  new Point(3,1)});
+            checkPaths(expected, path);
+        } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
 
     /**
-     * Helper method used to compare two Stacks of integer arrays
+     * Used to test that the pathfinder can avoid obstacles
+     */
+    @Test
+    public void test_pathFind_Success6(){
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "6 5\n" +
+                        ". . . . . . \n" +
+                        "* * * * . . \n" +
+                        ". * . . . . \n" +
+                        ". * * * . . \n" +
+                        ". . . . . . ";
+        try {
+            Scanner sc = new Scanner(simpleMap);
+            m.read(sc);
+            Room r = m.getCurrentRoom();
+            Queue<Point> path = Pathfinder.findPath(new Point(0,0), new Point(3,2), r);
+            Queue<Point> expected = createExpected(new Point[] {
+                    new Point(0,0),
+                    new Point(1,0),
+                    new Point(2,0),
+                    new Point(3,0),
+                    new Point(4,0),
+                    new Point(4,1),
+                    new Point(4,2),
+                    new Point(3,2)
+            });
+
+            checkPaths(expected, path);
+        } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    /**
+     * Used to test that the pathfinder can't leave the board
+     */
+    @Test
+    public void test_pathFind_Fail1(){
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "6 5\n" +
+                        ". . . . . . \n" +
+                        ". . * . * . \n" +
+                        ". . . . . . \n" +
+                        ". . . . . . \n" +
+                        ". . . . . . ";
+        try {
+            Scanner sc = new Scanner(simpleMap);
+            m.read(sc);
+            Room r = m.getCurrentRoom();
+            Queue<Point> path = Pathfinder.findPath(new Point(1,1), new Point(-1,-1), r);
+            Queue<Point> expected = createExpected(new Point[] {});
+            checkPaths(expected, path);
+        } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    /**
+     * Used to test that the pathfinder can't leave the board
+     */
+    @Test
+    public void test_pathFind_Fail2(){
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "6 5\n" +
+                        ". . . . . . \n" +
+                        ". . * . * . \n" +
+                        ". . . . . . \n" +
+                        ". . . . . . \n" +
+                        ". . . . . . ";
+        try {
+            Scanner sc = new Scanner(simpleMap);
+            m.read(sc);
+            Room r = m.getCurrentRoom();
+            Queue<Point> path = Pathfinder.findPath(new Point(6,5), new Point(7,5), r);
+            Queue<Point> expected = createExpected(new Point[] {});
+            checkPaths(expected, path);
+        } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    /**
+     * Used to test that the pathfinder can't jump a barrier
+     */
+    @Test
+    public void test_pathFind_Fail3(){
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "6 5\n" +
+                        ". . . . * . \n" +
+                        ". . . . * . \n" +
+                        ". . . . * . \n" +
+                        ". . . . * . \n" +
+                        ". . . . * . ";
+        try {
+            Scanner sc = new Scanner(simpleMap);
+            m.read(sc);
+            Room r = m.getCurrentRoom();
+            Queue<Point> path = Pathfinder.findPath(new Point(3,3), new Point(5,3), r);
+            Queue<Point> expected = createExpected(new Point[] {});
+            checkPaths(expected, path);
+        } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    /**
+     * Used to test that the pathfinder can't jump a barrier
+     */
+    @Test
+    public void test_pathFind_Fail4(){
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "6 5\n" +
+                        ". . . . . . \n" +
+                        ". . * * * . \n" +
+                        ". . * . * . \n" +
+                        ". . * * * . \n" +
+                        ". . . . . . ";
+        try {
+            Scanner sc = new Scanner(simpleMap);
+            m.read(sc);
+            Room r = m.getCurrentRoom();
+            Queue<Point> path = Pathfinder.findPath(new Point(3,2), new Point(5,3), r);
+            Queue<Point> expected = createExpected(new Point[] {});
+            checkPaths(expected, path);
+        } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    /**
+     * Helper method used to compare two Stacks of Point arrays
      * @param expected
      *      Expected path between two points
      *      Stack of int array objects
@@ -141,9 +312,9 @@ public class TestAll {
      */
     private void checkPaths(Queue<Point> expected, Queue<Point> path){
 
-        System.out.println();
+        System.out.println("PATH");
         for(Point pathPiece: path){
-            System.out.println(pathPiece.x + " " + pathPiece.y);
+            System.out.println("Path: " + pathPiece.x + " " + pathPiece.y);
         }
 
         if(expected.size() != path.size()) fail("Expected path not the same length as actual path");
@@ -157,15 +328,11 @@ public class TestAll {
     }
 
     /**
-     * Used to convert a 2D array of ints into a stack of 1D int arrays
+     * Used to convert an array of Point objects into a LinkedList of Points
      *
-     * Used to make created the 'expected' array eaiser
+     * In order to be compared later
      * @param toUse
-     *      2D array of ints
-     *      outer array -> collection of inner arrays
-     *      inner array -> format {x,y}
      * @return
-     *      Stack containing all of the inner arrays
      */
     public LinkedList<Point> createExpected(Point[] toUse){
         LinkedList<Point> expected = new LinkedList<>();
