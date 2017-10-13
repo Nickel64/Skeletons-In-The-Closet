@@ -75,4 +75,6 @@ public class PowerUpHealth implements PowerUp{
     public String toString() {
         return "`";
     }
+
+    public void ping(){}
 }

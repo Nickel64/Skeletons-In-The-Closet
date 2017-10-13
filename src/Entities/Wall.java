@@ -59,4 +59,6 @@ public class Wall implements Entity {
     public String toString() {
         return "*";
     }
+
+    public void ping(){}
 }

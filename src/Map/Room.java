@@ -453,6 +453,12 @@ public class Room {
     public void checkAttack(Entity entity, Direction direction) {
         Point p = findPoint(entity);
         Point destP = movesTo(p.x, p.y, direction);
+        //is the attacker a player
+        //if it is, then set the player attack boolean to true
+        //ping will check if animation is complete when it is called
+        //if it is, then trigger the attack
+        //same for other entities
+        //and other actions (aoe, dying etc)
         attack(p, destP);
     }
 
@@ -523,6 +529,9 @@ public class Room {
     }
 
     public void ping(Model m) {
+
+        player.ping();
+
         for(Entity entity : getEnemies()) {
             String message = "atk";
             Point p = findPoint(entity);
@@ -557,9 +566,5 @@ public class Room {
 
             if(Resources.DEBUG) System.out.println(message);
         }
-
-        //for(Entity entity : getEnemies()) {
-          //  entity.ping();
-        //}
     }
 }

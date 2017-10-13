@@ -51,4 +51,6 @@ public class Nothing implements Entity {
     public int getLevel() {
         return 0;
     }
+
+    public void ping(){}
 }

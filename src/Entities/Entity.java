@@ -44,6 +44,8 @@ public interface Entity {
      */
     boolean canStepOn();
 
+    void ping();
+
    // damaged
    // turn
     //move

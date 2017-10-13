@@ -76,4 +76,6 @@ public class PowerUpAttack implements PowerUp {
         p.increaseAttack(1);
     }
 
+    public void ping(){}
+
 }

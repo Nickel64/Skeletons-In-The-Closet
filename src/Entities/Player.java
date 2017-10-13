@@ -227,4 +227,12 @@ public class Player extends Observable implements Entity {
         return images.getIdle(dir.ordinal());
     }
     public Image getDefending(){return images.getDefending();}
+
+    public void ping(){
+        //stuff incoming
+        if(animCount < 6){
+            animCount++;
+        }
+
+    }
 }

@@ -63,4 +63,6 @@ public class Decor implements Entity {
     public boolean canStepOn() {
         return false;
     }
+
+    public void ping(){}
 }

@@ -19,6 +19,11 @@ public class Enemy extends Observable implements Entity {
     private boolean inRange;
     private int level;
 
+
+    private boolean attacking = false;
+    private boolean dying = false;
+    private int animCount = 0;  //max value of 6
+
     public int getHealth(){return health;}
     public int getMaxHealth(){return maxHealth;}
     public int getSpeed(){return speed;}
@@ -88,6 +93,10 @@ public class Enemy extends Observable implements Entity {
 
     public String toString() {
         return level+"";
+    }
+
+    public void ping(){
+
     }
 
 }
