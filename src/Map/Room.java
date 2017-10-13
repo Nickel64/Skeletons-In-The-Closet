@@ -11,6 +11,7 @@ import Utils.Resources;
 import Utils.TileSet;
 
 import java.awt.*;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.List;
 
@@ -331,7 +332,7 @@ public class Room {
             Room nextRoom = model.getRoom(door.nameOfNextRoom());       //finds next room to hold player
             DoorTile endDoor = nextRoom.getDoorNamed(this.name);
             Point destDoorPoint = nextRoom.getTilePoint(endDoor);
-            System.out.println(direction.name()+" at x: "+x+" and y: "+y);
+            if(Resources.DEBUG) System.out.println(direction.name()+" at x: "+x+" and y: "+y);
             switch (direction) {
                 case Down:
                     if(y+1 >= this.height) {    //checks that direction is going out of room
@@ -534,13 +535,10 @@ public class Room {
                 checkAttack(getEntityAt(p.x,p.y), Direction.Down);
             else {
                 message ="";
-                Queue<Point> path = Pathfinder.findPath(p,getPlayerLocation(),this);
-                if (path == null || path.isEmpty())
+
+                Point nextPos = Pathfinder.findNextClosestPointToGoal(this, p, getPlayerLocation());
+                if(nextPos == null)
                     return;
-                if (path.peek().x == p.x && path.peek().y == p.y) {
-                    path.poll();
-                }
-                Point nextPos = path.poll();
 
                 Direction dir = Direction.Left;
                 if (p.x > nextPos.x)
@@ -552,9 +550,11 @@ public class Room {
                 else if (p.y < nextPos.y)
                     dir = Direction.Down;
                 moveEntity(entity, dir, m);
+                if(Resources.DEBUG) System.out.println("MOVING ENEMY: " + dir);
+
             }
 
-            System.out.println(message);
+            if(Resources.DEBUG) System.out.println(message);
         }
 
         //for(Entity entity : getEnemies()) {

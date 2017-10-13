@@ -1,5 +1,7 @@
 package Behaviour;
 
+import Entities.Enemy;
+import Entities.Player;
 import Map.Room;
 import Map.Tile;
 import Utils.GameError;
@@ -54,7 +56,7 @@ public class Pathfinder {
             return out;
         }
         else{
-            throw new GameError("Unable to find suitable path");
+            return new LinkedList<>();
         }
     }
 
@@ -107,19 +109,19 @@ public class Pathfinder {
     public static ArrayList<Point> getNeighbours(Room room, Point node, Point goal){
         ArrayList<Point> neighbours = new ArrayList<>();
 
-        if(node.x-1 >= 0 && room.getTileAtLocation(node.x-1, node.y).getEntity().canStepOn()){ //left node row - 1, col
+        if((node.x-1 >= 0 && room.getTileAtLocation(node.x-1, node.y).getEntity().canStepOn()) || room.getTileAtLocation(node.x-1, node.y).getEntity() instanceof Player){ //left node row - 1, col
             neighbours.add(new Point(node.x-1, node.y));
         }
 
-        if(node.x+1 < room.getWidth() && room.getTileAtLocation(node.x+1, node.y).getEntity().canStepOn()){ //right node row + 1, col
+        if((node.x+1 < room.getWidth() && room.getTileAtLocation(node.x+1, node.y).getEntity().canStepOn()) || room.getTileAtLocation(node.x+1, node.y).getEntity() instanceof Player ){ //right node row + 1, col
             neighbours.add(new Point(node.x+1, node.y));
         }
 
-        if(node.y-1 >= 0 && room.getTileAtLocation(node.x, node.y-1).getEntity().canStepOn()){ //top node row, col-1
+        if((node.y-1 >= 0 && room.getTileAtLocation(node.x, node.y-1).getEntity().canStepOn()) || room.getTileAtLocation(node.x, node.y-1).getEntity() instanceof Player){ //top node row, col-1
             neighbours.add(new Point(node.x, node.y-1));
         }
 
-        if(node.y+1 < room.getHeight() && room.getTileAtLocation(node.x, node.y+1).getEntity().canStepOn()){ //bottom node row, col+1
+        if((node.y+1 < room.getHeight() && room.getTileAtLocation(node.x, node.y+1).getEntity().canStepOn()) || room.getTileAtLocation(node.x, node.y+1).getEntity() instanceof Player){ //bottom node row, col+1
             neighbours.add(new Point(node.x, node.y+1));
         }
 
@@ -139,12 +141,21 @@ public class Pathfinder {
         }
 
         for(Point point: output){
-            System.out.println(" x:" + point.x + " y:" + point.y);
+            if(Resources.DEBUG) System.out.println(" x:" + point.x + " y:" + point.y);
         }
 
         if(Resources.DEBUG) System.out.println("Best Node: x:" + output.get(0).x + " Y:" + output.get(0).y);
 
         return output;
+    }
+
+    public static Point findNextClosestPointToGoal(Room room, Point node, Point goal){
+        Queue<Point> path = findPath(node, goal, room);
+        while(!path.isEmpty() && path.peek().x == node.x && path.peek().y == node.y){
+            Point p = path.poll();
+        }
+        Point nextStep = path.poll();
+        return nextStep;
     }
 }
 
