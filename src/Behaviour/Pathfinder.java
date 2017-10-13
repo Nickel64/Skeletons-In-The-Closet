@@ -148,7 +148,7 @@ public class Pathfinder {
             if(Resources.DEBUG) System.out.println(" x:" + point.x + " y:" + point.y);
         }
 
-        if(Resources.DEBUG) System.out.println("Best Node: x:" + output.get(0).x + " Y:" + output.get(0).y);
+        //if(Resources.DEBUG) System.out.println("Best Node: x:" + output.get(0).x + " Y:" + output.get(0).y);
 
         return output;
     }
