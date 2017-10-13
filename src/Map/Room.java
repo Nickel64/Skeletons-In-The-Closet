@@ -530,7 +530,7 @@ public class Room {
 
     public void ping(Model m) {
 
-        player.ping();
+        if(player != null) player.ping();
 
         for(Entity entity : getEnemies()) {
             String message = "atk";
