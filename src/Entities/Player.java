@@ -9,6 +9,7 @@ import java.util.Observable;
  */
 public class Player extends Observable implements Entity {
     private Direction dir = Direction.Right;
+
     private int health = 100; // how much health the unit has
     private int maxHealth = 100;
     private int maxSpecial = 100;
@@ -16,11 +17,14 @@ public class Player extends Observable implements Entity {
     private int exp = 0;
     private int maxExp = 100;
     private int damage = 1; // how much damage the unit deals
-    private int speed; // how fast the unit can move
-    private int experience;
     private int level = 1;
 
-    private boolean defending;
+    //animation related fields
+    private boolean defending = false;
+    private boolean attacking = false;
+    private boolean dying = false;
+    private boolean aoe = false;
+    private int animCount = 0;  //max value of 6
 
     private EntitySet images;
 
@@ -102,6 +106,7 @@ public class Player extends Observable implements Entity {
 
     public boolean isDead() {
         if (health <= 0) {
+            dying = true;
             return true;
         }
         return false;

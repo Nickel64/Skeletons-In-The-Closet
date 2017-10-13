@@ -461,7 +461,7 @@ public class Room {
      * @param entity that is initialising attack
      */
     public void checkAttackAOE(Entity entity) {
-        if (getPlayer().getSpecial() - 10 > 0) {
+        if (getPlayer().getSpecial() - 10 >= 0) {
             getPlayer().setSpecial(getPlayer().getSpecial() - 10);
         }
             Point attacker = findPoint(entity);
@@ -493,6 +493,7 @@ public class Room {
             if (horiLeft && vertDown) attack(attacker, new Point(x - 1, y + 1));     //bottom left
             if (horiRight && vertUp) attack(attacker, new Point(x + 1, y - 1));      //top right
             if (horiRight && vertDown) attack(attacker, new Point(x + 1, y + 1));    //bottom right
+            player.attackAOE();
     }
 
     /**
