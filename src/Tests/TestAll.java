@@ -11,94 +11,122 @@ import Model.Model;
 import Utils.GameError;
 import org.junit.*;
 
-import java.util.Scanner;
-import java.util.Stack;
+import java.awt.*;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
 public class TestAll {
-    public String[] tests = {"ModelTests", "PathfinderTests"};
-
 
     /**
-     * Used to test that a path between a point and itself just returns itself (a.k.a no movement)
+     * Used to test that there is no path between a point and itself(a.k.a no movement)
      */
-    /**
     @Test
-    public void test_pathfind_EmptyGridSuccess1(){
-        Tile[][] grid = new Tile[10][10];
-        Stack<int[]> path = Pathfinder.findPath(new int[]{0,0}, new int[]{0,0}, grid);
-        Stack<int[]> expected = createExpected(new int[][]{{0,0}});
-        checkEmptyGrid(expected, path);
+    public void test_pathFind_Success1(){
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "6 5\n" +
+                        ". . . . . . \n" +
+                        ". . . . . . \n" +
+                        ". . . . . . \n" +
+                        ". . . . . . \n" +
+                        ". . . . . . ";
+        try {
+            Scanner sc = new Scanner(simpleMap);
+            m.read(sc);
+            Room r = m.getCurrentRoom();
+            Queue<Point> path = Pathfinder.findPath(new Point(0,0), new Point(0,0), r);
+            Queue<Point> expected = createExpected(new Point[] {});
+            checkPaths(expected, path);
+        } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
     }
-    **/
 
     /**
-     * Tests a path between 0,0 and 2,2 on an empty board
+     * Used to test that there is a path between 0,0 and 2,0
      */
-    /**
     @Test
-    public void test_pathfind_EmptyGridSuccess2(){
-        Tile[][] grid = new Tile[10][10];
-        Stack<int[]> path = Pathfinder.findPath(new int[]{0,0}, new int[]{2,2}, grid);
-        Stack<int[]> expected = createExpected(new int[][]{{0,0}, {1,0}, {2,0}, {2,1}, {2,2}});
-        checkEmptyGrid(expected, path);
+    public void test_pathFind_Success2(){
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "6 5\n" +
+                        ". . . . . . \n" +
+                        ". . . . . . \n" +
+                        ". . . . . . \n" +
+                        ". . . . . . \n" +
+                        ". . . . . . ";
+        try {
+            Scanner sc = new Scanner(simpleMap);
+            m.read(sc);
+            Room r = m.getCurrentRoom();
+            Queue<Point> path = Pathfinder.findPath(new Point(0,0), new Point(2,0), r);
+            Queue<Point> expected = createExpected(new Point[] {new Point(0,0), new Point(1,0), new Point(2,0)});
+            checkPaths(expected, path);
+        } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
     }
-    **/
 
     /**
-     * Tests a path between 0,0 and 3,3 on an empty board
+     * Used to test that there is a path between 0,0 and 2,2
      */
-    /**
     @Test
-    public void test_pathfind_EmptyGridSuccess3(){
-        Tile[][] grid = new Tile[10][10];
-        Stack<int[]> path = Pathfinder.findPath(new int[]{0,0}, new int[]{3,3}, grid);
-        Stack<int[]> expected = createExpected(new int[][]{{0,0}, {1,0}, {2,0}, {3,0}, {3,1}, {3,2}, {3,3}});
-        checkEmptyGrid(expected, path);
+    public void test_pathFind_Success3(){
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "6 5\n" +
+                        ". . . . . . \n" +
+                        ". . . . . . \n" +
+                        ". . . . . . \n" +
+                        ". . . . . . \n" +
+                        ". . . . . . ";
+        try {
+            Scanner sc = new Scanner(simpleMap);
+            m.read(sc);
+            Room r = m.getCurrentRoom();
+            Queue<Point> path = Pathfinder.findPath(new Point(0,0), new Point(2,2), r);
+            Queue<Point> expected = createExpected(new Point[] {new Point(0,0), new Point(0,1), new Point(1,1), new Point(1,2), new Point(2,2)});
+            checkPaths(expected, path);
+        } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
     }
-    **/
 
     /**
-     * Used to test that the pathfinder will not attempt to move into negative positions
+     * Used to test that there is a path between 0,0 and 2,2
      */
-    /**
     @Test
-    public void test_pathfind_EmptyGridFail1(){
-        Tile[][] grid = new Tile[10][10];
-        Stack<int[]> path = Pathfinder.findPath(new int[]{0,0}, new int[]{-1,-1}, grid);
-        //Stack<int[]> expected = createExpected(new int[][]{{0,0}, {1,0}, {2,0}, {3,0}, {3,1}, {3,2}, {3,3}});
-        Stack<int[]> expected = new Stack<>();
-        checkEmptyGrid(expected, path);
+    public void test_pathFind_Success4(){
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "6 5\n" +
+                        ". . . . . . \n" +
+                        ". . * . . . \n" +
+                        ". . . . . . \n" +
+                        ". . . . . . \n" +
+                        ". . . . . . ";
+        try {
+            Scanner sc = new Scanner(simpleMap);
+            m.read(sc);
+            Room r = m.getCurrentRoom();
+            Queue<Point> path = Pathfinder.findPath(new Point(1,1), new Point(3,1), r);
+            Queue<Point> expected = createExpected(new Point[] {new Point(1,1), new Point(1,2), new Point(2,2), new Point(3,2), new Point(3,1)});
+            checkPaths(expected, path);
+        } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
     }
-    **/
 
-    /**
-     * Used to check that the pathfinder will not move into positions outside the right edge of the board
-     */
-    /**
-    @Test
-    public void test_pathfind_EmptyGridFail2(){
-        Tile[][] grid = new Tile[10][10];
-        Stack<int[]> path = Pathfinder.findPath(new int[]{0,0}, new int[]{11,11}, grid);
-        //Stack<int[]> expected = createExpected(new int[][]{{0,0}, {1,0}, {2,0}, {3,0}, {3,1}, {3,2}, {3,3}});
-        Stack<int[]> expected = new Stack<>();
-        checkEmptyGrid(expected, path);
-    }
-    **/
 
-    /**
-     * Used to check that the pathfinder will not move into positions outside the right edge of the board
-     */
-    /**
-    @Test
-    public void test_pathfind_EmptyGridFail3(){
-        Tile[][] grid = new Tile[10][10];
-        Stack<int[]> path = Pathfinder.findPath(new int[]{0,0}, new int[]{10,10}, grid);
-        Stack<int[]> expected = new Stack<>();
-        checkEmptyGrid(expected, path);
-    }
-    **/
 
     /**
      * Helper method used to compare two Stacks of integer arrays
@@ -111,19 +139,20 @@ public class TestAll {
      *      Stack of int array objects
      *      each int array {x,y}
      */
-    public void checkEmptyGrid(Stack<int[]> expected, Stack<int[]> path){
-        if(expected.size() != path.size()) fail("Expected path not the same length as actual path");
+    private void checkPaths(Queue<Point> expected, Queue<Point> path){
 
         System.out.println();
-        for(int[] pathPiece: path){
-            System.out.println(pathPiece[0] + " " + pathPiece[1]);
+        for(Point pathPiece: path){
+            System.out.println(pathPiece.x + " " + pathPiece.y);
         }
 
+        if(expected.size() != path.size()) fail("Expected path not the same length as actual path");
+
         for(int i = 0; i < expected.size(); i++){
-            int[] exp = expected.pop();
-            int[] act = path.pop();
-            assertEquals(exp[0], act[0]);
-            assertEquals(exp[1], act[1]);
+            Point exp = expected.poll();
+            Point act = path.poll();
+            assertEquals(exp.x, act.x);
+            assertEquals(exp.y, act.y);
         }
     }
 
@@ -138,11 +167,9 @@ public class TestAll {
      * @return
      *      Stack containing all of the inner arrays
      */
-    public Stack<int[]> createExpected(int[][] toUse){
-        Stack<int[]> expected = new Stack<>();
-        for(int i = 0; i < toUse.length; i++){
-            expected.add(toUse[i]);
-        }
+    public LinkedList<Point> createExpected(Point[] toUse){
+        LinkedList<Point> expected = new LinkedList<>();
+        expected.addAll(Arrays.asList(toUse));
         return expected;
     }
 

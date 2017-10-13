@@ -1,12 +1,8 @@
 package Behaviour;
 
-import Entities.Enemy;
 import Entities.Player;
 import Map.Room;
-import Map.Tile;
-import Utils.GameError;
 import Utils.Resources;
-import com.sun.org.apache.regexp.internal.RE;
 
 import java.awt.*;
 import java.util.*;
