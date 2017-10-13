@@ -4,11 +4,10 @@ import Behaviour.Pathfinder;
 import Entities.Enemy;
 import Entities.Entity;
 import Entities.Player;
-import Entities.PowerUp;
 import Map.Room;
-import Map.Tile;
 import Model.Model;
 import Utils.GameError;
+import Utils.SaveLoad;
 import org.junit.*;
 
 import java.awt.*;
@@ -1494,6 +1493,78 @@ public class TestAll {
             error.printStackTrace();
             fail(error.getMessage());
         }
+    }
+
+    @Test
+    public void test_saveLoad_Success1(){
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * + . . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+
+        SaveLoad saveLoad = new SaveLoad();
+        saveLoad.save(m);
+
+        Point prevPlayer = m.getPlayerLocation();
+        m.moveEntity(m.getPlayer(), Entity.Direction.Up);
+        assertNotEquals(prevPlayer, m.getPlayerLocation());
+
+        m = saveLoad.load((String) saveLoad.saves.keySet().toArray()[0]);
+
+        assertEquals(prevPlayer, m.getPlayerLocation());
+    }
+
+    @Test
+    public void test_saveLoad_Success2(){
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * + . . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+
+        SaveLoad saveLoad = new SaveLoad();
+        saveLoad.save(m);
+
+        Point prevPlayer = m.getPlayerLocation();
+        m.moveEntity(m.getPlayer(), Entity.Direction.Up);
+
+        Point player2point = m.getPlayerLocation();
+        assertNotEquals(prevPlayer, player2point);
+
+        saveLoad.save(m);
+
+        assert(saveLoad.saves.keySet().size() > 1);
+
+        m = saveLoad.load((String) saveLoad.saves.keySet().toArray()[1]);
+        assertEquals(player2point, m.getPlayerLocation());
+
     }
 
 }

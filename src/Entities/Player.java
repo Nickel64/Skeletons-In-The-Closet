@@ -246,6 +246,10 @@ public class Player extends Observable implements Entity, java.io.Serializable {
         return false;
     }
 
+    /**
+     * Used to Reset the TileSet
+     * after this class is Deserialized
+     */
     public void resetPlayer(){
         images = new EntitySet(true, 0);
     }

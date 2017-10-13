@@ -195,7 +195,6 @@ public class View extends JComponent implements Observer{
                   JOptionPane.showMessageDialog(frame, "Unable to load");
                 }
                 else pauseMenuToggle();
-                //replaceModel(saveLoad.load(""));
             }
         });
 
