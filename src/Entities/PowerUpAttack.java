@@ -76,6 +76,6 @@ public class PowerUpAttack implements PowerUp, java.io.Serializable {
         p.increaseAttack(1);
     }
 
-    public void ping(){}
 
+    public boolean ping(){return false;}
 }

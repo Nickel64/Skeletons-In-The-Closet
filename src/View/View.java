@@ -129,8 +129,12 @@ public class View extends JComponent implements Observer{
         }
 
         g.drawImage(border, 0, this.getHeight()-border.getHeight(null),null);
-
-        //drawShadows(gg, model.getPlayerLocation());
+        //the AoE should go over the top
+        if(model.getPlayer().isPlayerAttackAoE()){
+            int x = (model.getPlayerLocation().x*tileSize)+startX-tileSize;
+            int y = (model.getPlayerLocation().y*tileSize)+startY-tileSize;
+            g.drawImage(model.getPlayer().getAoE(), x, y, null);
+        }
 
         long end = System.currentTimeMillis()-start;
         if(Resources.DEBUG) System.out.println("View update took ms " + end);
@@ -371,7 +375,12 @@ public class View extends JComponent implements Observer{
             return;
         else if(e instanceof Player){
             Player p = (Player) e;
-            g.drawImage(p.getIdle(), x,y,null);
+            if(p.isPlayerAttack()){
+
+            }
+            else {
+                g.drawImage(p.getIdle(), x, y, null);
+            }
             if(p.isDefending()){
                 g.drawImage(p.getDefending(), x,y,null);
             }

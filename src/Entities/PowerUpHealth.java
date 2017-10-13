@@ -76,5 +76,5 @@ public class PowerUpHealth implements PowerUp, java.io.Serializable {
         return "`";
     }
 
-    public void ping(){}
+    public boolean ping(){return false;}
 }

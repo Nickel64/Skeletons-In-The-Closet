@@ -95,8 +95,6 @@ public class Enemy extends Observable implements Entity, java.io.Serializable {
         return level+"";
     }
 
-    public void ping(){
 
-    }
-
+    public boolean ping(){return false;}
 }

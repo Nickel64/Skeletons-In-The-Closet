@@ -52,5 +52,5 @@ public class Nothing implements Entity, java.io.Serializable {
         return 0;
     }
 
-    public void ping(){}
-}
+
+    public boolean ping(){return false;}}

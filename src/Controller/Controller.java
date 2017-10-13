@@ -36,7 +36,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     }
 
     private void startLoop() {
-        new Timer(300, (e) -> {
+        new Timer(50, (e) -> {
             if(!view.pauseMenuVisible) {
                 this.model.getCurrentRoom().ping(model);
                 view.repaint();
@@ -198,14 +198,17 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                      if(System.currentTimeMillis() - timeLastAction < COOLDOWN) return;
                     switch(buttonName) {
                         case "Attack":
-                            model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
+                            //model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
+                            model.getPlayer().startAction("atk");
                             break;
                         case "Defend":
                             model.getPlayer().toggleGuard();
                             view.repaint();
                             break;
                         case "AOE":
-                            model.checkAttackAOE(model.getPlayer());
+                            //model.checkAttackAOE(model.getPlayer());
+                            if(model.getPlayer().getSpecial() >= 10)
+                                model.getPlayer().startAction("aoe");
                             if(Resources.DEBUG){
                                 System.out.println(model.getPlayer().getSpecial());
                             }

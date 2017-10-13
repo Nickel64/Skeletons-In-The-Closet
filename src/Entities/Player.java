@@ -1,6 +1,7 @@
 package Entities;
 
 import Utils.EntitySet;
+import Utils.Resources;
 
 import java.awt.*;
 import java.util.Observable;
@@ -228,15 +229,52 @@ public class Player extends Observable implements Entity, java.io.Serializable {
     }
     public Image getDefending(){return images.getDefending();}
 
-    public void ping(){
-        //stuff incoming
-        if(animCount < 6){
-            animCount++;
-        }
 
+    public Image getAoE(){return images.getAoE();}
+
+    public boolean ping(){
+        //stuff incoming
+        if(attacking || aoe) {
+            if (animCount < 6) {
+                animCount++;
+                if(Resources.DEBUG) System.out.println("Player Animation progress: " + animCount);
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void resetPlayer(){
         images = new EntitySet(true, 0);
+    }
+
+    public boolean isPlayerAttack(){return this.attacking;}
+    public boolean isPlayerAttackAoE(){return this.aoe;}
+    public boolean isPlayerDying(){return this.isDead();}
+
+    public void resetPlayerActions(String action){
+        switch(action){
+            case "atk":
+                attacking = false;
+                break;
+            case "aoe":
+                aoe = false;
+                break;
+        }
+        this.animCount = 0;
+    }
+
+    public void startAction(String action){
+        switch(action){
+            case "atk":
+                attacking = true;
+                break;
+            case "aoe":
+                aoe = true;
+                break;
+        }
+        this.animCount = 0;
     }
 }

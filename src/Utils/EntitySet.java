@@ -46,6 +46,10 @@ public class EntitySet {
 
     public Image getDefending(){return defending;}
 
+    public Image getAoE(){
+        return AoE;
+    }
+
     public Image[] getMoveSequence(int direction){
         return movements[direction];
     }

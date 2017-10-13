@@ -529,8 +529,21 @@ public class Room implements java.io.Serializable{
 
     public void ping(Model m) {
 
-        if(player != null) player.ping();
+        boolean actComplete = false;
 
+        if(player != null) {
+            actComplete = player.ping();
+            if(actComplete) {   //some action is completed
+                if (player.isPlayerAttack()) {
+                    player.resetPlayerActions("atk");
+                    this.checkAttack(player, player.getDir());
+                }
+                if (player.isPlayerAttackAoE()) {
+                    player.resetPlayerActions("aoe");
+                    this.checkAttackAOE(player);
+                }
+            }
+        }
         for(Entity entity : getEnemies()) {
             String message = "atk";
             Point p = findPoint(entity);

@@ -64,5 +64,5 @@ public class Decor implements Entity, java.io.Serializable {
         return false;
     }
 
-    public void ping(){}
-}
+
+    public boolean ping(){return false;}}

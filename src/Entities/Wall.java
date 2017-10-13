@@ -60,5 +60,5 @@ public class Wall implements Entity, java.io.Serializable {
         return "*";
     }
 
-    public void ping(){}
-}
+
+    public boolean ping(){return false;}}
