@@ -4,7 +4,7 @@ import Entities.Entity;
 
 import javax.print.DocFlavor;
 
-public class OneWayEntryTeleport implements Tile {
+public class OneWayEntryTeleport implements Tile, java.io.Serializable {
 
     private Entity entity;
     private String connectedRoomName;

@@ -11,7 +11,6 @@ import Utils.Resources;
 import Utils.TileSet;
 
 import java.awt.*;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.List;
 
@@ -22,7 +21,7 @@ import java.util.List;
  * @author Balgmi Nam
  */
 
-public class Room {
+public class Room implements java.io.Serializable{
 
     private Tile[][] layout;
     private Map<String, DoorTile> doors;
@@ -33,7 +32,7 @@ public class Room {
     private int width;
     private int height;
     private boolean cleared = false;
-    private TileSet tiles;
+    private transient TileSet tiles;
     private OneWayExitTeleport exit;
 
     public Room(String name) {
@@ -566,5 +565,9 @@ public class Room {
 
             if(Resources.DEBUG) System.out.println(message);
         }
+    }
+
+    public void resetTileSet(){
+        this.tiles = new TileSet(level);
     }
 }

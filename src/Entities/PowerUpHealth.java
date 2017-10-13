@@ -3,7 +3,7 @@ package Entities;
 /**
  * Created by Shlomoburg on 8/10/2017.
  */
-public class PowerUpHealth implements PowerUp{
+public class PowerUpHealth implements PowerUp, java.io.Serializable {
 
     public PowerUpHealth(){
 

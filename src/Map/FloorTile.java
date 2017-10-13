@@ -7,7 +7,7 @@ import Entities.*;
  * Created: 19/9/17
  * @author Balgmi Nam
  */
-public class FloorTile implements Tile {
+public class FloorTile implements Tile, java.io.Serializable {
 
     private Entity entity;
 

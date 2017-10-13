@@ -7,7 +7,7 @@ import java.util.Observable;
 /**
  * Created by Shlomoburg on 19/09/2017.
  */
-public class Player extends Observable implements Entity {
+public class Player extends Observable implements Entity, java.io.Serializable {
     private Direction dir = Direction.Right;
 
     private int health = 100; // how much health the unit has
@@ -26,7 +26,7 @@ public class Player extends Observable implements Entity {
     private boolean aoe = false;
     private int animCount = 0;  //max value of 6
 
-    private EntitySet images;
+    private transient EntitySet images;
 
     public Player(int health, int damage) {
         this.health = health;
@@ -234,5 +234,9 @@ public class Player extends Observable implements Entity {
             animCount++;
         }
 
+    }
+
+    public void resetPlayer(){
+        images = new EntitySet(true, 0);
     }
 }

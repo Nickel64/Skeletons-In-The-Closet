@@ -3,7 +3,7 @@ package Entities;
 /**
  * Created by Shlomoburg on 19/09/2017.
  */
-public class Wall implements Entity {
+public class Wall implements Entity, java.io.Serializable {
 
     private int level;
 

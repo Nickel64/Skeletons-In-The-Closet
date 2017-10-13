@@ -188,9 +188,10 @@ public class View extends JComponent implements Observer{
             public void actionPerformed(ActionEvent e) {
                 int result = JOptionPane.showOptionDialog(frame, "Select a Save File to Load", "Load a Saved Game", 0, 0, null, saveLoad.saves.keySet().toArray(), saveLoad.saves.get(saveLoad.saves.keySet().toArray()[0]));
                 if(!replaceModel(saveLoad.load((String) saveLoad.saves.keySet().toArray()[result]))){
-                    JOptionPane.showMessageDialog(frame, "Unable to load");
+                  JOptionPane.showMessageDialog(frame, "Unable to load");
                 }
                 else pauseMenuToggle();
+                //replaceModel(saveLoad.load(""));
             }
         });
 

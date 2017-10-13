@@ -24,7 +24,7 @@ import java.util.Scanner;
  * Created: 19/9/17
  * @author Balgmi Nam
  */
-public class Model extends Observable {
+public class Model extends Observable implements java.io.Serializable {
 
     private static final String fileName = "map.txt";   //will be using txt to create layout of world
     private Map<String, Room> map;  //map of room names and rooms for easy access when moving room to room
@@ -160,11 +160,20 @@ public class Model extends Observable {
 
     public String serialise(){
         StringBuffer buffer = new StringBuffer();
-        //buffer.append("Model: \n");
         for(String str: map.keySet()){
             buffer.append(map.get(str).toString());
         }
         return buffer.toString();
+    }
+
+    /**
+     * Used to restart the game after Deserialization
+     */
+    public void resetGame(){
+        for(Room room: map.values()){
+            room.resetTileSet();
+        }
+        getPlayer().resetPlayer();
     }
 
     public void startGameLoop(){

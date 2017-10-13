@@ -3,7 +3,7 @@ package Entities;
 /**
  * Created by Shlomoburg on 19/09/2017.
  */
-public class Nothing implements Entity {
+public class Nothing implements Entity, java.io.Serializable {
     public boolean inAggroRange(){throw new Error();}
     public boolean isDead(){return false;}
     public void damaged(int damage){}

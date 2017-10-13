@@ -2,7 +2,7 @@ package Map;
 
 import Entities.Entity;
 
-public class OneWayExitTeleport implements Tile {
+public class OneWayExitTeleport implements Tile, java.io.Serializable {
 
     private Entity entity;
 

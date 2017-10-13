@@ -1,10 +1,8 @@
 package Utils;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.io.*;
+import java.util.*;
+
 import Model.*;
 
 /**
@@ -27,6 +25,7 @@ public class SaveLoad {
     public boolean save(Model m){
         if(m == null) return false;
 
+        /**
         StringBuffer serialised = new StringBuffer();
 
         serialised.append(m.serialise());
@@ -34,6 +33,25 @@ public class SaveLoad {
         if(Resources.DEBUG) System.out.println(saveName + " saved!");
         System.out.println(serialised.toString());
         saves.put(saveName, serialised.toString());
+        **/
+
+        String saveName = new Date().toString();
+
+        try {
+            //FileOutputStream fout = new FileOutputStream("/tmp/save.ser");
+            ByteArrayOutputStream fout = new ByteArrayOutputStream();
+            ObjectOutputStream oout = new ObjectOutputStream(fout);
+
+            oout.writeObject(m);
+            oout.flush();
+
+            saves.put(saveName, Base64.getEncoder().encodeToString(fout.toByteArray()));
+            if(Resources.DEBUG) System.out.println(saveName + " saved!");
+
+        } catch(IOException e){
+            e.printStackTrace();
+            throw new GameError(e.getMessage());
+        }
 
         return true;
     }
@@ -43,6 +61,7 @@ public class SaveLoad {
      */
     public Model load(String saveName){
 
+        /**
         if(Resources.DEBUG) System.out.println("Loading: " + saveName);
         String str = saves.get(saveName);
 
@@ -53,7 +72,25 @@ public class SaveLoad {
             e.printStackTrace();
         }
 
-        return newModel;
+         **/
+
+        try {
+            if(Resources.DEBUG) System.out.println("Loading: " + saveName);
+            String str = saves.get(saveName);
+            byte[] dataIn = Base64.getDecoder().decode(str);
+            ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(dataIn));
+
+            Model newModel = (Model) oin.readObject();
+            oin.close();
+            newModel.resetGame();
+            return newModel;
+
+        } catch (Exception e){
+            e.printStackTrace();
+            throw new GameError(e.getMessage());
+        }
+
+
     }
 
 }
