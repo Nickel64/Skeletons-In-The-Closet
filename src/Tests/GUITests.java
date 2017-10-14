@@ -16,6 +16,7 @@ import static org.junit.Assert.*;
 
 
 public class GUITests {
+    /**
     @Test
     public void test_GUIKeyboard_move_UP_1(){
         Model m = new Model();

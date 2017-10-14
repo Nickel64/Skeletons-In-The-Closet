@@ -31,7 +31,7 @@ public class Nothing implements Entity, java.io.Serializable {
     public void attack(Entity entity){}
 
     public boolean canMove() {
-        return true;
+        return false;
     }
 
     public boolean canStepOn() {
