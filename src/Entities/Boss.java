@@ -18,7 +18,7 @@ public class Boss extends Enemy {
     public void damaged(int damageAmount) {
         super.damaged(damageAmount);
         if(isDead())
-            Resources.playAudio("DoorUnlocked.wav");
+            Resources.playAudio("DamageEnemy.wav");
     }
 
 
@@ -27,6 +27,10 @@ public class Boss extends Enemy {
     }
 
     public Image getIdle() {
+        System.out.println(images);
+        System.out.println(dir);
+        System.out.println(dir.ordinal());
+
         return images.getIdle(dir.ordinal());
     }
 

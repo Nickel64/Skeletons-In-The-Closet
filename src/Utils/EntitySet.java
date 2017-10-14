@@ -33,7 +33,7 @@ public class EntitySet {
             //otherwise, it must be an enemy
             else if (boss) {
                 for (int n = 0; n < 4; n++) {
-                    idle[n] = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/Boss/BossIdle" + n + ".png"));
+                    idle[n] = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/Boss/BossIdle_" + n + ".png"));
 
                     //attacks
                     for(int i = 0; i < 6; i++){

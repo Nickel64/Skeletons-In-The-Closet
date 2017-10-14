@@ -1,7 +1,7 @@
 HotConnectionHubWorld 1
 13 9
 . . LvlFourOne . . . LvlFinalOne . . . LvlSixOne . .
-. . . . . . . . . . . . .
+10 . . . . . . . . . . . .
 . . * . . . . ~ . . * . LvlFiveLabyrinth
 . . . . . . . . . . . . .
 LvlTwoOne . . . . . + . . . . . .

@@ -37,6 +37,7 @@ public class Enemy extends Observable implements Entity, java.io.Serializable {
         this.maxHealth = health;
         this.damage = damage;
         this.speed = speed;
+        dir = Direction.Right;
         images = new EntitySet(false, false, level);
     }
 
