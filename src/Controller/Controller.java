@@ -13,7 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Queue;
-import java.util.Stack;
 
 /** * * * * * * * * * * * * *
  * Controller class
@@ -26,6 +25,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     private View view;
     private static final int COOLDOWN = 300;
     private long timeLastAction = -COOLDOWN;
+    private int bgmIteration = 0;
 
     private boolean inAutoMovement = false;
 
@@ -37,6 +37,10 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
     private void startLoop() {
         new Timer(50, (e) -> {
+            if((bgmIteration++ % 3880) == 0) {
+                bgmIteration = 1;
+                Resources.playAudio("Background.wav");
+            }
             if(!view.pauseMenuVisible) {
                 this.model.getCurrentRoom().ping(model);
                 view.repaint();
@@ -93,9 +97,9 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         else if(code == KeyEvent.VK_Q){
             if(view.pauseMenuVisible || System.currentTimeMillis() - timeLastAction < COOLDOWN)
                 return;
-            //model.checkAttackAOE(model.getPlayer());
-            if(model.getPlayer().getSpecial() >= 10)
+            if(model.getPlayer().getSpecial() >= 10) {
                 model.getPlayer().startAction("aoe");
+            }
             timeLastAction = System.currentTimeMillis();
         }
         else if(code == KeyEvent.VK_CONTROL) {
@@ -211,8 +215,9 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                             view.repaint();
                             break;
                         case "AOE":
-                            if(model.getPlayer().getSpecial() >= 10)
+                            if(model.getPlayer().getSpecial() >= 10) {
                                 model.getPlayer().startAction("aoe");
+                            }
                             if(Resources.DEBUG){
                                 System.out.println(model.getPlayer().getSpecial());
                             }

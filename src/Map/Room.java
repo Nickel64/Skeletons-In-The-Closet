@@ -34,7 +34,7 @@ public class Room implements java.io.Serializable{
     private boolean cleared = false;
     private transient TileSet tiles;
     private OneWayExitTeleport exit;
-    private int pingCount = 0;
+    private int pingLoop = 0;
 
     public Room(String name) {
         this.exit = null;
@@ -550,8 +550,8 @@ public class Room implements java.io.Serializable{
                 }
             }
         }
-        if(pingCount++ == 15-(level)) {
-            pingCount = 0;
+        if(pingLoop++ == 15-level) {
+            pingLoop = 0;
             for(Entity entity : getEnemies()) {
                 String message = "atk";
                 Point p = findPoint(entity);
@@ -583,6 +583,7 @@ public class Room implements java.io.Serializable{
                     if (Resources.DEBUG) System.out.println("MOVING ENEMY: " + dir);
 
                 }
+
                 if (Resources.DEBUG) System.out.println(message);
             }
         }

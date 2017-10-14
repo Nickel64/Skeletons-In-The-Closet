@@ -164,13 +164,16 @@ public class Player extends Observable implements Entity, java.io.Serializable {
             int beforeSpecial = special;
             this.special -= damageAmount;
             damageAmount = damageAmount - beforeSpecial;
+            Resources.playAudio("ShieldHit.wav");
             if (damageAmount > 0) { //defence broken
                 defending = false;
                 this.health = this.health - damageAmount;
+                Resources.playAudio("Defend.wav");
                 System.out.println("Play a guard breaking sound here");
             }
         } else {
             this.health = this.health - damageAmount;
+            Resources.playAudio("DamagePlayer.wav");
             System.out.println(this.health);
         }
         notifyObservers();
@@ -274,9 +277,11 @@ public class Player extends Observable implements Entity, java.io.Serializable {
         switch(action){
             case "atk":
                 attacking = true;
+                Resources.playAudio("PlayerAttack.wav");
                 break;
             case "aoe":
                 aoe = true;
+                Resources.playAudio("AoE.wav");
                 break;
         }
         this.animCount = 0;
