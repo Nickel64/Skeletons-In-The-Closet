@@ -229,13 +229,16 @@ public class Player extends Observable implements Entity, java.io.Serializable {
     }
     public Image getDefending(){return images.getDefending();}
 
-
     public Image getAoE(){return images.getAoE();}
+
+    public Image getAttack(){
+        return images.getAttack(dir.ordinal(), animCount);
+    }
 
     public boolean ping(){
         //stuff incoming
         if(attacking || aoe) {
-            if (animCount < 6) {
+            if (animCount < 5) {
                 animCount++;
                 if(Resources.DEBUG) System.out.println("Player Animation progress: " + animCount);
                 return false;

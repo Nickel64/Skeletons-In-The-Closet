@@ -10,7 +10,6 @@ import java.io.IOException;
 public class EntitySet {
 
     private Image[] idle = new Image[4];
-    private Image[][] movements;
     private Image[][] attacks = new Image[4][6];
     Image defending;
     Image AoE;
@@ -22,10 +21,10 @@ public class EntitySet {
                 for (int n = 0; n < 4; n++) {
                     idle[n] = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/Player/PlayerIdle" + n + ".png"));
 
-                    //walks and attacks
-                    //for(int i = 0; i < 6; i++){
-                        //attacks[n][i] = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/Player/PlayerAttack" +2+"_"+ i + ".png"));
-                   // }
+                    //attacks
+                    for(int i = 0; i < 6; i++){
+                        attacks[n][i] = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/Player/PlayerAttack" + n +"_"+ i + ".png"));
+                    }
                 }
                 defending = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/Player/shield.png"));
                 AoE = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/Player/AoE.png"));
@@ -50,11 +49,7 @@ public class EntitySet {
         return AoE;
     }
 
-    public Image[] getMoveSequence(int direction){
-        return movements[direction];
-    }
-
-    public Image[] getAttackSequence(int direction){
-        return attacks[direction];
+    public Image getAttack(int direction, int stage){
+        return attacks[direction][stage];
     }
 }

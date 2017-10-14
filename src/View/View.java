@@ -375,7 +375,7 @@ public class View extends JComponent implements Observer{
         else if(e instanceof Player){
             Player p = (Player) e;
             if(p.isPlayerAttack()){
-
+                g.drawImage(p.getAttack(), x, y, null);
             }
             else {
                 g.drawImage(p.getIdle(), x, y, null);
