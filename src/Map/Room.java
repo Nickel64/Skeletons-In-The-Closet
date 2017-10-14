@@ -612,6 +612,7 @@ public class Room implements java.io.Serializable {
                 playerProx = Direction.Down;
             }
 
+            this.checkEnemyAttack(e, playerProx);
 
             if (pingLoop++ == 15 - level) {
                 pingLoop = 0;
@@ -619,7 +620,6 @@ public class Room implements java.io.Serializable {
                     if (!e.isEnemyAttack()) {
                         e.startAction("atk");
                     }
-                    this.checkEnemyAttack(e, playerProx);
                 }
                 else {
                     message = "";
