@@ -620,6 +620,7 @@ public class Room implements java.io.Serializable {
                 if (playerProx != null) {
                     e.setDirection(playerProx);
                     if (!e.isEnemyAttack()) {
+                        e.setDirection(playerProx);
                         e.startAction("atk");
                     }
                 }

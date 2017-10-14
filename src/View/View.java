@@ -5,10 +5,8 @@ import Model.*;
 import Utils.*;
 import Entities.*;
 import Controller.*;
-import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -133,7 +131,8 @@ public class View extends JComponent implements Observer{
         else if(!pauseMenuVisible){
             drawWorld(gg);
             //drawNewShadows(gg, model.getCurrentRoom());
-                drawShadows(gg, model.getPlayerLocation());
+            drawAllEntities(model, gg);
+            drawShadows(gg, model.getPlayerLocation());
         }
         else{
             showPauseMenu(gg);
@@ -392,7 +391,7 @@ public class View extends JComponent implements Observer{
         }
 
         if(tile.getEntity() != null){
-            drawEntity(g, tile.getEntity(), tileSet, x,y);
+            //drawEntity(g, tile.getEntity(), tileSet, x,y);
         }
     }
 
@@ -454,8 +453,6 @@ public class View extends JComponent implements Observer{
             int endX =(int) Math.ceil(((double)tileSize/temp.getMaxHealth())*temp.getHealth());
             g.fillRect(x, y-tileSize/6,endX, tileSize/6);
         }
-
-
 
         else if(e instanceof PowerUp){
             PowerUp p = (PowerUp) e;
@@ -679,5 +676,14 @@ public class View extends JComponent implements Observer{
             }
         }
         return new int[] {-1, -1};
+    }
+
+    public void drawAllEntities(Model model, Graphics2D g){
+        for(int y = 0; y < model.getCurrentRoom().getHeight(); y++){
+            for(int x = 0; x < model.getCurrentRoom().getWidth(); x++){
+                if(model.getCurrentRoom().getEntityAt(x,y) != null)
+                    drawEntity(g, model.getCurrentRoom().getEntityAt(x,y),model.getCurrentRoom().getTileSet(), startX + (tileSize*x),startY + (tileSize*y));
+            }
+        }
     }
 }
