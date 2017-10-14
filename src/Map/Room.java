@@ -457,7 +457,13 @@ public class Room implements java.io.Serializable{
      */
     public void checkAttack(Entity entity, Direction direction) {
         Point p = findPoint(entity);
-        Point destP = movesTo(p.x, p.y, direction);
+        Point destP = null;
+        try{
+            destP = movesTo(p.x, p.y, direction);
+        }
+        catch(GameError g){
+            return;
+        }
         //is the attacker a player
         //if it is, then set the player attack boolean to true
         //ping will check if animation is complete when it is called
