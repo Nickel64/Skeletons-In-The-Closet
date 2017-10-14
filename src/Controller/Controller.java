@@ -37,7 +37,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
     private void startLoop() {
         new Timer(50, (e) -> {
-            if((bgmIteration++ % 3880) == 0) {
+            if((bgmIteration++ % 3880) == 0) { //bgm is 194s * 20 pings/sec
                 bgmIteration = 1;
                 Resources.playAudio("Background.wav");
             }
