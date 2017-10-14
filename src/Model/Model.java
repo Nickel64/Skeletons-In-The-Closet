@@ -50,7 +50,6 @@ public class Model extends Observable implements java.io.Serializable {
     public void initialise(String str) throws IOException{
         Scanner sc = new Scanner(str);
         read(sc);
-        startGameLoop();
     }
 
     /**
@@ -158,14 +157,6 @@ public class Model extends Observable implements java.io.Serializable {
         return this.currentRoom;
     }
 
-    public String serialise(){
-        StringBuffer buffer = new StringBuffer();
-        for(String str: map.keySet()){
-            buffer.append(map.get(str).toString());
-        }
-        return buffer.toString();
-    }
-
     /**
      * Used to restart the game after Deserialization
      */
@@ -176,6 +167,7 @@ public class Model extends Observable implements java.io.Serializable {
         getPlayer().resetPlayer();
     }
 
+    /**
     public void startGameLoop(){
         //TODO in the current room, ping everything in a loop
         //TODO enemies attack
@@ -187,4 +179,5 @@ public class Model extends Observable implements java.io.Serializable {
         //gets reset at the end of the attack
         //death animations, too
     }
+     **/
 }

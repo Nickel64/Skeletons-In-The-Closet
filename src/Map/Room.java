@@ -157,6 +157,11 @@ public class Room implements java.io.Serializable{
     }
 
     /**
+     * Return the Name of this room
+     */
+    public String getName(){return name;}
+
+    /**
      * Returns the point of the player within the room layout, if player is not found return null
      * @return Point of player in room
      */

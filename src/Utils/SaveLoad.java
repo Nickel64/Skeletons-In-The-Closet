@@ -54,7 +54,10 @@ public class SaveLoad {
 
         try {
             if(Resources.DEBUG) System.out.println("Loading: " + saveName);
+
             String str = saves.get(saveName);
+            if(str == null) return null;
+
             byte[] dataIn = Base64.getDecoder().decode(str);
             ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(dataIn));
 
