@@ -534,10 +534,9 @@ public class Room implements java.io.Serializable{
 
     public void ping(Model m) {
 
-        boolean actComplete = false;
 
         if(player != null) {
-            actComplete = player.ping();
+            boolean actComplete = player.ping();
             if(actComplete) {   //some action is completed
                 if (player.isPlayerAttack()) {
                     player.resetPlayerActions("atk");
@@ -550,16 +549,34 @@ public class Room implements java.io.Serializable{
             }
         }
         for(Entity entity : getEnemies()) {
+            Enemy e = (Enemy) entity;
             String message = "atk";
             Point p = findPoint(entity);
-            if(p.x > 0 && getEntityAt(p.x-1,p.y) instanceof Player)
-                checkAttack(getEntityAt(p.x, p.y), Direction.Left);
-            else if(p.x+1 < getWidth() && getEntityAt(p.x+1,p.y) instanceof Player)
-                checkAttack(getEntityAt(p.x,p.y),Direction.Right);
-            else if(p.y > 0 && getEntityAt(p.x,p.y-1) instanceof Player)
-                checkAttack(getEntityAt(p.x, p.y), Direction.Up);
-            else if(p.y+1 < getHeight() && getEntityAt(p.x,p.y+1) instanceof Player)
-                checkAttack(getEntityAt(p.x,p.y), Direction.Down);
+
+            Direction playerProx = null;
+
+            // search for the player
+                if (p.x > 0 && getEntityAt(p.x - 1, p.y) instanceof Player) {
+                    playerProx = Direction.Left;
+                } else if (p.x + 1 < getWidth() && getEntityAt(p.x + 1, p.y) instanceof Player) {
+
+                    playerProx = Direction.Right;
+                } else if (p.y > 0 && getEntityAt(p.x, p.y - 1) instanceof Player) {
+
+                    playerProx = Direction.Up;
+                } else if (p.y + 1 < getHeight() && getEntityAt(p.x, p.y + 1) instanceof Player) {
+
+                    playerProx = Direction.Down;
+                }
+
+            if(playerProx != null){
+                if(!e.isEnemyAttack()){
+                    e.startAction("atk");
+                }
+                this.checkEnemyAttack(e, playerProx);
+            }
+
+            //not in range, try to close the gap
             else {
                 message ="";
 
@@ -591,5 +608,15 @@ public class Room implements java.io.Serializable{
      */
     public void resetTileSet(){
         this.tiles = new TileSet(level);
+    }
+
+    public void checkEnemyAttack(Enemy e, Direction dir){
+        boolean actComplete = e.ping();
+        if(actComplete) {   //some action is completed
+            if (e.isEnemyAttack()) {
+                e.resetEnemyActions("atk");
+                this.checkAttack(e, dir);
+            }
+        }
     }
 }

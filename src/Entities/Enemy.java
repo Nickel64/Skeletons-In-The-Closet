@@ -1,6 +1,7 @@
 package Entities;
 
 import Behaviour.Pathfinder;
+import Utils.Resources;
 
 import java.awt.*;
 import java.util.Observable;
@@ -96,5 +97,36 @@ public class Enemy extends Observable implements Entity, java.io.Serializable {
     }
 
 
-    public boolean ping(){return false;}
+    public boolean ping(){
+        if(attacking) {
+            if (animCount < 5) {
+                animCount++;
+                if(Resources.DEBUG) System.out.println("Enemy Animation progress: " + animCount);
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void resetEnemyActions(String action){
+        switch(action){
+            case "atk":
+                attacking = false;
+                break;
+        }
+        this.animCount = 0;
+    }
+
+    public void startAction(String action) {
+        switch (action) {
+            case "atk":
+                attacking = true;
+                break;
+        }
+        this.animCount = 0;
+    }
+
+    public boolean isEnemyAttack(){return this.attacking;}
 }
