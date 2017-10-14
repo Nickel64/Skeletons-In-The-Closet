@@ -2,7 +2,7 @@ HotConnectionHubWorld 1
 13 9
 . . LvlFourOne . . . LvlFinalOne . . . LvlSixOne . .
 . . . . . . . . . . . . .
-. . * . . . . . . . * . LvlFiveLabyrinth
+. . * . . . . ~ . . * . LvlFiveLabyrinth
 . . . . . . . . . . . . .
 LvlTwoOne . . . . . + . . . . . .
 . . . . . . = . . . . . .
@@ -65,7 +65,7 @@ LvlTwoOne 2
 . . . . * . . . . .
 . . . . . . . . . .
 LvlTwoAOne . . . . . . . . .
-. . * . * . * . . HotConnectionHubWorld
+. . * 1 * 1 * . . HotConnectionHubWorld
 LvlTwoBOne . . . . . . . . .
 . . . . . . . . . .
 . . . . * . . . . .
@@ -90,7 +90,7 @@ LvlTwoBoss 2
 . * * * . LvlTwoATwo
 . * . * . .
 . . . . . .
--HotConnectionHubWorld 9 . . . .
+-HotConnectionHubWorld 11 . . . .
 . . . . . .
 . . . . . .
 . * . * . .

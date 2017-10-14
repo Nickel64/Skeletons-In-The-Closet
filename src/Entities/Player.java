@@ -1,13 +1,14 @@
 package Entities;
 
 import Utils.EntitySet;
+import Utils.Resources;
 
 import java.awt.*;
 import java.util.Observable;
 /**
  * Created by Shlomoburg on 19/09/2017.
  */
-public class Player extends Observable implements Entity {
+public class Player extends Observable implements Entity, java.io.Serializable {
     private Direction dir = Direction.Right;
 
     private int health = 100; // how much health the unit has
@@ -26,17 +27,17 @@ public class Player extends Observable implements Entity {
     private boolean aoe = false;
     private int animCount = 0;  //max value of 6
 
-    private EntitySet images;
+    private transient EntitySet images;
 
     public Player(int health, int damage) {
         this.health = health;
         this.maxHealth = health;
         this.damage = damage;
-        images = new EntitySet(true, 0);
+        images = new EntitySet(true,false, 0);
     }
 
     public Player() {
-        images = new EntitySet(true, 0);
+        images = new EntitySet(true,false, 0);
     }
 
     public int getMaxHealth() {
@@ -81,10 +82,6 @@ public class Player extends Observable implements Entity {
         this.maxHealth = maxHealth;
     }
 
-    public void setDamage(int Damage) {
-        damage = Damage;
-    }
-
     //public void  setSpeed(int Speed){speed = Speed;}
     public void setSpecial(int s) {
         special = s;
@@ -116,6 +113,7 @@ public class Player extends Observable implements Entity {
         exp = 0;
         level++;
         damage = damage + 2;
+        Resources.playAudio("LevelUp.wav");
     }
 
     /**
@@ -133,17 +131,14 @@ public class Player extends Observable implements Entity {
         //toggling off
         if (defending) {
             defending = !defending;
-            //TODO play a sound
-            System.out.println("not blocking damage");
             return;
         }
         //toggling on
         else if (special > 0) {
             //valid to block
             this.defending = true;
-            System.out.println("blocking damage");
-
         }
+        Resources.playAudio("Defend.wav");
     }
     public int getLevel(){
         return level;
@@ -157,7 +152,7 @@ public class Player extends Observable implements Entity {
         entity.damaged(this.damage);
 //        attack();
         if(entity.isDead()){
-            incExp(10);
+            incExp(entity.getLevel()*9);
         }
     }
 
@@ -167,13 +162,16 @@ public class Player extends Observable implements Entity {
             int beforeSpecial = special;
             this.special -= damageAmount;
             damageAmount = damageAmount - beforeSpecial;
+            Resources.playAudio("ShieldHit.wav");
             if (damageAmount > 0) { //defence broken
                 defending = false;
                 this.health = this.health - damageAmount;
+                Resources.playAudio("Defend.wav");
                 System.out.println("Play a guard breaking sound here");
             }
         } else {
             this.health = this.health - damageAmount;
+            Resources.playAudio("DamagePlayer.wav");
             System.out.println(this.health);
         }
         notifyObservers();
@@ -226,13 +224,80 @@ public class Player extends Observable implements Entity {
     public Image getIdle() {
         return images.getIdle(dir.ordinal());
     }
+
+    public Image getAttack(){
+        return images.getAttack(dir.ordinal(), animCount);
+    }
+
     public Image getDefending(){return images.getDefending();}
 
-    public void ping(){
+    public Image getAoE(){return images.getAoE();}
+
+
+
+    public boolean ping(){
         //stuff incoming
-        if(animCount < 6){
-            animCount++;
+        if(attacking || aoe) {
+            if (animCount < 5) {
+                animCount++;
+                if(Resources.DEBUG) System.out.println("Player Animation progress: " + animCount);
+                return false;
+            } else {
+                animCount = 0;
+                return true;
+            }
         }
+        return false;
+    }
+
+    /**
+     * Used to Reset the TileSet
+     * after this class is Deserialized
+     */
+    public void resetPlayer(){
+        images = new EntitySet(true,false, 0);
+    }
+
+    public boolean isPlayerAttack(){return this.attacking;}
+    public boolean isPlayerAttackAoE(){return this.aoe;}
+    public boolean isPlayerDying(){return this.isDead();}
+
+    public void resetPlayerActions(String action){
+        switch(action){
+            case "atk":
+                attacking = false;
+                break;
+            case "aoe":
+                aoe = false;
+                break;
+        }
+        this.animCount = 0;
+    }
+
+    public void startAction(String action){
+        switch(action){
+            case "atk":
+                attacking = true;
+                Resources.playAudio("PlayerAttack.wav");
+                break;
+            case "aoe":
+                aoe = true;
+                Resources.playAudio("AoE.wav");
+                break;
+        }
+        this.animCount = 0;
+    }
+
+    public void regen(){
+        if(health < maxHealth){
+            setChanged();
+            health++;
+        }
+        if(special < maxSpecial){
+            setChanged();
+            special++;
+        }
+        notifyObservers();
 
     }
 }

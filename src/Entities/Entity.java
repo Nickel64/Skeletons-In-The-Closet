@@ -44,7 +44,8 @@ public interface Entity {
      */
     boolean canStepOn();
 
-    void ping();
+    //the boolean determines if an action is complete (AoE, attack,dying etc)
+    boolean ping();
 
    // damaged
    // turn

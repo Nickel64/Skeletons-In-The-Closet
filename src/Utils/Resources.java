@@ -16,7 +16,7 @@ import java.net.URL;
  */
 public class Resources {
 
-    public static boolean DEBUG = true; //used to enable/disable debug messages
+    public static boolean DEBUG = false; //used to enable/disable debug messages
 
 
     //A collection of various game resources
@@ -24,12 +24,45 @@ public class Resources {
 
     public static String HELPDESC = "Skeletons in the Closet! \n\n" +
             "Welcome to our game. More information about this game will be avaliable here\n\n" +
-            "Created by Nick, Morgan, Ben, Rachel, Belle";
+            "Created by Nick, Morgan, Ben, Rachel, Belle\n\n" +
+            "Controls\n" +
+            "Movement: Direction Pad / WASD / click-to-move/ on screen buttons\n" +
+            "Attack: On screen button / spacebar\n" +
+            "Defend: On screen button / left control\n" +
+            "AoE: On screen button / 'q'";
 
+    //LOAD AND SAVE MESSAGES
     public static String SAVE_SUCCESSFUL_MESSAGE = "Game saved successfully";
     public static String SAVE_UNSUCCESSFUL_MESSAGE = "ERROR: The game was unable to be saved";
+    public static String LOAD_NOSAVES_MESSAGE = "There are no saved games to load from";
+    public static String LOAD_UNSUCCESSFUL_MESSAGE = "ERROR: Unable to load this saved game";
+    public static String LOAD_PROMPT_MESSAGE = "Select a saved game to Load:";
+    public static String LOAD_TITLE_MESSAGE = "Load Game:";
 
-    public static Dimension WINDOW_SIZE = new Dimension(1024,720);
+
+    //MAIN MENU BUTTONS
+    public static String MENU_NEWGAME_BUTTON = "New Game";
+    public static String MENU_SAVEDGAME_BUTTON = "Load Game";
+    public static String MENU_HELP_BUTTON = "Instructions";
+    public static String MENU_QUIT_BUTTON = "Exit";
+
+
+    //PAUSE MENU BUTTONS
+    public static String PAUSE_LOAD_BUTTON = "Load Game";
+    public static String PAUSE_SAVE_BUTTON = "Save Game";
+    public static String PAUSE_HELP_BUTTON = "Help";
+    public static String PAUSE_QUIT_BUTTON = "Quit Game";
+    public static String PAUSE_PAUSE_BUTTON = "Pause";
+    public static String PAUSE_RESUME_BUTTON = "Resume";
+    public static String PAUSE_NEWGAME_BUTTON = "New Game";
+
+    public static String PAUSE_MENU_TITLE = "Game Paused";
+    public static String EXIT_CONFIRM = "Are you sure that you want to exit?";
+    public static String NEWGAME_CONFIRM = "Are you sure that you want to start a new game?";
+    public static String DEATH_MESSAGE = "YOU'VE DIED \n Oh no, unfortunately you have not succeeded at your quest. \n" +
+            "For that, you must now die";
+
+    public static Dimension WINDOW_SIZE = new Dimension(1024,768);
 
     public static Color transparent = new Color(0,0,0,0);
     public static Color shadowBack = new Color(32,39,32);
@@ -41,6 +74,11 @@ public class Resources {
     public static Image getImage(String imgDesc){
         if(imgDesc.equals("border")){
             String temp = "Decor/";
+            temp += imgDesc;
+            imgDesc = temp;
+        }
+        else if(imgDesc.equals("PowerUpAttack") || imgDesc.equals("PowerUpHealth")){
+            String temp = "SpriteSets/PowerUps/";
             temp += imgDesc;
             imgDesc = temp;
         }

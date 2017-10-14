@@ -1,13 +1,28 @@
 package Entities;
 
+import Utils.Resources;
+
+import java.awt.*;
+
 /**
  * Created by Shlomoburg on 8/10/2017.
  */
-public class PowerUpAttack implements PowerUp {
+public class PowerUpAttack implements PowerUp, java.io.Serializable {
+
+
+    transient Image image;
 
     public PowerUpAttack (){
-
+        image = Resources.getImage("PowerUpAttack");
     }
+
+    public Image getImage(){
+        return image;
+    }
+
+    @Override
+    public void resetImage() { image = Resources.getImage("PowerUpAttack");}
+
     @Override
     public int getLevel() {
         return 0;
@@ -76,6 +91,6 @@ public class PowerUpAttack implements PowerUp {
         p.increaseAttack(1);
     }
 
-    public void ping(){}
 
+    public boolean ping(){return false;}
 }

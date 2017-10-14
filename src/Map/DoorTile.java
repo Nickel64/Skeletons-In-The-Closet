@@ -2,7 +2,7 @@ package Map;
 
 import Entities.Entity;
 
-public class DoorTile implements Tile {
+public class DoorTile implements Tile, java.io.Serializable {
 
     private String connectedRoomName;
     private Entity entity;

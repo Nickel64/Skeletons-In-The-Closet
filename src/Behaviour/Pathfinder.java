@@ -35,6 +35,7 @@ public class Pathfinder {
     public static Queue<Point> findPath(Point pointA, Point pointB, Room room) {
         //INPUT CHECKING
         int sizeX = room.getWidth(), sizeY = room.getHeight();
+        if(pointA == null || pointB == null) return new LinkedList<>();
         if(pointA.equals(pointB)
                 || pointA.x < 0 || pointA.y < 0 || pointB.x < 0 || pointB.y < 0
                 || pointA.x > sizeX || pointA.y > sizeY || pointB.x > sizeX || pointB.y > sizeY)

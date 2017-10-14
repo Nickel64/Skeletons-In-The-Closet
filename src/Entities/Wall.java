@@ -3,7 +3,7 @@ package Entities;
 /**
  * Created by Shlomoburg on 19/09/2017.
  */
-public class Wall implements Entity {
+public class Wall implements Entity, java.io.Serializable {
 
     private int level;
 
@@ -60,5 +60,5 @@ public class Wall implements Entity {
         return "*";
     }
 
-    public void ping(){}
-}
+
+    public boolean ping(){return false;}}

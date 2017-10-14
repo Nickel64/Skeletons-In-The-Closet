@@ -3,7 +3,7 @@ package Entities;
 /**
  * Created by nicks on 12/10/2017.
  */
-public class Decor implements Entity {
+public class Decor implements Entity, java.io.Serializable {
     @Override
     public boolean inAggroRange() {
         return false;
@@ -64,5 +64,5 @@ public class Decor implements Entity {
         return false;
     }
 
-    public void ping(){}
-}
+
+    public boolean ping(){return false;}}

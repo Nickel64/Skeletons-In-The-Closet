@@ -13,7 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Queue;
-import java.util.Stack;
 
 /** * * * * * * * * * * * * *
  * Controller class
@@ -24,8 +23,9 @@ import java.util.Stack;
 public class Controller implements KeyListener, MouseListener, ActionListener {
     private Model model;
     private View view;
-    private static final int COOLDOWN = 150;
+    private static final int COOLDOWN = 300;
     private long timeLastAction = -COOLDOWN;
+    private int bgmIteration = 0;
 
     private boolean inAutoMovement = false;
 
@@ -36,8 +36,12 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     }
 
     private void startLoop() {
-        new Timer(300, (e) -> {
-            if(!view.pauseMenuVisible) {
+        new Timer(50, (e) -> {
+            if((bgmIteration++ % 3880) == 0) { //bgm is 194s * 20 pings/sec
+                bgmIteration = 1;
+                Resources.playAudio("Background.wav");
+            }
+            if(!view.pauseMenuVisible || !view.paused) {
                 this.model.getCurrentRoom().ping(model);
                 view.repaint();
             }
@@ -60,7 +64,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         //process input from keyboard
         //e.g. move up, down, left, right, attack
 
-        if(view.pauseMenuVisible || inAutoMovement) return;
+        if(view.pauseMenuVisible || inAutoMovement || view.paused) return;
         int code = e.getKeyCode();
         if(code == KeyEvent.VK_KP_UP || code == KeyEvent.VK_UP || code == KeyEvent.VK_W) {
             movePlayer(Entity.Direction.Up);
@@ -78,14 +82,13 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-
-        if(inAutoMovement)
+        if(inAutoMovement || view.paused)
             return;
         int code = e.getKeyCode();
         if(code == KeyEvent.VK_SPACE) {
             if(view.pauseMenuVisible || System.currentTimeMillis() - timeLastAction < COOLDOWN)
                 return;
-            model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
+            model.getPlayer().startAction("atk");
             timeLastAction = System.currentTimeMillis();
         }
         else if(code == KeyEvent.VK_ESCAPE){
@@ -94,8 +97,14 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         else if(code == KeyEvent.VK_Q){
             if(view.pauseMenuVisible || System.currentTimeMillis() - timeLastAction < COOLDOWN)
                 return;
-            model.checkAttackAOE(model.getPlayer());
+            if(model.getPlayer().getSpecial() >= 10) {
+                model.getPlayer().startAction("aoe");
+            }
             timeLastAction = System.currentTimeMillis();
+        }
+        else if(code == KeyEvent.VK_CONTROL) {
+            model.getPlayer().toggleGuard();
+            view.repaint();
         }
     }
 
@@ -113,12 +122,12 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(inAutoMovement) return;
+        if(inAutoMovement || view.paused) return;
         int x = e.getX(), y = e.getY();
         int[] toGoArr = view.getGridCoordsAt(x,y);
         Point toGo = new Point(toGoArr[0], toGoArr[1]);
 
-        if(toGo.x == -1 || toGo.y == -1) throw new Error("Cannot move outside the board");
+        if(toGo.x == -1 || toGo.y == -1) return;
         if(Resources.DEBUG) System.out.println("Heading toward x:" + toGo.x + " y:" + toGo.y);
 
         Point goFrom = new Point(model.getPlayerLocation().x, model.getPlayerLocation().y);
@@ -198,14 +207,17 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                      if(System.currentTimeMillis() - timeLastAction < COOLDOWN) return;
                     switch(buttonName) {
                         case "Attack":
-                            model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
+                            //model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
+                            model.getPlayer().startAction("atk");
                             break;
                         case "Defend":
                             model.getPlayer().toggleGuard();
                             view.repaint();
                             break;
                         case "AOE":
-                            model.checkAttackAOE(model.getPlayer());
+                            if(model.getPlayer().getSpecial() >= 10) {
+                                model.getPlayer().startAction("aoe");
+                            }
                             if(Resources.DEBUG){
                                 System.out.println(model.getPlayer().getSpecial());
                             }

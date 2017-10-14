@@ -5,17 +5,17 @@ import Model.*;
 import Utils.*;
 import Entities.*;
 import Controller.*;
-import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -39,7 +39,7 @@ public class View extends JComponent implements Observer{
     JPanel pauseMenu;
 
     //menu buttons
-    JButton pauseBtn = new JButton("Pause");
+    JButton pauseBtn = new JButton(Resources.PAUSE_PAUSE_BUTTON);
 
     //control buttons
     JButton up = new JButton();
@@ -65,6 +65,7 @@ public class View extends JComponent implements Observer{
     SaveLoad saveLoad;
 
     public boolean pauseMenuVisible = false;
+    public boolean paused = false;
 
     public View(Model m) {
 
@@ -119,9 +120,19 @@ public class View extends JComponent implements Observer{
 
         Graphics2D gg = (Graphics2D) g;
 
-        if(!pauseMenuVisible){
+        //player has died (oh no!)
+        if(model.getPlayerLocation() == null){
+            paused = true;
+            frame.dispose();
+            JOptionPane.showMessageDialog(this, Resources.DEATH_MESSAGE);
+            System.exit(0);
+            return;
+        }
+
+        else if(!pauseMenuVisible){
             drawWorld(gg);
             //drawNewShadows(gg, model.getCurrentRoom());
+            drawAllEntities(model, gg);
             drawShadows(gg, model.getPlayerLocation());
         }
         else{
@@ -129,8 +140,12 @@ public class View extends JComponent implements Observer{
         }
 
         g.drawImage(border, 0, this.getHeight()-border.getHeight(null),null);
-
-        //drawShadows(gg, model.getPlayerLocation());
+        //the AoE should go over the top
+        if(model.getPlayer().isPlayerAttackAoE()){
+            int x = (model.getPlayerLocation().x*tileSize)+startX-tileSize;
+            int y = (model.getPlayerLocation().y*tileSize)+startY-tileSize;
+            g.drawImage(model.getPlayer().getAoE(), x, y, null);
+        }
 
         long end = System.currentTimeMillis()-start;
         if(Resources.DEBUG) System.out.println("View update took ms " + end);
@@ -165,14 +180,28 @@ public class View extends JComponent implements Observer{
 
         pauseMenu = new JPanel();
         pauseMenu.setLayout(new BoxLayout(pauseMenu, BoxLayout.PAGE_AXIS));
+        paused = true;
 
-        //graphics.setColor(new Color(32,39,32));
-        //graphics.fillRect(0,0, this.getWidth(), this.getHeight()-border.getHeight(null));
 
-        JButton save = new JButton("Save"); save.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton load = new JButton("Load"); load.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton help = new JButton("Help"); help.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton quit = new JButton("Quit"); quit.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton newGame = new JButton(Resources.PAUSE_NEWGAME_BUTTON); newGame.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton save = new JButton(Resources.PAUSE_SAVE_BUTTON); save.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton load = new JButton(Resources.PAUSE_LOAD_BUTTON); load.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton help = new JButton(Resources.PAUSE_HELP_BUTTON); help.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton quit = new JButton(Resources.PAUSE_QUIT_BUTTON); quit.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        newGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int ans = JOptionPane.showConfirmDialog(frame, Resources.NEWGAME_CONFIRM);
+                if(ans == 0) {
+                    Model m = new Model();
+                    try{m.initialise();}
+                    catch (IOException g){g.printStackTrace();}
+                    replaceModel(m);
+                    pauseMenuToggle();
+                }
+            }
+        });
 
         save.addActionListener(new ActionListener() {
             @Override
@@ -186,11 +215,16 @@ public class View extends JComponent implements Observer{
         load.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int result = JOptionPane.showOptionDialog(frame, "Select a Save File to Load", "Load a Saved Game", 0, 0, null, saveLoad.saves.keySet().toArray(), saveLoad.saves.get(saveLoad.saves.keySet().toArray()[0]));
-                if(!replaceModel(saveLoad.load((String) saveLoad.saves.keySet().toArray()[result]))){
-                    JOptionPane.showMessageDialog(frame, "Unable to load");
+                if(saveLoad.saves.size() >= 1) {
+                    int result = JOptionPane.showOptionDialog(frame, Resources.LOAD_PROMPT_MESSAGE, Resources.LOAD_TITLE_MESSAGE, 0, 0, null, saveLoad.saves.keySet().toArray(), saveLoad.saves.get(saveLoad.saves.keySet().toArray()[0]));
+                    if(result == -1) return;
+                    if (!replaceModel(saveLoad.load((String) saveLoad.saves.keySet().toArray()[result]))) {
+                        JOptionPane.showMessageDialog(frame, Resources.LOAD_UNSUCCESSFUL_MESSAGE);
+                    } else pauseMenuToggle();
                 }
-                else pauseMenuToggle();
+                else{
+                    JOptionPane.showMessageDialog(frame, Resources.LOAD_NOSAVES_MESSAGE);
+                }
             }
         });
 
@@ -204,7 +238,7 @@ public class View extends JComponent implements Observer{
         quit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int ans = JOptionPane.showConfirmDialog(frame, "Are you sure that you want to exit?");
+                int ans = JOptionPane.showConfirmDialog(frame, Resources.EXIT_CONFIRM);
                 if(ans == 0) {
                     frame.dispose();
                     System.exit(0);
@@ -212,11 +246,12 @@ public class View extends JComponent implements Observer{
             }
         });
 
-        JLabel title = new JLabel("Game Paused");
+        JLabel title = new JLabel(Resources.PAUSE_MENU_TITLE);
         title.setFont(new Font("SansSerif", Font.PLAIN, 25));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         pauseMenu.add(title);
+        pauseMenu.add(newGame);
         pauseMenu.add(save);
         pauseMenu.add(load);
         pauseMenu.add(help);
@@ -252,8 +287,9 @@ public class View extends JComponent implements Observer{
 
     public void pauseMenuToggle(){
         pauseMenuVisible = !pauseMenuVisible;
-        if(!pauseMenuVisible){ removePauseMenu(); pauseBtn.setText("Pause");}
-        else pauseBtn.setText("Resume");
+        paused = !paused;
+        if(!pauseMenuVisible){ removePauseMenu(); pauseBtn.setText(Resources.PAUSE_PAUSE_BUTTON);}
+        else pauseBtn.setText(Resources.PAUSE_RESUME_BUTTON);
         repaint();
     }
 
@@ -352,10 +388,6 @@ public class View extends JComponent implements Observer{
             img = tileSet.getEntry();
             g.drawImage(img, x,y,null);
         }
-
-        if(tile.getEntity() != null){
-            drawEntity(g, tile.getEntity(), tileSet, x,y);
-        }
     }
 
     /**
@@ -366,25 +398,65 @@ public class View extends JComponent implements Observer{
      */
 
     public void drawEntity(Graphics2D g, Entity e, TileSet tileSet, int x, int y){
+        Image img = null;
+        Image mod = null;
+        int difX, difY;
+
         if(e instanceof Nothing)
             return;
+
         else if(e instanceof Player){
             Player p = (Player) e;
-            g.drawImage(p.getIdle(), x,y,null);
+            if(p.isPlayerAttack()){
+
+                img = p.getAttack();
+            }
+            else {
+                img = p.getIdle();
+            }
             if(p.isDefending()){
-                g.drawImage(p.getDefending(), x,y,null);
+                mod = p.getDefending();
             }
         }
         else if(e instanceof  Wall){
-            Image img = tileSet.getWall();
-            if(img == null)
-                return;
-            g.drawImage(img, x,y,null);
+            img = tileSet.getWall();
 
         }
+        else if (e instanceof  Boss){
+            Boss b = (Boss) e;
+            if(b.isEnemyAttack()){
+                img = b.getAttack();
+            }
+            else {
+                img = b.getIdle();
+            }
+        }
+
         else if(e instanceof Enemy){
-            g.setColor(Color.red);
-            g.fillOval((tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
+            Enemy ee = (Enemy) e;
+            if(ee.isEnemyAttack()){
+                img = ee.getAttack();
+            }
+            else {
+                img = ee.getIdle();
+            }
+        }
+
+        else if(e instanceof PowerUp){
+            PowerUp p = (PowerUp) e;
+            img = p.getImage();
+        }
+
+        //apparently this already works with oversize images?
+        //if it doesn't I can come back to it tomorrow
+
+
+        g.drawImage(img, x, y, null);
+        if(mod != null)
+            g.drawImage(mod, x, y, null);
+
+        if(e instanceof  Boss || e instanceof Enemy){
+            //draw the hp bar background
             g.setColor(Color.black);
             g.fillRect(x, y-tileSize/6, tileSize, tileSize/6);
 
@@ -393,16 +465,6 @@ public class View extends JComponent implements Observer{
             g.setColor(Color.red.darker());
             int endX =(int) Math.ceil(((double)tileSize/temp.getMaxHealth())*temp.getHealth());
             g.fillRect(x, y-tileSize/6,endX, tileSize/6);
-        }
-        else if(e instanceof PowerUp){
-            if(e instanceof PowerUpAttack){
-                g.setColor(Color.gray);
-                g.fillOval((tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
-            }
-            else if(e instanceof  PowerUpHealth){
-                g.setColor(Color.red);
-                g.fillOval((tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
-            }
         }
     }
 
@@ -622,5 +684,14 @@ public class View extends JComponent implements Observer{
             }
         }
         return new int[] {-1, -1};
+    }
+
+    public void drawAllEntities(Model model, Graphics2D g){
+        for(int y = 0; y < model.getCurrentRoom().getHeight(); y++){
+            for(int x = 0; x < model.getCurrentRoom().getWidth(); x++){
+                if(model.getCurrentRoom().getEntityAt(x,y) != null)
+                    drawEntity(g, model.getCurrentRoom().getEntityAt(x,y),model.getCurrentRoom().getTileSet(), startX + (tileSize*x),startY + (tileSize*y));
+            }
+        }
     }
 }

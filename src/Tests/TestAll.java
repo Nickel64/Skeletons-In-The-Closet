@@ -4,14 +4,14 @@ import Behaviour.Pathfinder;
 import Entities.Enemy;
 import Entities.Entity;
 import Entities.Player;
-import Entities.PowerUp;
 import Map.Room;
-import Map.Tile;
 import Model.Model;
 import Utils.GameError;
+import Utils.SaveLoad;
 import org.junit.*;
 
 import java.awt.*;
+import java.nio.file.Path;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -192,6 +192,34 @@ public class TestAll {
     }
 
     /**
+     * Used to test that the pathfinder can get the next step correctly
+     */
+    @Test
+    public void test_pathFind_Success7(){
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "6 5\n" +
+                        ". . . . . . \n" +
+                        "* * * * . . \n" +
+                        ". * . . . . \n" +
+                        ". * * * . . \n" +
+                        ". . . . . . ";
+        try {
+            Scanner sc = new Scanner(simpleMap);
+            m.read(sc);
+            new Pathfinder();
+            Room r = m.getCurrentRoom();
+            Point path = Pathfinder.findNextClosestPointToGoal(r, new Point(0,0), new Point(3,2));
+            Point expected = new Point(1,0);
+            assertEquals(path, expected);
+        } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    /**
      * Used to test that the pathfinder can't leave the board
      */
     @Test
@@ -357,13 +385,13 @@ public class TestAll {
                         ". . . . * ";
         try {
             Scanner sc = new Scanner(simpleMap);
-            m.read(sc);
+            m.initialise(simpleMap);
             assertNotNull(m.getCurrentRoom());
             Room r = m.getCurrentRoom();
             assertNotNull(r.getEnemies());
             assertEquals(3, r.getEnemies().size());
             assertEquals(simpleMap, r.toString());
-        } catch (Error error) {
+        } catch (Exception error) {
             error.printStackTrace();
             fail(error.getMessage());
         }
@@ -462,6 +490,27 @@ public class TestAll {
             Scanner sc = new Scanner(simpleMap);
             m.read(sc);
         } catch (Error error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    @Test
+    public void test_model_initialise_6() {
+        //tests that model is initialising the room.txt appropriately
+        Model m = new Model();
+
+        try {
+            m.initialise();
+            Scanner scan = new Scanner(Utils.Resources.class.getResourceAsStream("map.txt"));
+            StringBuffer buffer = new StringBuffer();
+            while(scan.hasNext()){
+                String roomName = scan.next();
+                assertNotNull(m.getRoom(roomName));
+                Room newRoom = new Room(roomName);
+                scan = newRoom.initialise(scan);
+            }
+        } catch (Exception error) {
             error.printStackTrace();
             fail(error.getMessage());
         }
@@ -1462,8 +1511,9 @@ public class TestAll {
             fail(error.getMessage());
         }
     }
+
     @Test
-    public void test_entity_1() {
+    public void test_entity_Player1() {
         //Testing that player entity is initialised properly
         Model m = new Model();
         String simpleMap =
@@ -1485,15 +1535,174 @@ public class TestAll {
         m.read(sc);
         Room r = m.getCurrentRoom();
         Player player = (Player)r.getEntityAt(2, 3);
-        try {
-            assertTrue(player.getDamage()==1);
-            assertTrue(player.canMove()==true);
-            assertTrue(player.getHealth()==10&&player.getMaxHealth()==10);
-
-        } catch (Error error) {
-            error.printStackTrace();
-            fail(error.getMessage());
-        }
+        assertTrue(player.getDamage()==1);
+        assertTrue(player.canMove());
+        assertTrue(player.getHealth()==100&&player.getMaxHealth()==100);
+        assertFalse(player.isPlayerAttack());
+        assertFalse(player.isPlayerAttackAoE());
+        assertFalse(player.isPlayerDying());
     }
 
+    @Test
+    public void test_entity_Nothing1() {
+        //Testing that player entity is initialised properly
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * + . . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+        Room r = m.getCurrentRoom();
+        Entities.Nothing nothingTile = (Entities.Nothing)r.getEntityAt(2, 2);
+        assertTrue(nothingTile.getDamage()==-1);
+        assertTrue(!nothingTile.canMove());
+        assertTrue(nothingTile.canStepOn());
+        assertEquals(nothingTile.toString(), ".");
+        assertTrue(nothingTile.getHealth()==-1&&nothingTile.getMaxHealth()==-1);
+        assertFalse(nothingTile.ping());
+        assertEquals(nothingTile.getLevel(), 0);
+        nothingTile.setDirection(Entity.Direction.Up);
+        nothingTile.attack(null);
+        assertNull(nothingTile.getImageName());
+    }
+
+    @Test
+    public void test_saveLoad_Success1(){
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * + . . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+
+        SaveLoad saveLoad = new SaveLoad();
+        saveLoad.saves = new HashMap<>();
+        saveLoad.save(m);
+
+        Point prevPlayer = m.getPlayerLocation();
+        m.moveEntity(m.getPlayer(), Entity.Direction.Up);
+        assertNotEquals(prevPlayer, m.getPlayerLocation());
+
+        m = saveLoad.load((String) saveLoad.saves.keySet().toArray()[0]);
+
+        assertEquals(prevPlayer, m.getPlayerLocation());
+    }
+
+    @Test
+    public void test_saveLoad_Success2(){
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * + . . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+
+        SaveLoad saveLoad = new SaveLoad();
+        saveLoad.saves = new HashMap<>();
+        saveLoad.save(m);
+
+        Point prevPlayer = m.getPlayerLocation();
+        m.moveEntity(m.getPlayer(), Entity.Direction.Up);
+        Point player2point = m.getPlayerLocation();
+        assertNotEquals(prevPlayer, player2point);
+
+        saveLoad.save(m);
+
+        m.moveEntity(m.getPlayer(), Entity.Direction.Up);
+
+        assert(saveLoad.saves.keySet().size() > 1);
+    }
+
+    @Test
+    public void test_saveLoad_Success3(){
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". . . . . \n" +
+                        ". . . . . \n" +
+                        "* * + . . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". . . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+
+        Room firstRoom = m.getCurrentRoom();
+        SaveLoad saveLoad = new SaveLoad();
+        saveLoad.saves = new HashMap<>();
+        saveLoad.save(m);
+
+        m.moveEntity(m.getPlayer(), Entity.Direction.Down);
+        m.moveEntity(m.getPlayer(), Entity.Direction.Down);
+        m.moveEntity(m.getPlayer(), Entity.Direction.Down);
+        Room secondRoom = m.getCurrentRoom();
+        assertNotEquals(firstRoom.getName(), secondRoom.getName());
+
+        m = saveLoad.load((String) saveLoad.saves.keySet().toArray()[0]);
+        assertEquals(firstRoom.getName(), m.getCurrentRoom().getName());
+    }
+
+    @Test
+    public void test_saveLoad_Fail1(){
+        Model m = new Model();
+        SaveLoad saveLoad = new SaveLoad();
+        saveLoad.saves = new HashMap<>();
+
+        m = saveLoad.load("");
+        assertNull(m);
+    }
+
+    @Test
+    public void test_saveLoad_Fail2(){
+        Model m = null;
+        SaveLoad saveLoad = new SaveLoad();
+        saveLoad.saves = new HashMap<>();
+        saveLoad.save(m);
+        assertTrue(saveLoad.saves.size() == 0);
+        saveLoad.save(null);
+        assertTrue(saveLoad.saves.size() == 0);
+    }
 }

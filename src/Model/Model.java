@@ -24,7 +24,7 @@ import java.util.Scanner;
  * Created: 19/9/17
  * @author Balgmi Nam
  */
-public class Model extends Observable {
+public class Model extends Observable implements java.io.Serializable {
 
     private static final String fileName = "map.txt";   //will be using txt to create layout of world
     private Map<String, Room> map;  //map of room names and rooms for easy access when moving room to room
@@ -50,7 +50,6 @@ public class Model extends Observable {
     public void initialise(String str) throws IOException{
         Scanner sc = new Scanner(str);
         read(sc);
-        startGameLoop();
     }
 
     /**
@@ -158,24 +157,14 @@ public class Model extends Observable {
         return this.currentRoom;
     }
 
-    public String serialise(){
-        StringBuffer buffer = new StringBuffer();
-        //buffer.append("Model: \n");
-        for(String str: map.keySet()){
-            buffer.append(map.get(str).toString());
-        }
-        return buffer.toString();
-    }
+    /**
+     * Used to restart the game after Deserialization
+     */
+    public void resetGame(){
+        for(Room room: map.values()){
+            room.resetTileSet();
 
-    public void startGameLoop(){
-        //TODO in the current room, ping everything in a loop
-        //TODO enemies attack
-        //TODO get player animation from this ping
-        //TODO get enemy animation from this
-        //Entities that are attacking should (in my mind) have 6 'stages' of attack to go through before the attack is processed. This should be handled here
-        //i.e. only attack once the entity has completed its animation.
-        //Entity can have a counter that will decide what image to return
-        //gets reset at the end of the attack
-        //death animations, too
+        }
+        getPlayer().resetPlayer();
     }
 }

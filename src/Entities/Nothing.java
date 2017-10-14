@@ -3,7 +3,7 @@ package Entities;
 /**
  * Created by Shlomoburg on 19/09/2017.
  */
-public class Nothing implements Entity {
+public class Nothing implements Entity, java.io.Serializable {
     public boolean inAggroRange(){throw new Error();}
     public boolean isDead(){return false;}
     public void damaged(int damage){}
@@ -31,7 +31,7 @@ public class Nothing implements Entity {
     public void attack(Entity entity){}
 
     public boolean canMove() {
-        return true;
+        return false;
     }
 
     public boolean canStepOn() {
@@ -52,5 +52,5 @@ public class Nothing implements Entity {
         return 0;
     }
 
-    public void ping(){}
-}
+
+    public boolean ping(){return false;}}
