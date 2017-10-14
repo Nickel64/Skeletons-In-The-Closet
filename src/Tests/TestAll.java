@@ -1600,6 +1600,7 @@ public class TestAll {
         m.read(sc);
 
         SaveLoad saveLoad = new SaveLoad();
+        saveLoad.saves = new HashMap<>();
         saveLoad.save(m);
 
         Point prevPlayer = m.getPlayerLocation();
@@ -1633,6 +1634,7 @@ public class TestAll {
         m.read(sc);
 
         SaveLoad saveLoad = new SaveLoad();
+        saveLoad.saves = new HashMap<>();
         saveLoad.save(m);
 
         Point prevPlayer = m.getPlayerLocation();
@@ -1670,6 +1672,7 @@ public class TestAll {
 
         Room firstRoom = m.getCurrentRoom();
         SaveLoad saveLoad = new SaveLoad();
+        saveLoad.saves = new HashMap<>();
         saveLoad.save(m);
 
         m.moveEntity(m.getPlayer(), Entity.Direction.Down);
@@ -1686,6 +1689,7 @@ public class TestAll {
     public void test_saveLoad_Fail1(){
         Model m = new Model();
         SaveLoad saveLoad = new SaveLoad();
+        saveLoad.saves = new HashMap<>();
 
         m = saveLoad.load("");
         assertNull(m);
@@ -1695,6 +1699,7 @@ public class TestAll {
     public void test_saveLoad_Fail2(){
         Model m = null;
         SaveLoad saveLoad = new SaveLoad();
+        saveLoad.saves = new HashMap<>();
         saveLoad.save(m);
         assertTrue(saveLoad.saves.size() == 0);
         saveLoad.save(null);

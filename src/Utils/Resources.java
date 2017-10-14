@@ -48,15 +48,17 @@ public class Resources {
 
 
     //PAUSE MENU BUTTONS
-    public static String PAUSE_LOAD_BUTTON = "Load";
-    public static String PAUSE_SAVE_BUTTON = "Save";
+    public static String PAUSE_LOAD_BUTTON = "Load Game";
+    public static String PAUSE_SAVE_BUTTON = "Save Game";
     public static String PAUSE_HELP_BUTTON = "Help";
-    public static String PAUSE_QUIT_BUTTON = "Quit";
+    public static String PAUSE_QUIT_BUTTON = "Quit Game";
     public static String PAUSE_PAUSE_BUTTON = "Pause";
     public static String PAUSE_RESUME_BUTTON = "Resume";
+    public static String PAUSE_NEWGAME_BUTTON = "New Game";
 
     public static String PAUSE_MENU_TITLE = "Game Paused";
     public static String EXIT_CONFIRM = "Are you sure that you want to exit?";
+    public static String NEWGAME_CONFIRM = "Are you sure that you want to start a new game?";
 
     public static Dimension WINDOW_SIZE = new Dimension(1024,768);
 
