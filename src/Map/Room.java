@@ -612,16 +612,18 @@ public class Room implements java.io.Serializable {
                 playerProx = Direction.Down;
             }
 
+
             this.checkEnemyAttack(e, playerProx);
 
             if (pingLoop++ == 15 - level) {
                 pingLoop = 0;
                 if (playerProx != null) {
+                    e.setDirection(playerProx);
                     if (!e.isEnemyAttack()) {
                         e.startAction("atk");
                     }
                 }
-                else {
+                else if(!e.isEnemyAttack()) {
                     message = "";
 
                     Point nextPos = Pathfinder.findNextClosestPointToGoal(this, p, getPlayerLocation());
@@ -668,7 +670,8 @@ public class Room implements java.io.Serializable {
         if (actComplete) {   //some action is completed
             if (e.isEnemyAttack()) {
                 e.resetEnemyActions("atk");
-                this.checkAttack(e, dir);
+                if(dir!=null)
+                    this.checkAttack(e, dir);
             }
         }
     }
