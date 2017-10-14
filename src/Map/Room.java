@@ -433,6 +433,9 @@ public class Room implements java.io.Serializable {
         if (!isRoomCleared()) {
             throw new GameError("Player cannot progress to next room until room is cleared");
         }
+        if(nextRoom.level-1 > player.getBossesDefeated()) {
+            throw new GameError("Player cannot enter this stage, must defeat " + (nextRoom.level-player.getBossesDefeated()-1) + " more bosses to enter");
+        }
         Entity temp = exit.getEntity();
         exit.setEntity(entry.getEntity());
         entry.setEntity(temp);

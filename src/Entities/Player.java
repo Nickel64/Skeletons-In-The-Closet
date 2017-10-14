@@ -19,6 +19,7 @@ public class Player extends Observable implements Entity, java.io.Serializable {
     private int maxExp = 100;
     private int damage = 1; // how much damage the unit deals
     private int level = 1;
+    private int bossesDefeated = 0;
 
     //animation related fields
     private boolean defending = false;
@@ -68,6 +69,10 @@ public class Player extends Observable implements Entity, java.io.Serializable {
         return damage;
     }
     // public int getSpeed(){return speed;}
+
+    public int getBossesDefeated() {
+        return bossesDefeated;
+    }
 
     public Direction getDir() {
         return dir;
@@ -153,6 +158,9 @@ public class Player extends Observable implements Entity, java.io.Serializable {
 //        attack();
         if(entity.isDead()){
             incExp(entity.getLevel()*9);
+            if(entity instanceof Boss) {
+                this.bossesDefeated++;
+            }
         }
     }
 
