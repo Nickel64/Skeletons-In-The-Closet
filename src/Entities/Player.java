@@ -154,7 +154,7 @@ public class Player extends Observable implements Entity, java.io.Serializable {
         entity.damaged(this.damage);
 //        attack();
         if(entity.isDead()){
-            incExp(10);
+            incExp(entity.getLevel()*10);
         }
     }
 
