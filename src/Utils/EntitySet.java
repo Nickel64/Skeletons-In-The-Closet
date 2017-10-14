@@ -3,6 +3,7 @@ package Utils;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Random;
 
 /**
  * Created by Shlomoburg on 5/10/2017.
@@ -14,7 +15,7 @@ public class EntitySet {
     Image defending;
     Image AoE;
 
-    public EntitySet(boolean player, int enemyType){
+    public EntitySet(boolean player, boolean boss, int enemyType){
         //if the entitySet belongs to a player
         try {
             if (player) {
@@ -30,8 +31,20 @@ public class EntitySet {
                 AoE = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/Player/AoE.png"));
             }
             //otherwise, it must be an enemy
-            else {
+            else if (boss) {
+                for (int n = 0; n < 4; n++) {
+                    idle[n] = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/Boss/BossIdle" + n + ".png"));
 
+                    //attacks
+                    for(int i = 0; i < 6; i++){
+                        attacks[n][i] = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/Boss/BossAttack" + n +"_"+ i + ".png"));
+                    }
+                }
+            }
+            else{   //regular enemy, need 2 or 3 variations
+                Random random = new Random();
+                int select = random.nextInt(3);
+                //select that enemy for this entityset
             }
         }
         catch(IOException e){

@@ -33,11 +33,11 @@ public class Player extends Observable implements Entity, java.io.Serializable {
         this.health = health;
         this.maxHealth = health;
         this.damage = damage;
-        images = new EntitySet(true, 0);
+        images = new EntitySet(true,false, 0);
     }
 
     public Player() {
-        images = new EntitySet(true, 0);
+        images = new EntitySet(true,false, 0);
     }
 
     public int getMaxHealth() {
@@ -223,13 +223,16 @@ public class Player extends Observable implements Entity, java.io.Serializable {
     public Image getIdle() {
         return images.getIdle(dir.ordinal());
     }
-    public Image getDefending(){return images.getDefending();}
-
-    public Image getAoE(){return images.getAoE();}
 
     public Image getAttack(){
         return images.getAttack(dir.ordinal(), animCount);
     }
+
+    public Image getDefending(){return images.getDefending();}
+
+    public Image getAoE(){return images.getAoE();}
+
+
 
     public boolean ping(){
         //stuff incoming
@@ -251,7 +254,7 @@ public class Player extends Observable implements Entity, java.io.Serializable {
      * after this class is Deserialized
      */
     public void resetPlayer(){
-        images = new EntitySet(true, 0);
+        images = new EntitySet(true,false, 0);
     }
 
     public boolean isPlayerAttack(){return this.attacking;}
@@ -285,13 +288,15 @@ public class Player extends Observable implements Entity, java.io.Serializable {
     }
 
     public void regen(){
-        setChanged();
         if(health < maxHealth){
+            setChanged();
             health++;
-            notifyObservers();
         }
-        else{
-            clearChanged();
+        if(special < maxSpecial){
+            setChanged();
+            special++;
         }
+        notifyObservers();
+
     }
 }

@@ -1,6 +1,7 @@
 package Entities;
 
 import Behaviour.Pathfinder;
+import Utils.EntitySet;
 import Utils.Resources;
 
 import java.awt.*;
@@ -11,18 +12,19 @@ import java.util.StringJoiner;
  * Created by Shlomoburg on 19/09/2017.
  */
 public class Enemy extends Observable implements Entity, java.io.Serializable {
-    private Direction dir;
-    private int health; // how much health the unit has
-    private int maxHealth;  //needed for hp display purposes
-    private int damage; // how much damage the unit deals
-    private int speed; // how fast the unit can move
-    private boolean inRange;
-    private int level;
+    protected Direction dir;
+    protected int health; // how much health the unit has
+    protected int maxHealth;  //needed for hp display purposes
+    protected int damage; // how much damage the unit deals
+    protected int speed; // how fast the unit can move
+    protected boolean inRange;
+    protected int level;
 
 
-    private boolean attacking = false;
-    private boolean dying = false;
-    private int animCount = 0;  //max value of 6
+    protected boolean attacking = false;
+    protected boolean dying = false;
+    protected int animCount = 0;  //max value of 6
+    protected EntitySet images;
 
     public int getHealth(){return health;}
     public int getMaxHealth(){return maxHealth;}
@@ -35,6 +37,19 @@ public class Enemy extends Observable implements Entity, java.io.Serializable {
         this.maxHealth = health;
         this.damage = damage;
         this.speed = speed;
+        images = new EntitySet(false, false, level);
+    }
+
+    public EntitySet getImages(){
+        return images;
+    }
+
+    public Image getIdle() {
+        return images.getIdle(dir.ordinal());
+    }
+
+    public Image getAttack(){
+        return images.getAttack(dir.ordinal(), animCount);
     }
 
     public int getLevel(){

@@ -394,11 +394,19 @@ public class View extends JComponent implements Observer{
         }
         else if(e instanceof  Wall){
             Image img = tileSet.getWall();
-            if(img == null)
-                return;
             g.drawImage(img, x,y,null);
 
         }
+        else if (e instanceof  Boss){
+            Boss b = (Boss) e;
+            if(b.isEnemyAttack()){
+                g.drawImage(b.getAttack(), x, y, null);
+            }
+            else {
+                g.drawImage(b.getIdle(), x, y, null);
+            }
+        }
+
         else if(e instanceof Enemy){
             g.setColor(Color.red);
             g.fillOval((tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
@@ -411,6 +419,9 @@ public class View extends JComponent implements Observer{
             int endX =(int) Math.ceil(((double)tileSize/temp.getMaxHealth())*temp.getHealth());
             g.fillRect(x, y-tileSize/6,endX, tileSize/6);
         }
+
+
+
         else if(e instanceof PowerUp){
             PowerUp p = (PowerUp) e;
             g.drawImage(p.getImage(), x, y, null);

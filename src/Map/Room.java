@@ -92,7 +92,7 @@ public class Room implements java.io.Serializable{
                     }else if(curString.matches("\\+")) {       //player
                         this.player = new Player();
                         curEntity = this.player;
-                    } else if(curString.matches("[0-9]")){                 //enemy
+                    } else if(curString.matches("[0-9]+")){                 //enemy
                         //if between 1-3 norm, 4-6 agile, 7-9 strong, 10 BOSS
                         Integer enemyID = Integer.parseInt(curString);
                         int type = enemyID % 3 + 1;
