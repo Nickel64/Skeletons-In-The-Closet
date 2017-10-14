@@ -24,7 +24,7 @@ import java.util.Stack;
 public class Controller implements KeyListener, MouseListener, ActionListener {
     private Model model;
     private View view;
-    private static final int COOLDOWN = 150;
+    private static final int COOLDOWN = 300;
     private long timeLastAction = -COOLDOWN;
 
     private boolean inAutoMovement = false;
@@ -78,14 +78,13 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-
         if(inAutoMovement)
             return;
         int code = e.getKeyCode();
         if(code == KeyEvent.VK_SPACE) {
             if(view.pauseMenuVisible || System.currentTimeMillis() - timeLastAction < COOLDOWN)
                 return;
-            model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
+            model.getPlayer().startAction("atk");
             timeLastAction = System.currentTimeMillis();
         }
         else if(code == KeyEvent.VK_ESCAPE){
@@ -94,8 +93,14 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         else if(code == KeyEvent.VK_Q){
             if(view.pauseMenuVisible || System.currentTimeMillis() - timeLastAction < COOLDOWN)
                 return;
-            model.checkAttackAOE(model.getPlayer());
+            //model.checkAttackAOE(model.getPlayer());
+            if(model.getPlayer().getSpecial() >= 10)
+                model.getPlayer().startAction("aoe");
             timeLastAction = System.currentTimeMillis();
+        }
+        else if(code == KeyEvent.VK_CONTROL) {
+            model.getPlayer().toggleGuard();
+            view.repaint();
         }
     }
 
@@ -206,7 +211,6 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                             view.repaint();
                             break;
                         case "AOE":
-                            //model.checkAttackAOE(model.getPlayer());
                             if(model.getPlayer().getSpecial() >= 10)
                                 model.getPlayer().startAction("aoe");
                             if(Resources.DEBUG){

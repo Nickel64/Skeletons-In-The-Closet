@@ -34,6 +34,7 @@ public class Room implements java.io.Serializable{
     private boolean cleared = false;
     private transient TileSet tiles;
     private OneWayExitTeleport exit;
+    private int pingCount = 0;
 
     public Room(String name) {
         this.exit = null;
@@ -534,9 +535,10 @@ public class Room implements java.io.Serializable{
 
     public void ping(Model m) {
 
+        boolean actComplete = false;
 
         if(player != null) {
-            boolean actComplete = player.ping();
+            actComplete = player.ping();
             if(actComplete) {   //some action is completed
                 if (player.isPlayerAttack()) {
                     player.resetPlayerActions("atk");
@@ -548,57 +550,41 @@ public class Room implements java.io.Serializable{
                 }
             }
         }
-        for(Entity entity : getEnemies()) {
-            Enemy e = (Enemy) entity;
-            String message = "atk";
-            Point p = findPoint(entity);
+        if(pingCount++ == 15-(level)) {
+            pingCount = 0;
+            for(Entity entity : getEnemies()) {
+                String message = "atk";
+                Point p = findPoint(entity);
+                if (p.x > 0 && getEntityAt(p.x - 1, p.y) instanceof Player)
+                    checkAttack(getEntityAt(p.x, p.y), Direction.Left);
+                else if (p.x + 1 < getWidth() && getEntityAt(p.x + 1, p.y) instanceof Player)
+                    checkAttack(getEntityAt(p.x, p.y), Direction.Right);
+                else if (p.y > 0 && getEntityAt(p.x, p.y - 1) instanceof Player)
+                    checkAttack(getEntityAt(p.x, p.y), Direction.Up);
+                else if (p.y + 1 < getHeight() && getEntityAt(p.x, p.y + 1) instanceof Player)
+                    checkAttack(getEntityAt(p.x, p.y), Direction.Down);
+                else {
+                    message = "";
 
-            Direction playerProx = null;
+                    Point nextPos = Pathfinder.findNextClosestPointToGoal(this, p, getPlayerLocation());
+                    if (nextPos == null)
+                        return;
 
-            // search for the player
-                if (p.x > 0 && getEntityAt(p.x - 1, p.y) instanceof Player) {
-                    playerProx = Direction.Left;
-                } else if (p.x + 1 < getWidth() && getEntityAt(p.x + 1, p.y) instanceof Player) {
+                    Direction dir = Direction.Left;
+                    if (p.x > nextPos.x)
+                        dir = Direction.Left;
+                    else if (p.x < nextPos.x)
+                        dir = Direction.Right;
+                    else if (p.y > nextPos.y)
+                        dir = Direction.Up;
+                    else if (p.y < nextPos.y)
+                        dir = Direction.Down;
+                    moveEntity(entity, dir, m);
+                    if (Resources.DEBUG) System.out.println("MOVING ENEMY: " + dir);
 
-                    playerProx = Direction.Right;
-                } else if (p.y > 0 && getEntityAt(p.x, p.y - 1) instanceof Player) {
-
-                    playerProx = Direction.Up;
-                } else if (p.y + 1 < getHeight() && getEntityAt(p.x, p.y + 1) instanceof Player) {
-
-                    playerProx = Direction.Down;
                 }
-
-            if(playerProx != null){
-                if(!e.isEnemyAttack()){
-                    e.startAction("atk");
-                }
-                this.checkEnemyAttack(e, playerProx);
+                if (Resources.DEBUG) System.out.println(message);
             }
-
-            //not in range, try to close the gap
-            else {
-                message ="";
-
-                Point nextPos = Pathfinder.findNextClosestPointToGoal(this, p, getPlayerLocation());
-                if(nextPos == null)
-                    return;
-
-                Direction dir = Direction.Left;
-                if (p.x > nextPos.x)
-                    dir = Direction.Left;
-                else if (p.x < nextPos.x)
-                    dir = Direction.Right;
-                else if (p.y > nextPos.y)
-                    dir = Direction.Up;
-                else if (p.y < nextPos.y)
-                    dir = Direction.Down;
-                moveEntity(entity, dir, m);
-                if(Resources.DEBUG) System.out.println("MOVING ENEMY: " + dir);
-
-            }
-
-            if(Resources.DEBUG) System.out.println(message);
         }
     }
 
@@ -608,15 +594,5 @@ public class Room implements java.io.Serializable{
      */
     public void resetTileSet(){
         this.tiles = new TileSet(level);
-    }
-
-    public void checkEnemyAttack(Enemy e, Direction dir){
-        boolean actComplete = e.ping();
-        if(actComplete) {   //some action is completed
-            if (e.isEnemyAttack()) {
-                e.resetEnemyActions("atk");
-                this.checkAttack(e, dir);
-            }
-        }
     }
 }

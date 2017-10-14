@@ -243,6 +243,7 @@ public class Player extends Observable implements Entity, java.io.Serializable {
                 if(Resources.DEBUG) System.out.println("Player Animation progress: " + animCount);
                 return false;
             } else {
+                animCount = 0;
                 return true;
             }
         }
