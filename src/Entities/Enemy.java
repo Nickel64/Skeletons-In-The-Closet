@@ -108,7 +108,7 @@ public class Enemy extends Observable implements Entity, java.io.Serializable {
     }
 
     public String toString() {
-        return level+"";
+        return Integer.toString(level);
     }
 
 

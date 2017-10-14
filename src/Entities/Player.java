@@ -113,6 +113,7 @@ public class Player extends Observable implements Entity, java.io.Serializable {
         exp = 0;
         level++;
         damage = damage + 2;
+        Resources.playAudio("LevelUp.wav");
     }
 
     /**

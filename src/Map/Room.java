@@ -354,8 +354,6 @@ public class Room implements java.io.Serializable {
 
 
         if (layout[y][x] instanceof DoorTile) {      //if entity is currently on door tile, possible room change
-            if (!(entity instanceof Player))
-                throw new Error("An entity other than player cannot move from room to room");
             DoorTile door = (DoorTile) layout[y][x];        //gets current door tile
             Room nextRoom = model.getRoom(door.nameOfNextRoom());       //finds next room to hold player
             DoorTile endDoor = nextRoom.getDoorNamed(this.name);
@@ -366,6 +364,8 @@ public class Room implements java.io.Serializable {
                     if (y + 1 >= this.height) {    //checks that direction is going out of room
                         //check that next room door tile is correctly placed
                         if (destDoorPoint.y == 0) {
+                            if (!(entity instanceof Player))
+                                throw new Error("An entity other than player cannot move from room to room");
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         } else
@@ -376,6 +376,8 @@ public class Room implements java.io.Serializable {
                     if (x + 1 >= this.width) {    //checks that direction is going out of room
                         //check that next room door tile is correctly placed
                         if (destDoorPoint.x == 0) {
+                            if (!(entity instanceof Player))
+                                throw new Error("An entity other than player cannot move from room to room");
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         } else
@@ -386,6 +388,8 @@ public class Room implements java.io.Serializable {
                     if (y - 1 < 0) {    //checks that direction is going out of room
                         //check that next room door tile is correctly placed
                         if (destDoorPoint.y == nextRoom.height - 1) {
+                            if (!(entity instanceof Player))
+                                throw new Error("An entity other than player cannot move from room to room");
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         } else
@@ -396,6 +400,8 @@ public class Room implements java.io.Serializable {
                     if (x - 1 < 0) {    //checks that direction is going out of room
                         //check that next room door tile is correctly placed
                         if (destDoorPoint.x == nextRoom.width - 1) {
+                            if (!(entity instanceof Player))
+                                throw new Error("An entity other than player cannot move from room to room");
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         } else
@@ -587,7 +593,7 @@ public class Room implements java.io.Serializable {
                     player.resetPlayerActions("aoe");
                     this.checkAttackAOE(player);
                 }
-            }
+             }
         }
         if (isRoomCleared() && player != null)
             player.regen();
@@ -596,8 +602,6 @@ public class Room implements java.io.Serializable {
             Direction playerProx = null;
             String message = "atk";
             Point p = findPoint(entity);
-
-
             // search for the player
             if (p.x > 0 && getEntityAt(p.x - 1, p.y) instanceof Player) {
                 playerProx = Direction.Left;
@@ -616,20 +620,18 @@ public class Room implements java.io.Serializable {
             this.checkEnemyAttack(e, playerProx);
 
             if (pingLoop++ == 15 - level) {
-                pingLoop = 0;
                 if (playerProx != null) {
                     e.setDirection(playerProx);
                     if (!e.isEnemyAttack()) {
                         e.setDirection(playerProx);
                         e.startAction("atk");
                     }
-                }
-                else if(!e.isEnemyAttack()) {
+                } else if (!e.isEnemyAttack()) {
                     message = "";
 
                     Point nextPos = Pathfinder.findNextClosestPointToGoal(this, p, getPlayerLocation());
                     if (nextPos == null)
-                        return;
+                        continue;
 
                     Direction dir = Direction.Left;
                     if (p.x > nextPos.x)
@@ -640,14 +642,20 @@ public class Room implements java.io.Serializable {
                         dir = Direction.Up;
                     else if (p.y < nextPos.y)
                         dir = Direction.Down;
-                    moveEntity(entity, dir, m);
+                    try {
+                        moveEntity(entity, dir, m);
+                    } catch (GameError er) {
+                        continue;
+                    }
                     entity.setDirection(dir);
                     if (Resources.DEBUG) System.out.println("MOVING ENEMY: " + dir);
-                }
 
-                if (Resources.DEBUG) System.out.println(message);
+                    if (Resources.DEBUG) System.out.println(message);
+
+                }
             }
         }
+        pingLoop %= 15;
     }
 
     /**
