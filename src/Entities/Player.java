@@ -82,10 +82,6 @@ public class Player extends Observable implements Entity, java.io.Serializable {
         this.maxHealth = maxHealth;
     }
 
-    public void setDamage(int Damage) {
-        damage = Damage;
-    }
-
     //public void  setSpeed(int Speed){speed = Speed;}
     public void setSpecial(int s) {
         special = s;

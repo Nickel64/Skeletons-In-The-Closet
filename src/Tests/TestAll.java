@@ -1511,8 +1511,9 @@ public class TestAll {
             fail(error.getMessage());
         }
     }
+
     @Test
-    public void test_entity_1() {
+    public void test_entity_Player1() {
         //Testing that player entity is initialised properly
         Model m = new Model();
         String simpleMap =
@@ -1535,8 +1536,46 @@ public class TestAll {
         Room r = m.getCurrentRoom();
         Player player = (Player)r.getEntityAt(2, 3);
         assertTrue(player.getDamage()==1);
-        assertTrue(player.canMove()==true);
+        assertTrue(player.canMove());
         assertTrue(player.getHealth()==100&&player.getMaxHealth()==100);
+        assertFalse(player.isPlayerAttack());
+        assertFalse(player.isPlayerAttackAoE());
+        assertFalse(player.isPlayerDying());
+    }
+
+    @Test
+    public void test_entity_Nothing1() {
+        //Testing that player entity is initialised properly
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * + . . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". 2 . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+        Room r = m.getCurrentRoom();
+        Entities.Nothing nothingTile = (Entities.Nothing)r.getEntityAt(2, 2);
+        assertTrue(nothingTile.getDamage()==-1);
+        assertTrue(!nothingTile.canMove());
+        assertTrue(nothingTile.canStepOn());
+        assertEquals(nothingTile.toString(), ".");
+        assertTrue(nothingTile.getHealth()==-1&&nothingTile.getMaxHealth()==-1);
+        assertFalse(nothingTile.ping());
+        assertEquals(nothingTile.getLevel(), 0);
+        nothingTile.setDirection(Entity.Direction.Up);
+        nothingTile.attack(null);
+        assertNull(nothingTile.getImageName());
     }
 
     @Test
@@ -1598,17 +1637,14 @@ public class TestAll {
 
         Point prevPlayer = m.getPlayerLocation();
         m.moveEntity(m.getPlayer(), Entity.Direction.Up);
-
         Point player2point = m.getPlayerLocation();
         assertNotEquals(prevPlayer, player2point);
 
         saveLoad.save(m);
 
+        m.moveEntity(m.getPlayer(), Entity.Direction.Up);
+
         assert(saveLoad.saves.keySet().size() > 1);
-
-        m = saveLoad.load((String) saveLoad.saves.keySet().toArray()[1]);
-        assertEquals(player2point, m.getPlayerLocation());
-
     }
 
     @Test
