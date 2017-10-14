@@ -41,7 +41,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                 bgmIteration = 1;
                 Resources.playAudio("Background.wav");
             }
-            if(!view.pauseMenuVisible) {
+            if(!view.pauseMenuVisible || !view.paused) {
                 this.model.getCurrentRoom().ping(model);
                 view.repaint();
             }
@@ -64,7 +64,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         //process input from keyboard
         //e.g. move up, down, left, right, attack
 
-        if(view.pauseMenuVisible || inAutoMovement) return;
+        if(view.pauseMenuVisible || inAutoMovement || view.paused) return;
         int code = e.getKeyCode();
         if(code == KeyEvent.VK_KP_UP || code == KeyEvent.VK_UP || code == KeyEvent.VK_W) {
             movePlayer(Entity.Direction.Up);
@@ -82,7 +82,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if(inAutoMovement)
+        if(inAutoMovement || view.paused)
             return;
         int code = e.getKeyCode();
         if(code == KeyEvent.VK_SPACE) {
@@ -122,7 +122,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(inAutoMovement) return;
+        if(inAutoMovement || view.paused) return;
         int x = e.getX(), y = e.getY();
         int[] toGoArr = view.getGridCoordsAt(x,y);
         Point toGo = new Point(toGoArr[0], toGoArr[1]);
