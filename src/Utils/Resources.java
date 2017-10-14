@@ -59,6 +59,8 @@ public class Resources {
     public static String PAUSE_MENU_TITLE = "Game Paused";
     public static String EXIT_CONFIRM = "Are you sure that you want to exit?";
     public static String NEWGAME_CONFIRM = "Are you sure that you want to start a new game?";
+    public static String DEATH_MESSAGE = "YOU'VE DIED \n Oh no, unfortunately you have not succeeded at your quest. \n" +
+            "For that, you must now die";
 
     public static Dimension WINDOW_SIZE = new Dimension(1024,768);
 

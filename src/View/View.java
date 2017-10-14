@@ -66,6 +66,7 @@ public class View extends JComponent implements Observer{
     SaveLoad saveLoad;
 
     public boolean pauseMenuVisible = false;
+    public boolean paused = false;
 
     public View(Model m) {
 
@@ -119,7 +120,13 @@ public class View extends JComponent implements Observer{
         long start = System.currentTimeMillis();
 
         Graphics2D gg = (Graphics2D) g;
+
+        //player has died (oh no!)
         if(model.getPlayerLocation() == null){
+            paused = true;
+            frame.dispose();
+            JOptionPane.showMessageDialog(this, Resources.DEATH_MESSAGE);
+            System.exit(0);
             return;
         }
 
@@ -173,6 +180,7 @@ public class View extends JComponent implements Observer{
 
         pauseMenu = new JPanel();
         pauseMenu.setLayout(new BoxLayout(pauseMenu, BoxLayout.PAGE_AXIS));
+        paused = true;
 
         //graphics.setColor(new Color(32,39,32));
         //graphics.fillRect(0,0, this.getWidth(), this.getHeight()-border.getHeight(null));
@@ -281,6 +289,7 @@ public class View extends JComponent implements Observer{
 
     public void pauseMenuToggle(){
         pauseMenuVisible = !pauseMenuVisible;
+        paused = !paused;
         if(!pauseMenuVisible){ removePauseMenu(); pauseBtn.setText(Resources.PAUSE_PAUSE_BUTTON);}
         else pauseBtn.setText(Resources.PAUSE_RESUME_BUTTON);
         repaint();
