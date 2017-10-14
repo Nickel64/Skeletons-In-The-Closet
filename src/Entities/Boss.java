@@ -27,10 +27,6 @@ public class Boss extends Enemy {
     }
 
     public Image getIdle() {
-        System.out.println(images);
-        System.out.println(dir);
-        System.out.println(dir.ordinal());
-
         return images.getIdle(dir.ordinal());
     }
 

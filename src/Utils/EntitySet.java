@@ -45,6 +45,14 @@ public class EntitySet {
                 Random random = new Random();
                 int select = random.nextInt(3);
                 //select that enemy for this entityset
+                for (int n = 0; n < 4; n++) {
+                    idle[n] = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/Enemy/Enemy"+ select +"/EnemyIdle" + n + ".png"));
+
+                    //attacks
+                    for(int i = 0; i < 6; i++){
+                        attacks[n][i] = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/Enemy/Enemy"+select+"/EnemyAttack" + n + "_" + i + ".png"));
+                    }
+                }
             }
         }
         catch(IOException e){

@@ -15,6 +15,7 @@ import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -181,8 +182,6 @@ public class View extends JComponent implements Observer{
         pauseMenu.setLayout(new BoxLayout(pauseMenu, BoxLayout.PAGE_AXIS));
         paused = true;
 
-        //graphics.setColor(new Color(32,39,32));
-        //graphics.fillRect(0,0, this.getWidth(), this.getHeight()-border.getHeight(null));
 
         JButton newGame = new JButton(Resources.PAUSE_NEWGAME_BUTTON); newGame.setAlignmentX(Component.CENTER_ALIGNMENT);
         JButton save = new JButton(Resources.PAUSE_SAVE_BUTTON); save.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -389,10 +388,6 @@ public class View extends JComponent implements Observer{
             img = tileSet.getEntry();
             g.drawImage(img, x,y,null);
         }
-
-        if(tile.getEntity() != null){
-            //drawEntity(g, tile.getEntity(), tileSet, x,y);
-        }
     }
 
     /**
@@ -403,60 +398,73 @@ public class View extends JComponent implements Observer{
      */
 
     public void drawEntity(Graphics2D g, Entity e, TileSet tileSet, int x, int y){
+        Image img = null;
+        Image mod = null;
+        int difX, difY;
+
         if(e instanceof Nothing)
             return;
+
         else if(e instanceof Player){
             Player p = (Player) e;
             if(p.isPlayerAttack()){
-                g.drawImage(p.getAttack(), x, y, null);
+
+                img = p.getAttack();
             }
             else {
-                g.drawImage(p.getIdle(), x, y, null);
+                img = p.getIdle();
             }
             if(p.isDefending()){
-                g.drawImage(p.getDefending(), x,y,null);
+                mod = p.getDefending();
             }
         }
         else if(e instanceof  Wall){
-            Image img = tileSet.getWall();
-            g.drawImage(img, x,y,null);
+            img = tileSet.getWall();
 
         }
         else if (e instanceof  Boss){
             Boss b = (Boss) e;
             if(b.isEnemyAttack()){
-                g.drawImage(b.getAttack(), x, y, null);
+                img = b.getAttack();
             }
             else {
-                g.drawImage(b.getIdle(), x, y, null);
+                img = b.getIdle();
             }
-
-            g.setColor(Color.black);
-            g.fillRect(x, y-tileSize/6, tileSize, tileSize/6);
-
-            //the enemy HP bar
-            Enemy temp = (Enemy) e;
-            g.setColor(Color.red.darker());
-            int endX =(int) Math.ceil(((double)tileSize/temp.getMaxHealth())*temp.getHealth());
-            g.fillRect(x, y-tileSize/6,endX, tileSize/6);
         }
 
         else if(e instanceof Enemy){
-            g.setColor(Color.red);
-            g.fillOval((tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
-            g.setColor(Color.black);
-            g.fillRect(x, y-tileSize/6, tileSize, tileSize/6);
-
-            //the enemy HP bar
-            Enemy temp = (Enemy) e;
-            g.setColor(Color.red.darker());
-            int endX =(int) Math.ceil(((double)tileSize/temp.getMaxHealth())*temp.getHealth());
-            g.fillRect(x, y-tileSize/6,endX, tileSize/6);
+            Enemy ee = (Enemy) e;
+            if(ee.isEnemyAttack()){
+                img = ee.getAttack();
+            }
+            else {
+                img = ee.getIdle();
+            }
         }
 
         else if(e instanceof PowerUp){
             PowerUp p = (PowerUp) e;
-            g.drawImage(p.getImage(), x, y, null);
+            img = p.getImage();
+        }
+
+        //apparently this already works with oversize images?
+        //if it doesn't I can come back to it tomorrow
+
+
+        g.drawImage(img, x, y, null);
+        if(mod != null)
+            g.drawImage(mod, x, y, null);
+
+        if(e instanceof  Boss || e instanceof Enemy){
+            //draw the hp bar background
+            g.setColor(Color.black);
+            g.fillRect(x, y-tileSize/6, tileSize, tileSize/6);
+
+            //the enemy HP bar
+            Enemy temp = (Enemy) e;
+            g.setColor(Color.red.darker());
+            int endX =(int) Math.ceil(((double)tileSize/temp.getMaxHealth())*temp.getHealth());
+            g.fillRect(x, y-tileSize/6,endX, tileSize/6);
         }
     }
 
