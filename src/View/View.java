@@ -431,6 +431,15 @@ public class View extends JComponent implements Observer{
             else {
                 g.drawImage(b.getIdle(), x, y, null);
             }
+
+            g.setColor(Color.black);
+            g.fillRect(x, y-tileSize/6, tileSize, tileSize/6);
+
+            //the enemy HP bar
+            Enemy temp = (Enemy) e;
+            g.setColor(Color.red.darker());
+            int endX =(int) Math.ceil(((double)tileSize/temp.getMaxHealth())*temp.getHealth());
+            g.fillRect(x, y-tileSize/6,endX, tileSize/6);
         }
 
         else if(e instanceof Enemy){

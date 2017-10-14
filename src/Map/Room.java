@@ -589,7 +589,7 @@ public class Room implements java.io.Serializable {
                 }
             }
         }
-        if (isRoomCleared())
+        if (isRoomCleared() && player != null)
             player.regen();
         for (Entity entity : getEnemies()) {
             Enemy e = (Enemy) entity;
