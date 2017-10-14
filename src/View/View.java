@@ -118,11 +118,14 @@ public class View extends JComponent implements Observer{
         long start = System.currentTimeMillis();
 
         Graphics2D gg = (Graphics2D) g;
+        if(model.getPlayerLocation() == null){
+            return;
+        }
 
-        if(!pauseMenuVisible){
+        else if(!pauseMenuVisible){
             drawWorld(gg);
             //drawNewShadows(gg, model.getCurrentRoom());
-            drawShadows(gg, model.getPlayerLocation());
+                drawShadows(gg, model.getPlayerLocation());
         }
         else{
             showPauseMenu(gg);

@@ -29,7 +29,7 @@ public class Resources {
     public static String SAVE_SUCCESSFUL_MESSAGE = "Game saved successfully";
     public static String SAVE_UNSUCCESSFUL_MESSAGE = "ERROR: The game was unable to be saved";
 
-    public static Dimension WINDOW_SIZE = new Dimension(1024,720);
+    public static Dimension WINDOW_SIZE = new Dimension(1024,768);
 
     public static Color transparent = new Color(0,0,0,0);
     public static Color shadowBack = new Color(32,39,32);

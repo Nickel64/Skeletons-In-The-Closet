@@ -130,17 +130,14 @@ public class Player extends Observable implements Entity, java.io.Serializable {
         //toggling off
         if (defending) {
             defending = !defending;
-            //TODO play a sound
-            System.out.println("not blocking damage");
             return;
         }
         //toggling on
         else if (special > 0) {
             //valid to block
             this.defending = true;
-            System.out.println("blocking damage");
-
         }
+        Resources.playAudio("Defend.wav");
     }
     public int getLevel(){
         return level;
@@ -285,5 +282,16 @@ public class Player extends Observable implements Entity, java.io.Serializable {
                 break;
         }
         this.animCount = 0;
+    }
+
+    public void regen(){
+        setChanged();
+        if(health < maxHealth){
+            health++;
+            notifyObservers();
+        }
+        else{
+            clearChanged();
+        }
     }
 }

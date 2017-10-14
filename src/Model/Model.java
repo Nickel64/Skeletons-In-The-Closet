@@ -166,18 +166,4 @@ public class Model extends Observable implements java.io.Serializable {
         }
         getPlayer().resetPlayer();
     }
-
-    /**
-    public void startGameLoop(){
-        //TODO in the current room, ping everything in a loop
-        //TODO enemies attack
-        //TODO get player animation from this ping
-        //TODO get enemy animation from this
-        //Entities that are attacking should (in my mind) have 6 'stages' of attack to go through before the attack is processed. This should be handled here
-        //i.e. only attack once the entity has completed its animation.
-        //Entity can have a counter that will decide what image to return
-        //gets reset at the end of the attack
-        //death animations, too
-    }
-     **/
 }

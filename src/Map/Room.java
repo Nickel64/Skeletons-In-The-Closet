@@ -557,6 +557,8 @@ public class Room implements java.io.Serializable{
             }
         }
         if(pingLoop++ == 15-level) {
+            if(isRoomCleared())
+                player.regen();
             pingLoop = 0;
             for(Entity entity : getEnemies()) {
                 String message = "atk";

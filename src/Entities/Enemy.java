@@ -12,7 +12,6 @@ import java.util.StringJoiner;
  */
 public class Enemy extends Observable implements Entity, java.io.Serializable {
     private Direction dir;
-    private Image sprite; //the visual representation of the unit
     private int health; // how much health the unit has
     private int maxHealth;  //needed for hp display purposes
     private int damage; // how much damage the unit deals
@@ -28,7 +27,6 @@ public class Enemy extends Observable implements Entity, java.io.Serializable {
     public int getHealth(){return health;}
     public int getMaxHealth(){return maxHealth;}
     public int getSpeed(){return speed;}
-    public Image getSprite(){return sprite;}
 
     //name will determine the sprite or something
     public Enemy(int level, int health, int damage, int speed){
