@@ -9,4 +9,6 @@ public interface PowerUp extends Entity {
     public void increase (Player p);
 
     public Image getImage();
+
+    public void resetImage();
 }

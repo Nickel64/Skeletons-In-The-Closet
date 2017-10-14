@@ -3,6 +3,7 @@ package View;
 import Controller.*;
 import Model.*;
 import Utils.Resources;
+import Utils.SaveLoad;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,7 +33,7 @@ public class Menu extends JComponent {
 
 
         //new game button
-        JButton newGame = new JButton("New Game");
+        JButton newGame = new JButton(Resources.MENU_NEWGAME_BUTTON);
         newGame.setAlignmentX(Component.CENTER_ALIGNMENT);
         newGame.addActionListener(new ActionListener() {
             @Override
@@ -42,8 +43,32 @@ public class Menu extends JComponent {
         });
         panel.add(newGame);
 
-        //new game button
-        JButton infoBut = new JButton("Help");
+        //saved games
+        JButton savedGame = new JButton(Resources.MENU_SAVEDGAME_BUTTON);
+        savedGame.setAlignmentX(Component.CENTER_ALIGNMENT);
+        savedGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SaveLoad saveLoad = new SaveLoad();
+                if(saveLoad.saves.size() >= 1) {
+                    int result = JOptionPane.showOptionDialog(frame, Resources.LOAD_PROMPT_MESSAGE, Resources.LOAD_TITLE_MESSAGE, 0, 0, null, saveLoad.saves.keySet().toArray(), saveLoad.saves.get(saveLoad.saves.keySet().toArray()[0]));
+                    if(result == -1) return;
+                    Model m = saveLoad.load((String) saveLoad.saves.keySet().toArray()[result]);
+                    if (m == null) {
+                        JOptionPane.showMessageDialog(frame, Resources.LOAD_UNSUCCESSFUL_MESSAGE);
+                    } else {
+                        loadGame(m);
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(frame, Resources.LOAD_NOSAVES_MESSAGE);
+                }
+            }
+        });
+        panel.add(savedGame);
+
+        //Help button
+        JButton infoBut = new JButton(Resources.MENU_HELP_BUTTON);
         infoBut.setAlignmentX(Component.CENTER_ALIGNMENT);
         infoBut.addActionListener(new ActionListener() {
             @Override
@@ -54,7 +79,7 @@ public class Menu extends JComponent {
         panel.add(infoBut);
 
         //quit button
-        JButton quit = new JButton("Quit");
+        JButton quit = new JButton(Resources.MENU_QUIT_BUTTON);
         quit.setAlignmentX(Component.CENTER_ALIGNMENT);
         quit.addActionListener(new ActionListener() {
             @Override
@@ -85,6 +110,11 @@ public class Menu extends JComponent {
         }
         frame.dispose();
         SwingUtilities.invokeLater(()-> new View(model));
+    }
+
+    private void loadGame(Model m){
+        frame.dispose();
+        SwingUtilities.invokeLater(()-> new View(m));
     }
 
     @Override

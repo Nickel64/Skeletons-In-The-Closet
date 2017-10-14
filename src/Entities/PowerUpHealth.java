@@ -9,7 +9,7 @@ import java.awt.*;
  */
 public class PowerUpHealth implements PowerUp, java.io.Serializable {
 
-    Image image;
+    transient Image image;
 
     public PowerUpHealth (){
         image = Resources.getImage("PowerUpHealth");
@@ -23,6 +23,11 @@ public class PowerUpHealth implements PowerUp, java.io.Serializable {
     public Image getImage(){
         return image;
     }
+
+
+    @Override
+    public void resetImage() { image = Resources.getImage("PowerUpHealth");}
+
 
     @Override
     public int getLevel() {

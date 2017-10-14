@@ -603,6 +603,14 @@ public class Room implements java.io.Serializable{
      * after this class is Deserialized
      */
     public void resetTileSet(){
+        for(int y = 0; y < layout.length; y++){
+            for(int x = 0; x < layout[0].length; x++){
+                if(layout[y][x].getEntity() instanceof PowerUp){
+                    PowerUp powerUps = (PowerUp) layout[y][x].getEntity();
+                    powerUps.resetImage();
+                }
+            }
+        }
         this.tiles = new TileSet(level);
     }
 }

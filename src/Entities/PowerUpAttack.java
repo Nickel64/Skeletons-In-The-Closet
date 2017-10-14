@@ -9,7 +9,8 @@ import java.awt.*;
  */
 public class PowerUpAttack implements PowerUp, java.io.Serializable {
 
-    Image image;
+
+    transient Image image;
 
     public PowerUpAttack (){
         image = Resources.getImage("PowerUpAttack");
@@ -18,6 +19,9 @@ public class PowerUpAttack implements PowerUp, java.io.Serializable {
     public Image getImage(){
         return image;
     }
+
+    @Override
+    public void resetImage() { image = Resources.getImage("PowerUpAttack");}
 
     @Override
     public int getLevel() {

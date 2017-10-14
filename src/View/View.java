@@ -39,7 +39,7 @@ public class View extends JComponent implements Observer{
     JPanel pauseMenu;
 
     //menu buttons
-    JButton pauseBtn = new JButton("Pause");
+    JButton pauseBtn = new JButton(Resources.PAUSE_PAUSE_BUTTON);
 
     //control buttons
     JButton up = new JButton();
@@ -176,10 +176,10 @@ public class View extends JComponent implements Observer{
         //graphics.setColor(new Color(32,39,32));
         //graphics.fillRect(0,0, this.getWidth(), this.getHeight()-border.getHeight(null));
 
-        JButton save = new JButton("Save"); save.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton load = new JButton("Load"); load.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton help = new JButton("Help"); help.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton quit = new JButton("Quit"); quit.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton save = new JButton(Resources.PAUSE_SAVE_BUTTON); save.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton load = new JButton(Resources.PAUSE_LOAD_BUTTON); load.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton help = new JButton(Resources.PAUSE_HELP_BUTTON); help.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton quit = new JButton(Resources.PAUSE_QUIT_BUTTON); quit.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         save.addActionListener(new ActionListener() {
             @Override
@@ -193,11 +193,16 @@ public class View extends JComponent implements Observer{
         load.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int result = JOptionPane.showOptionDialog(frame, "Select a Save File to Load", "Load a Saved Game", 0, 0, null, saveLoad.saves.keySet().toArray(), saveLoad.saves.get(saveLoad.saves.keySet().toArray()[0]));
-                if(!replaceModel(saveLoad.load((String) saveLoad.saves.keySet().toArray()[result]))){
-                  JOptionPane.showMessageDialog(frame, "Unable to load");
+                if(saveLoad.saves.size() >= 1) {
+                    int result = JOptionPane.showOptionDialog(frame, Resources.LOAD_PROMPT_MESSAGE, Resources.LOAD_TITLE_MESSAGE, 0, 0, null, saveLoad.saves.keySet().toArray(), saveLoad.saves.get(saveLoad.saves.keySet().toArray()[0]));
+                    if(result == -1) return;
+                    if (!replaceModel(saveLoad.load((String) saveLoad.saves.keySet().toArray()[result]))) {
+                        JOptionPane.showMessageDialog(frame, Resources.LOAD_UNSUCCESSFUL_MESSAGE);
+                    } else pauseMenuToggle();
                 }
-                else pauseMenuToggle();
+                else{
+                    JOptionPane.showMessageDialog(frame, Resources.LOAD_NOSAVES_MESSAGE);
+                }
             }
         });
 
@@ -211,7 +216,7 @@ public class View extends JComponent implements Observer{
         quit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int ans = JOptionPane.showConfirmDialog(frame, "Are you sure that you want to exit?");
+                int ans = JOptionPane.showConfirmDialog(frame, Resources.EXIT_CONFIRM);
                 if(ans == 0) {
                     frame.dispose();
                     System.exit(0);
@@ -219,7 +224,7 @@ public class View extends JComponent implements Observer{
             }
         });
 
-        JLabel title = new JLabel("Game Paused");
+        JLabel title = new JLabel(Resources.PAUSE_MENU_TITLE);
         title.setFont(new Font("SansSerif", Font.PLAIN, 25));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -259,8 +264,8 @@ public class View extends JComponent implements Observer{
 
     public void pauseMenuToggle(){
         pauseMenuVisible = !pauseMenuVisible;
-        if(!pauseMenuVisible){ removePauseMenu(); pauseBtn.setText("Pause");}
-        else pauseBtn.setText("Resume");
+        if(!pauseMenuVisible){ removePauseMenu(); pauseBtn.setText(Resources.PAUSE_PAUSE_BUTTON);}
+        else pauseBtn.setText(Resources.PAUSE_RESUME_BUTTON);
         repaint();
     }
 

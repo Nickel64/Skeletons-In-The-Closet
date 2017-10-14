@@ -31,8 +31,32 @@ public class Resources {
             "Defend: On screen button / left control\n" +
             "AoE: On screen button / 'q'";
 
+    //LOAD AND SAVE MESSAGES
     public static String SAVE_SUCCESSFUL_MESSAGE = "Game saved successfully";
     public static String SAVE_UNSUCCESSFUL_MESSAGE = "ERROR: The game was unable to be saved";
+    public static String LOAD_NOSAVES_MESSAGE = "There are no saved games to load from";
+    public static String LOAD_UNSUCCESSFUL_MESSAGE = "ERROR: Unable to load this saved game";
+    public static String LOAD_PROMPT_MESSAGE = "Select a saved game to Load:";
+    public static String LOAD_TITLE_MESSAGE = "Load Game:";
+
+
+    //MAIN MENU BUTTONS
+    public static String MENU_NEWGAME_BUTTON = "New Game";
+    public static String MENU_SAVEDGAME_BUTTON = "Load Game";
+    public static String MENU_HELP_BUTTON = "Instructions";
+    public static String MENU_QUIT_BUTTON = "Exit";
+
+
+    //PAUSE MENU BUTTONS
+    public static String PAUSE_LOAD_BUTTON = "Load";
+    public static String PAUSE_SAVE_BUTTON = "Save";
+    public static String PAUSE_HELP_BUTTON = "Help";
+    public static String PAUSE_QUIT_BUTTON = "Quit";
+    public static String PAUSE_PAUSE_BUTTON = "Pause";
+    public static String PAUSE_RESUME_BUTTON = "Resume";
+
+    public static String PAUSE_MENU_TITLE = "Game Paused";
+    public static String EXIT_CONFIRM = "Are you sure that you want to exit?";
 
     public static Dimension WINDOW_SIZE = new Dimension(1024,768);
 

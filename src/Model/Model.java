@@ -163,6 +163,7 @@ public class Model extends Observable implements java.io.Serializable {
     public void resetGame(){
         for(Room room: map.values()){
             room.resetTileSet();
+
         }
         getPlayer().resetPlayer();
     }
