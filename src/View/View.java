@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -176,10 +177,25 @@ public class View extends JComponent implements Observer{
         //graphics.setColor(new Color(32,39,32));
         //graphics.fillRect(0,0, this.getWidth(), this.getHeight()-border.getHeight(null));
 
+        JButton newGame = new JButton(Resources.PAUSE_NEWGAME_BUTTON); newGame.setAlignmentX(Component.CENTER_ALIGNMENT);
         JButton save = new JButton(Resources.PAUSE_SAVE_BUTTON); save.setAlignmentX(Component.CENTER_ALIGNMENT);
         JButton load = new JButton(Resources.PAUSE_LOAD_BUTTON); load.setAlignmentX(Component.CENTER_ALIGNMENT);
         JButton help = new JButton(Resources.PAUSE_HELP_BUTTON); help.setAlignmentX(Component.CENTER_ALIGNMENT);
         JButton quit = new JButton(Resources.PAUSE_QUIT_BUTTON); quit.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        newGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int ans = JOptionPane.showConfirmDialog(frame, Resources.NEWGAME_CONFIRM);
+                if(ans == 0) {
+                    Model m = new Model();
+                    try{m.initialise();}
+                    catch (IOException g){g.printStackTrace();}
+                    replaceModel(m);
+                    pauseMenuToggle();
+                }
+            }
+        });
 
         save.addActionListener(new ActionListener() {
             @Override
@@ -229,6 +245,7 @@ public class View extends JComponent implements Observer{
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         pauseMenu.add(title);
+        pauseMenu.add(newGame);
         pauseMenu.add(save);
         pauseMenu.add(load);
         pauseMenu.add(help);

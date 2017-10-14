@@ -127,7 +127,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         int[] toGoArr = view.getGridCoordsAt(x,y);
         Point toGo = new Point(toGoArr[0], toGoArr[1]);
 
-        if(toGo.x == -1 || toGo.y == -1) throw new Error("Cannot move outside the board");
+        if(toGo.x == -1 || toGo.y == -1) return;
         if(Resources.DEBUG) System.out.println("Heading toward x:" + toGo.x + " y:" + toGo.y);
 
         Point goFrom = new Point(model.getPlayerLocation().x, model.getPlayerLocation().y);
