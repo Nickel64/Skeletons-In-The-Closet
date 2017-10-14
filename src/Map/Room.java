@@ -397,8 +397,8 @@ public class Room {
         Entity temp = exit.getEntity();
         exit.setEntity(entry.getEntity());
         entry.setEntity(temp);
-        model.changeCurrentRoom(nextRoom);
         nextRoom.setPlayer(this.player);        //sets the next room up with the current player
+        model.changeCurrentRoom(nextRoom);
     }
 
     /**
