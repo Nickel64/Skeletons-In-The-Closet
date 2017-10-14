@@ -24,7 +24,12 @@ public class Resources {
 
     public static String HELPDESC = "Skeletons in the Closet! \n\n" +
             "Welcome to our game. More information about this game will be avaliable here\n\n" +
-            "Created by Nick, Morgan, Ben, Rachel, Belle";
+            "Created by Nick, Morgan, Ben, Rachel, Belle\n\n" +
+            "Controls\n" +
+            "Movement: Direction Pad / WASD / click-to-move/ on screen buttons\n" +
+            "Attack: On screen button / spacebar\n" +
+            "Defend: On screen button / left control\n" +
+            "AoE: On screen button / 'q'";
 
     public static String SAVE_SUCCESSFUL_MESSAGE = "Game saved successfully";
     public static String SAVE_UNSUCCESSFUL_MESSAGE = "ERROR: The game was unable to be saved";
@@ -41,6 +46,11 @@ public class Resources {
     public static Image getImage(String imgDesc){
         if(imgDesc.equals("border")){
             String temp = "Decor/";
+            temp += imgDesc;
+            imgDesc = temp;
+        }
+        else if(imgDesc.equals("PowerUpAttack") || imgDesc.equals("PowerUpHealth")){
+            String temp = "SpriteSets/PowerUps/";
             temp += imgDesc;
             imgDesc = temp;
         }

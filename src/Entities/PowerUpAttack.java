@@ -1,13 +1,24 @@
 package Entities;
 
+import Utils.Resources;
+
+import java.awt.*;
+
 /**
  * Created by Shlomoburg on 8/10/2017.
  */
 public class PowerUpAttack implements PowerUp, java.io.Serializable {
 
-    public PowerUpAttack (){
+    Image image;
 
+    public PowerUpAttack (){
+        image = Resources.getImage("PowerUpAttack");
     }
+
+    public Image getImage(){
+        return image;
+    }
+
     @Override
     public int getLevel() {
         return 0;

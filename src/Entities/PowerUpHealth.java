@@ -1,18 +1,29 @@
 package Entities;
 
+import Utils.Resources;
+
+import java.awt.*;
+
 /**
  * Created by Shlomoburg on 8/10/2017.
  */
 public class PowerUpHealth implements PowerUp, java.io.Serializable {
 
-    public PowerUpHealth(){
+    Image image;
 
+    public PowerUpHealth (){
+        image = Resources.getImage("PowerUpHealth");
     }
     @Override
     public void increase(Player p) {
         p.setMaxHealth(p.getMaxHealth()+2);
         p.setHealth(p.getHealth()+2);
     }
+
+    public Image getImage(){
+        return image;
+    }
+
     @Override
     public int getLevel() {
         return 0;

@@ -407,14 +407,8 @@ public class View extends JComponent implements Observer{
             g.fillRect(x, y-tileSize/6,endX, tileSize/6);
         }
         else if(e instanceof PowerUp){
-            if(e instanceof PowerUpAttack){
-                g.setColor(Color.gray);
-                g.fillOval((tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
-            }
-            else if(e instanceof  PowerUpHealth){
-                g.setColor(Color.red);
-                g.fillOval((tileSize/4)+x,tileSize/4+y,tileSize/2,tileSize/2);
-            }
+            PowerUp p = (PowerUp) e;
+            g.drawImage(p.getImage(), x, y, null);
         }
     }
 
