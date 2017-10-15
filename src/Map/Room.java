@@ -658,6 +658,7 @@ public class Room implements java.io.Serializable {
                 }
             }
         }
+        pingLoop++;
         pingLoop %= 15;
     }
 
