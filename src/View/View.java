@@ -447,11 +447,11 @@ public class View extends JComponent implements Observer{
             img = p.getImage();
         }
 
-        //apparently this already works with oversize images?
-        //if it doesn't I can come back to it tomorrow
+        //shift oversize tiles
+        int dx = img.getWidth(null)/2 - tileSize/2;
+        int dy = img.getHeight(null)/2 - tileSize/2;
 
-
-        g.drawImage(img, x, y, null);
+        g.drawImage(img, x - dx, y - dy, null);
         if(mod != null)
             g.drawImage(mod, x, y, null);
 

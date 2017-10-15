@@ -601,6 +601,8 @@ public class Room implements java.io.Serializable {
         if (isRoomCleared() && player != null)
             player.regen();
         for (Entity entity : getEnemies()) {
+            if(entity instanceof  Decor)
+                return;
             Enemy e = (Enemy) entity;
             Direction playerProx = null;
             String message = "atk";
@@ -622,7 +624,7 @@ public class Room implements java.io.Serializable {
 
             this.checkEnemyAttack(e, playerProx);
 
-            if (pingLoop++ == 15 - level) {
+            if (pingLoop == 15 - level) {
                 if (playerProx != null) {
                     e.setDirection(playerProx);
                     if (!e.isEnemyAttack()) {
@@ -658,8 +660,8 @@ public class Room implements java.io.Serializable {
                 }
             }
         }
+        pingLoop %= (15-level);
         pingLoop++;
-        pingLoop %= 15;
     }
 
     /**

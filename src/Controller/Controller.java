@@ -102,7 +102,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
             }
             timeLastAction = System.currentTimeMillis();
         }
-        else if(code == KeyEvent.VK_CONTROL) {
+        else if(code == KeyEvent.VK_E) {
             model.getPlayer().toggleGuard();
             view.repaint();
         }

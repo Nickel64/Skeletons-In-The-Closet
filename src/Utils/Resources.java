@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Random;
 
 /**
  * Used to store things
@@ -28,7 +29,7 @@ public class Resources {
             "Controls\n" +
             "Movement: Direction Pad / WASD / click-to-move/ on screen buttons\n" +
             "Attack: On screen button / spacebar\n" +
-            "Defend: On screen button / left control\n" +
+            "Defend: On screen button / 'e'\n" +
             "AoE: On screen button / 'q'";
 
     //LOAD AND SAVE MESSAGES
@@ -70,6 +71,8 @@ public class Resources {
     public static int radius = 400;
     public static int lightRadius = 200;
 
+    public static int levels = 7;   //zero indexed
+
 
     public static Image getImage(String imgDesc){
         if(imgDesc.equals("border")){
@@ -96,6 +99,19 @@ public class Resources {
             e.printStackTrace();
         }
         return img;
+    }
+
+    public static Image getDecorObject(int level){
+        Random random = new Random();
+        int n = random.nextInt(levels - 1);
+        String path = "ImgResources/DecorObjects/Level"+level+"decor"+n+".png";
+        try {
+            return ImageIO.read(Resources.class.getResource(path));
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /** Plays an audio clip*/
