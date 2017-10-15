@@ -694,4 +694,10 @@ public class View extends JComponent implements Observer{
             }
         }
     }
+
+    public void dispose(){
+        frame.dispose();
+        //this.dispose();
+        //System.exit(0);
+    }
 }
