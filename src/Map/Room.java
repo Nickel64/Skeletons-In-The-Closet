@@ -601,6 +601,8 @@ public class Room implements java.io.Serializable {
         if (isRoomCleared() && player != null)
             player.regen();
         for (Entity entity : getEnemies()) {
+            if(entity instanceof  Decor)
+                return;
             Enemy e = (Enemy) entity;
             Direction playerProx = null;
             String message = "atk";
