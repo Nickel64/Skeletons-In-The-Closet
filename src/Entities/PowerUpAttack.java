@@ -33,10 +33,7 @@ public class PowerUpAttack implements PowerUp, java.io.Serializable {
         return -1;
     }
 
-    @Override
-    public boolean inAggroRange() {
-        return false;
-    }
+  
 
     @Override
     public boolean isDead() {
