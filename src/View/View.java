@@ -64,6 +64,7 @@ public class View extends JComponent implements Observer{
 
     //other fields
     Image border;
+    Image manhole;
     SaveLoad saveLoad;
 
     public boolean pauseMenuVisible = false;
@@ -112,6 +113,7 @@ public class View extends JComponent implements Observer{
         frame.setLocationRelativeTo(null);
 
         border = Resources.getImage("border");
+        manhole = Resources.getImage("Manhole");
 
         this.getGraphics().drawImage(border, 0, this.getHeight()-border.getHeight(null),null);
     }
@@ -137,7 +139,7 @@ public class View extends JComponent implements Observer{
             frame.remove(interfacePanel);
             g.setColor(Color.black);
             //g.fillRect(0,0, this.getWidth(), this.getHeight());
-            g.drawImage(Resources.getImage("Manhole"),0,0,1040,630,this);
+            g.drawImage(manhole,0,0,1040,630,this);
             JOptionPane.showMessageDialog(this, Resources.SUCCESS_MESSAGE);
             return;
         }
@@ -195,7 +197,7 @@ public class View extends JComponent implements Observer{
             @Override
             public void paintComponent(Graphics g1) {
                 super.paintComponent(g1);
-                g1.drawImage(Resources.getImage("Manhole"),0,0,1040,630,this);
+                g1.drawImage(manhole,0,0,1040,630,this);
             }
         };
         pauseMenu.setLayout(new GridLayout(0,1,0,20));

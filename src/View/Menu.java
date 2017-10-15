@@ -19,6 +19,7 @@ import java.io.IOException;
  */
 public class Menu extends JComponent {
     JFrame frame;
+    Image manhole = Resources.getImage("Manhole");
 
     public Menu() {
         frame = new JFrame();
@@ -28,7 +29,7 @@ public class Menu extends JComponent {
             @Override
             protected void paintComponent(Graphics g1) {
                 super.paintComponent(g1);
-                g1.drawImage(Resources.getImage("Manhole"),0,0,1040,630,this);
+                g1.drawImage(manhole,0,0,1040,630,this);
             }
         };
         panel.setLayout(new GridLayout(0,1, 0, 20));
@@ -36,7 +37,7 @@ public class Menu extends JComponent {
 
 
         JLabel title = new JLabel(Resources.TITLE);
-        title.setFont(new Font("SansSerif", Font.PLAIN, 25));
+        title.setFont(new Font("Helvetica", Font.PLAIN, 30));
         title.setHorizontalAlignment(JLabel.CENTER);
         title.setForeground(Color.white);
         panel.add(title);
