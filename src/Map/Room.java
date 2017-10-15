@@ -692,4 +692,8 @@ public class Room implements java.io.Serializable {
         }
     }
 
+    public int getLevel(){
+        return level;
+    }
+
 }

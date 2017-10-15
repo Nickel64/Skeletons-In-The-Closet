@@ -343,7 +343,10 @@ public class View extends JComponent implements Observer{
 
         int indexY = (y-startY)/tileSize;
         int indexX = (x-startX)/tileSize;
-        if(!(tile instanceof  DoorTile)){
+        DoorTile t = null;
+        if(tile instanceof DoorTile)
+            t = (DoorTile) tile;
+        if(!(tile instanceof  DoorTile) || (t != null && model.getRoom(t.toString()).getLevel() > model.getPlayer().getLevel())){
             if(indexY == 0){ //draw wall at the top of the room
                 img = tileSet.getWallTop();
                 g.drawImage(img, x, y-img.getHeight(null), null);
