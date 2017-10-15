@@ -40,11 +40,6 @@ public class PowerUpHealth implements PowerUp, java.io.Serializable {
     }
 
     @Override
-    public boolean inAggroRange() {
-        return false;
-    }
-
-    @Override
     public boolean isDead() {
         return false;
     }

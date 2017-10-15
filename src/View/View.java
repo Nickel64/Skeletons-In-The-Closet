@@ -369,24 +369,46 @@ public class View extends JComponent implements Observer{
         DoorTile t = null;
         if(tile instanceof DoorTile)
             t = (DoorTile) tile;
-        if(!(tile instanceof  DoorTile) || (t != null && model.getRoom(t.toString()).getLevel() > model.getPlayer().getLevel())){
             if(indexY == 0){ //draw wall at the top of the room
-                img = tileSet.getWallTop();
-                g.drawImage(img, x, y-img.getHeight(null), null);
+                if((t != null && model.getRoom(t.toString()).getLevel() > model.getPlayer().getLevel()))
+                    img = tileSet.getLockTop();
+                else if(t == null)
+                    img = tileSet.getWallTop();
+                else
+                    img = null;
+                if(img != null)
+                    g.drawImage(img, x, y-img.getHeight(null), null);
             }
             if(indexY == model.getCurrentRoom().getHeight()-1){
-               img = tileSet.getWallBottom();
-               g.drawImage(img, x, y+tileSize, null);
+                if((t != null && model.getRoom(t.toString()).getLevel() > model.getPlayer().getLevel()))
+                    img = tileSet.getLockDown();
+                else if(t == null)
+                    img = tileSet.getWallBottom();
+                else
+                    img = null;
+                if(img != null)
+                    g.drawImage(img, x, y+tileSize, null);
             }
             if(indexX == 0){
-                img = tileSet.getWallLeft();
-                g.drawImage(img, x-img.getWidth(null), y, null);
+                if((t != null && model.getRoom(t.toString()).getLevel() > model.getPlayer().getLevel()))
+                    img = tileSet.getLockLeft();
+                else if(t == null)
+                    img = tileSet.getWallLeft();
+                else
+                    img = null;
+                if(img != null)
+                    g.drawImage(img, x-img.getWidth(null), y, null);
             }
             if(indexX == model.getCurrentRoom().getWidth()-1){
-                img = tileSet.getWallRight();
-                g.drawImage(img, x+tileSize, y, null);
+                if((t != null && model.getRoom(t.toString()).getLevel() > model.getPlayer().getLevel()))
+                    img = tileSet.getLockRight();
+                else if(t == null)
+                    img = tileSet.getWallRight();
+                else
+                    img = null;
+                if(img != null)
+                    g.drawImage(img, x+tileSize, y, null);
             }
-        }
 
         img = tileSet.getFloor();
         if(img == null)
@@ -426,10 +448,13 @@ public class View extends JComponent implements Observer{
     public void drawEntity(Graphics2D g, Entity e, TileSet tileSet, int x, int y){
         Image img = null;
         Image mod = null;
-        int difX, difY;
 
         if(e instanceof Nothing)
             return;
+        else if(e instanceof Decor){
+            Decor d = (Decor) e;
+            img = d.getImage();
+        }
 
         else if(e instanceof Player){
             Player p = (Player) e;
@@ -481,7 +506,7 @@ public class View extends JComponent implements Observer{
         if(mod != null)
             g.drawImage(mod, x, y, null);
 
-        if(e instanceof  Boss || e instanceof Enemy){
+        if(e instanceof  Boss || e instanceof Enemy && !(e instanceof  Decor)){
             //draw the hp bar background
             g.setColor(Color.black);
             g.fillRect(x, y-tileSize/6, tileSize, tileSize/6);

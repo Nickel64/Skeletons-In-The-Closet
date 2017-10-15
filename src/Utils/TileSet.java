@@ -21,7 +21,10 @@ public class TileSet {
     private Image wallRight;
     private Image OneWayEntry;
     private Image OneWayExit;
-    private Image[] decor = new Image[5];
+    private Image lockUp;
+    private Image lockDown;
+    private Image lockLeft;
+    private Image lockRight;
 
 
     public TileSet(int level){
@@ -34,7 +37,11 @@ public class TileSet {
             wallRight = ImageIO.read(Resources.class.getResource("ImgResources/Walls/" + "WallRight" + level + ".png"));
             OneWayEntry = read(Resources.class.getResource("ImgResources/Doors/" + "OneWayEntry.png"));
             OneWayExit = read(Resources.class.getResource("ImgResources/Doors/" + "OneWayExit.png"));
-            //TODO decor = ImageIO.read(Resources.class.getResource("ImgResources/DecorObjects/" + "decor_" + level + "_"+n + ".png"));
+            lockUp = read(Resources.class.getResource("ImgResources/Doors/LockUp.png"));
+            lockDown = read(Resources.class.getResource("ImgResources/Doors/LockDown.png"));
+            lockLeft = read(Resources.class.getResource("ImgResources/Doors/LockLeft.png"));
+            lockRight = read(Resources.class.getResource("ImgResources/Doors/LockRight.png"));
+
         }
         catch(IOException e){
             e.printStackTrace();
@@ -53,11 +60,12 @@ public class TileSet {
     public Image getExit(){
         return OneWayExit;
     }
-    //public Image getDecor(){
-        //return decor;
-    //}
     public Image getWallTop(){return wallTop;}
     public Image getWallBottom(){return wallBottom;}
     public Image getWallLeft() {return wallLeft;}
     public Image getWallRight() {return wallRight;}
+    public Image getLockTop(){ return lockUp;}
+    public Image getLockDown(){ return lockDown;}
+    public Image getLockLeft(){ return lockLeft;}
+    public Image getLockRight(){ return lockRight;}
 }
