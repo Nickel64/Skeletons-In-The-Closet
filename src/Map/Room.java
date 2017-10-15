@@ -100,7 +100,7 @@ public class Room implements java.io.Serializable {
                         //if between 1-3 norm, 4-6 agile, 7-9 strong, 10 BOSS
                         Integer enemyID = Integer.parseInt(curString);
                         int type = enemyID % 3 + 1;
-                        int lvlbonus = level + (level / 2);
+                        int lvlbonus = level * 2;
                         Random r = new Random();
                         if (enemyID <= 3 && enemyID >= 1) {
                             //NORMAL ENEMY
@@ -117,7 +117,9 @@ public class Room implements java.io.Serializable {
 //                            curEntity = new Enemy(enemyID, 4* level, (5+enemyID-6)* level, 2* level);
                         } else if (enemyID >= 10) {
                             //BOSS
-                            curEntity = new Boss(enemyID, (20 + enemyID - 6) * level, (8 + enemyID - 6) * level, (2 + enemyID - 6) * level);
+                            curEntity = new Boss(enemyID, r.nextInt(type) + 20 + lvlbonus,
+                                    r.nextInt(type) + 6 + lvlbonus, r.nextInt(type) + 6);
+//                            curEntity = new Boss(enemyID, (20 + enemyID - 6) * level, (8 + enemyID - 6) * level, (2 + enemyID - 6) * level);
                         } else throw new Error("Invalid enemy id, must be 1+");
                         enemies.add(curEntity);
                     }
@@ -435,7 +437,7 @@ public class Room implements java.io.Serializable {
         if (!isRoomCleared()) {
             throw new GameError("Player cannot progress to next room until room is cleared");
         }
-        if(nextRoom.level-2 > player.getBossesDefeated()) {
+        if(nextRoom.level-1 > player.getBossesDefeated()) {
             Resources.playAudio("meepmerp.wav");
             throw new GameError("Player cannot enter this stage, must defeat " + (nextRoom.level-player.getBossesDefeated()-1) + " more bosses to enter");
         }

@@ -117,7 +117,10 @@ public class Player extends Observable implements Entity, java.io.Serializable {
     public void levelUp() {
         exp = 0;
         level++;
-        damage = damage + 2;
+        damage = damage + 1;
+        maxExp = maxExp + (20 * level);
+        maxHealth = maxHealth + 10;
+        health = maxHealth;
         Resources.playAudio("LevelUp.wav");
     }
 
@@ -160,6 +163,7 @@ public class Player extends Observable implements Entity, java.io.Serializable {
             incExp(entity.getLevel()*9);
             if(entity instanceof Boss) {
                 this.bossesDefeated++;
+                System.out.println("bosses defeated: "+bossesDefeated );
             }
         }
     }
