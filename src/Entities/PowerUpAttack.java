@@ -9,7 +9,6 @@ import java.awt.*;
  */
 public class PowerUpAttack implements PowerUp, java.io.Serializable {
 
-
     transient Image image;
 
     public PowerUpAttack (){
