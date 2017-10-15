@@ -339,4 +339,150 @@ public class GUITests {
             fail(error.getMessage());
         }
     }
+
+    @Test
+    public void test_GUIKeyboard_move_RIGHT_1(){
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". . . + . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        String endMap =
+                "RoomA 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". . . . + \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        try {
+            m.initialise(simpleMap);
+            View v = new View(m);
+
+            Room r = m.getCurrentRoom();
+            Entity e = r.getEntityAt(3, 1);
+            assertEquals("+", e.toString());
+
+            //create robot to attempt keyboard press
+            Robot robot = new Robot();
+            robot.delay(5000);
+            robot.keyPress(KeyEvent.VK_D);
+            robot.delay(500);
+            robot.keyRelease(KeyEvent.VK_D);
+            robot.delay(500);
+            robot.keyPress(KeyEvent.VK_D);
+            robot.delay(500);
+            robot.keyRelease(KeyEvent.VK_D);
+
+            assertEquals(e, r.getEntityAt(4, 1));
+            assertNotEquals(e, r.getEntityAt(3,1));
+            assertEquals(endMap, r.toString());
+
+            v.dispose();
+        } catch (Exception error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    @Test
+    public void test_GUIKeyboard_attack_1(){
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". . . + 5 \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        try {
+            m.initialise(simpleMap);
+            View v = new View(m);
+
+            Room r = m.getCurrentRoom();
+            Entity e = r.getEntityAt(3, 1);
+            assertEquals("+", e.toString());
+
+            assertEquals(r.getEnemies().size(), 1);
+
+            //create robot to attempt keyboard press
+            Robot robot = new Robot();
+            robot.delay(5000);
+
+            for(int i = 0; i < 10; i++){
+                robot.keyPress(KeyEvent.VK_SPACE);
+                robot.delay(500);
+                robot.keyRelease(KeyEvent.VK_SPACE);
+                robot.delay(500);
+            }
+
+            assertEquals(e, r.getEntityAt(3, 1));
+            assertEquals(r.getEnemies().size(), 0);
+
+            v.dispose();
+        } catch (Exception error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    @Test
+    public void test_GUIKeyboard_attack_2(){
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". . . + 9 \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        "9 . . . * ";
+        try {
+            m.initialise(simpleMap);
+            View v = new View(m);
+
+            Room r = m.getCurrentRoom();
+            Entity e = r.getEntityAt(3, 1);
+            assertEquals("+", e.toString());
+
+            assertEquals(r.getEnemies().size(), 2);
+
+            //create robot to attempt keyboard press
+            Robot robot = new Robot();
+            robot.delay(1000);
+
+            for(int i = 0; i < 100; i++){
+                robot.keyPress(KeyEvent.VK_SPACE);
+                robot.delay(5);
+                robot.keyRelease(KeyEvent.VK_SPACE);
+                robot.delay(50);
+            }
+
+            assertEquals(r.getEnemies().size(), 1);
+
+            robot.keyPress(KeyEvent.VK_S);
+            robot.delay(500);
+            robot.keyRelease(KeyEvent.VK_S);
+
+            for(int i = 0; i < 100; i++){
+                robot.keyPress(KeyEvent.VK_SPACE);
+                robot.delay(5);
+                robot.keyRelease(KeyEvent.VK_SPACE);
+                robot.delay(50);
+            }
+
+            assertEquals(e, r.getEntityAt(3, 1));
+            assertEquals(r.getEnemies().size(), 0);
+
+            v.dispose();
+        } catch (Exception error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
 }
