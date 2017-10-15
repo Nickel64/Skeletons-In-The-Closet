@@ -245,6 +245,9 @@ public class Player extends Observable implements Entity, java.io.Serializable {
 
     public boolean ping(){
         //stuff incoming
+        if(bossesDefeated >= Resources.BOSSES_TO_WIN){
+
+        }
         if(attacking || aoe) {
             if (animCount < 5) {
                 animCount++;

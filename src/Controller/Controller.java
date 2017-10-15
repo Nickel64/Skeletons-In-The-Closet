@@ -41,7 +41,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
                 bgmIteration = 1;
                 Resources.playAudio("Background.wav");
             }
-            if(!view.pauseMenuVisible || !view.paused) {
+            if(!view.pauseMenuVisible && !view.paused) {
                 this.model.getCurrentRoom().ping(model);
                 view.repaint();
             }
