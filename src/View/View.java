@@ -130,29 +130,26 @@ public class View extends JComponent implements Observer{
         if(model.getPlayerLocation() == null){
             paused = true;
             showGameOverScreen(gg);
-            //JOptionPane.showMessageDialog(this, Resources.DEATH_MESSAGE);
-            //frame.dispose();
-            //System.exit(0);
             return;
         }
 
+        //player has won (yay!)
         else if(model.getPlayer().getBossesDefeated() >= Resources.BOSSES_TO_WIN){
             paused = true;
             frame.setJMenuBar(null);
             frame.remove(interfacePanel);
-            g.setColor(Color.black);
-            //g.fillRect(0,0, this.getWidth(), this.getHeight());
-            g.drawImage(manhole,0,0,1040,630,this);
             JOptionPane.showMessageDialog(this, Resources.SUCCESS_MESSAGE);
             return;
         }
 
+        //player has de-paused (let's go!)
         else if(!pauseMenuVisible){
             drawWorld(gg);
-            //drawNewShadows(gg, model.getCurrentRoom());
             drawAllEntities(model, gg);
             drawShadows(gg, model.getPlayerLocation());
         }
+
+        //player has paused (hold it...)
         else{
             showPauseMenu(gg);
         }
@@ -215,6 +212,7 @@ public class View extends JComponent implements Observer{
         gameOverScreen.add(end);
 
         frame.remove(this);
+        frame.setJMenuBar(null);
         frame.add(gameOverScreen);
     }
 
