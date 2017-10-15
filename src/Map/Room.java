@@ -682,6 +682,10 @@ public class Room implements java.io.Serializable {
                     Enemy enemy = (Enemy) layout[y][x].getEntity();
                     enemy.resetImage();
                 }
+                else if(layout[y][x].getEntity() instanceof Decor){
+                    Decor decor = (Decor) layout[y][x].getEntity();
+                    decor.resetImage();
+                }
             }
         }
         this.tiles = new TileSet(level);

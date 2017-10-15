@@ -17,4 +17,5 @@ public class Decor extends Enemy implements java.io.Serializable {
     }
 
     public Image getImage(){return image;}
+    public void resetImage(){image = Resources.getDecorObject(level);}
 }

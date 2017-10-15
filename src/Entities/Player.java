@@ -175,12 +175,11 @@ public class Player extends Observable implements Entity, java.io.Serializable {
                 defending = false;
                 this.health = this.health - damageAmount;
                 Resources.playAudio("Defend.wav");
-                System.out.println("Play a guard breaking sound here");
             }
         } else {
             this.health = this.health - damageAmount;
             Resources.playAudio("DamagePlayer.wav");
-            System.out.println(this.health);
+            if(Resources.DEBUG) System.out.println(this.health);
         }
         notifyObservers();
     }
