@@ -6,6 +6,7 @@ import Utils.Resources;
 import Utils.SaveLoad;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,19 +22,28 @@ public class Menu extends JComponent {
 
     public Menu() {
         frame = new JFrame();
+        frame.setPreferredSize(new Dimension(1040,630));
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g1) {
+                super.paintComponent(g1);
+                g1.drawImage(Resources.getImage("Manhole"),0,0,1040,630,this);
+            }
+        };
+        panel.setLayout(new GridLayout(0,1, 0, 20));
+        panel.setBorder(new EmptyBorder(10,350,100,350));
 
 
         JLabel title = new JLabel(Resources.TITLE);
         title.setFont(new Font("SansSerif", Font.PLAIN, 25));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setHorizontalAlignment(JLabel.CENTER);
+        title.setForeground(Color.white);
         panel.add(title);
 
 
         //new game button
-        JButton newGame = new JButton(Resources.MENU_NEWGAME_BUTTON);
+        JButton newGame = new View.NiceButton(Resources.MENU_NEWGAME_BUTTON);
         newGame.setAlignmentX(Component.CENTER_ALIGNMENT);
         newGame.addActionListener(new ActionListener() {
             @Override
@@ -44,7 +54,7 @@ public class Menu extends JComponent {
         panel.add(newGame);
 
         //saved games
-        JButton savedGame = new JButton(Resources.MENU_SAVEDGAME_BUTTON);
+        JButton savedGame = new View.NiceButton(Resources.MENU_SAVEDGAME_BUTTON);
         savedGame.setAlignmentX(Component.CENTER_ALIGNMENT);
         savedGame.addActionListener(new ActionListener() {
             @Override
@@ -68,7 +78,7 @@ public class Menu extends JComponent {
         panel.add(savedGame);
 
         //Help button
-        JButton infoBut = new JButton(Resources.MENU_HELP_BUTTON);
+        JButton infoBut = new View.NiceButton(Resources.MENU_HELP_BUTTON);
         infoBut.setAlignmentX(Component.CENTER_ALIGNMENT);
         infoBut.addActionListener(new ActionListener() {
             @Override
@@ -79,7 +89,7 @@ public class Menu extends JComponent {
         panel.add(infoBut);
 
         //quit button
-        JButton quit = new JButton(Resources.MENU_QUIT_BUTTON);
+        JButton quit = new View.NiceButton(Resources.MENU_QUIT_BUTTON);
         quit.setAlignmentX(Component.CENTER_ALIGNMENT);
         quit.addActionListener(new ActionListener() {
             @Override
