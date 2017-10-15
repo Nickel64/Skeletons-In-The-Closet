@@ -62,6 +62,9 @@ public class Resources {
     public static String NEWGAME_CONFIRM = "Are you sure that you want to start a new game?";
     public static String DEATH_MESSAGE = "YOU'VE DIED \n Oh no, unfortunately you have not succeeded at your quest. \n" +
             "For that, you must now die";
+    public static String SUCCESS_MESSAGE = "YOU WON!\n You fought hard and have reached the point where you have slain all of the skeletons in your closet.";
+
+    public static int BOSSES_TO_WIN = 7;
 
     public static Dimension WINDOW_SIZE = new Dimension(1024,768);
 

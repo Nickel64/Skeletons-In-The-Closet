@@ -131,6 +131,17 @@ public class View extends JComponent implements Observer{
             return;
         }
 
+        else if(model.getPlayer().getBossesDefeated() >= Resources.BOSSES_TO_WIN){
+            paused = true;
+            frame.setJMenuBar(null);
+            frame.remove(interfacePanel);
+            g.setColor(Color.black);
+            //g.fillRect(0,0, this.getWidth(), this.getHeight());
+            g.drawImage(Resources.getImage("Manhole"),0,0,1040,630,this);
+            JOptionPane.showMessageDialog(this, Resources.SUCCESS_MESSAGE);
+            return;
+        }
+
         else if(!pauseMenuVisible){
             drawWorld(gg);
             //drawNewShadows(gg, model.getCurrentRoom());
