@@ -106,9 +106,17 @@ public class Resources {
 
     public static Image getDecorObject(int level){
         Random random = new Random();
-        int bound = 22;
-        int n = random.nextInt(bound);
-        String path = "ImgResources/DecorObjects/Decor"+n+".png";
+        String path;
+        if(level == 7) {
+            int bound = 2;
+            int n = random.nextInt(bound);
+            path = "ImgResources/DecorObjects/Skull" + n + ".png";
+        }
+        else {
+            int bound = 23;
+            int n = random.nextInt(bound);
+            path = "ImgResources/DecorObjects/Decor" + n + ".png";
+        }
         try {
             return ImageIO.read(Resources.class.getResource(path));
         }
