@@ -99,20 +99,20 @@ LvlTwoBoss . * .
 . . . .
 
 
-LvlThreeOne 1
+LvlThreeOne 3
 10 10
 . . . . . . . . . .
-HotConnectionHubWorld . . . . . . . . .
+HotConnectionHubWorld . * . * . * . * .
 . . . . . . . . . .
+. . * . * . * . * .
 . . . . . . . . . .
+. . * . * . * . * .
 . . . . . . . . . .
-. . . . . . . . . .
-. . . . . . . . . .
-. . . . . . . . . .
+. . * . * . * . * .
 . . . . . . . . . .
 . . . . . LvlThreeTwo . . . .
 
-LvlThreeTwo 1
+LvlThreeTwo 3
 20 10
 . . . LvlThreeOne . . . . . . . . LvlThreeThreeA . . . LvlThreeThreeB . . .
 . . . . . . . . . . . . . . . . . . . .
@@ -125,7 +125,7 @@ LvlThreeTwo 1
 . . . . . . . . . . . . . . . . . . . .
 . . . . . . . . . . . . . . . . . . . .
 
-LvlThreeThreeA 1
+LvlThreeThreeA 3
 5 5
 . . LvlThreeFour . .
 . . . . .
@@ -133,7 +133,7 @@ LvlThreeThreeA 1
 . . . . .
 . . LvlThreeTwo . .
 
-LvlThreeThreeB 1
+LvlThreeThreeB 3
 5 5
 . . LvlThreeFour . .
 . . . . .
@@ -141,7 +141,7 @@ LvlThreeThreeB 1
 . . . . .
 . . LvlThreeTwo . .
 
-LvlThreeFour 1
+LvlThreeFour 3
 13 10
 . . . . . . -HotConnectionHubWorld . . . . . .
 . . . . . . . . . . . . .
