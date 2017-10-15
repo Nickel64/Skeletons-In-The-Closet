@@ -102,20 +102,20 @@ public class Room implements java.io.Serializable {
                         Random r = new Random();
                         if (enemyID <= 3 && enemyID >= 1) {
                             //NORMAL ENEMY
-                            curEntity = new Enemy(enemyID, r.nextInt(type) + 3 + lvlbonus,
+                            curEntity = new Enemy(enemyID, r.nextInt(type) + 10 + lvlbonus,
                                     r.nextInt(type) + 2 + lvlbonus, r.nextInt(type) + 3);
                         } else if (enemyID <= 6 && enemyID >= 4) {
                             //AGILE
-                            curEntity = new Enemy(enemyID, r.nextInt(type) + 2 + lvlbonus,
+                            curEntity = new Enemy(enemyID, r.nextInt(type) + 7 + lvlbonus,
                                     r.nextInt(type) + 1 + lvlbonus, r.nextInt(type) + 5);
                         } else if (enemyID <= 9 && enemyID >= 7) {
                             //STRONG
-                            curEntity = new Enemy(enemyID, r.nextInt(type) + 4 + lvlbonus,
+                            curEntity = new Enemy(enemyID, r.nextInt(type) + 12 + lvlbonus,
                                     r.nextInt(type) + 4 + lvlbonus, r.nextInt(type) + 1);
 //                            curEntity = new Enemy(enemyID, 4* level, (5+enemyID-6)* level, 2* level);
                         } else if (enemyID >= 10) {
                             //BOSS
-                            curEntity = new Boss(enemyID, (12 + enemyID - 6) * level, (8 + enemyID - 6) * level, (2 + enemyID - 6) * level);
+                            curEntity = new Boss(enemyID, (20 + enemyID - 6) * level, (8 + enemyID - 6) * level, (2 + enemyID - 6) * level);
                         } else throw new Error("Invalid enemy id, must be 1+");
                         enemies.add(curEntity);
                     }
