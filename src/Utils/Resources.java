@@ -78,12 +78,12 @@ public class Resources {
 
 
     public static Image getImage(String imgDesc){
-        if(imgDesc.equals("border") || imgDesc.equals("Manhole")){
+        if(imgDesc.equals("border") || imgDesc.equals("Manhole") || imgDesc.equals("GameOver")){
             String temp = "Decor/";
             temp += imgDesc;
             imgDesc = temp;
         }
-        else if(imgDesc.equals("PowerUpAttack") || imgDesc.equals("PowerUpHealth")){
+        else if(imgDesc.startsWith("PowerUp")){
             String temp = "SpriteSets/PowerUps/";
             temp += imgDesc;
             imgDesc = temp;

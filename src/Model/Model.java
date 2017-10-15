@@ -6,10 +6,8 @@ import Entities.Entity.Direction;
 import Entities.Player;
 import Map.Room;
 import Utils.GameError;
-import Utils.Resources;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;

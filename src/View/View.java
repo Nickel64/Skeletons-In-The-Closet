@@ -65,6 +65,7 @@ public class View extends JComponent implements Observer{
     //other fields
     Image border;
     Image manhole;
+    Image gameOver;
     SaveLoad saveLoad;
 
     public boolean pauseMenuVisible = false;
@@ -114,6 +115,7 @@ public class View extends JComponent implements Observer{
 
         border = Resources.getImage("border");
         manhole = Resources.getImage("Manhole");
+        gameOver = Resources.getImage("GameOver");
 
         this.getGraphics().drawImage(border, 0, this.getHeight()-border.getHeight(null),null);
     }
@@ -127,9 +129,10 @@ public class View extends JComponent implements Observer{
         //player has died (oh no!)
         if(model.getPlayerLocation() == null){
             paused = true;
-            frame.dispose();
-            JOptionPane.showMessageDialog(this, Resources.DEATH_MESSAGE);
-            System.exit(0);
+            showGameOverScreen(gg);
+            //JOptionPane.showMessageDialog(this, Resources.DEATH_MESSAGE);
+            //frame.dispose();
+            //System.exit(0);
             return;
         }
 
@@ -184,6 +187,36 @@ public class View extends JComponent implements Observer{
     //Visual methods below//
     ////////////////////////
 
+    private void showGameOverScreen(Graphics2D g) {
+        this.setVisible(false);
+        JPanel gameOverScreen = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics gg) {
+                gg.drawImage(gameOver, 0,0,1040,630,this);
+            }
+        };
+        gameOverScreen.setLayout(new GridLayout(0,1, 0, 50));
+        gameOverScreen.setBorder(new EmptyBorder(getHeight()/2 + 50,10,25,10));
+
+        JLabel deathInfo = new JLabel("<html><center>" + Resources.DEATH_MESSAGE+ "</center></html>");
+        deathInfo.setFont(new Font("TimesNewRoman", Font.PLAIN, 25));
+        deathInfo.setForeground(new Color(149,34,27));
+        deathInfo.setHorizontalAlignment(JLabel.CENTER);
+
+        JButton end = new NiceButton("Accept Your Fate");
+        end.addActionListener((e) -> {
+            frame.dispose();
+            System.exit(0);
+        });
+
+        System.out.println(end.getWidth());
+
+        gameOverScreen.add(deathInfo);
+        gameOverScreen.add(end);
+
+        frame.remove(this);
+        frame.add(gameOverScreen);
+    }
 
     /**
      * Will be called by a key press or a button, handled by the controller.
@@ -192,6 +225,13 @@ public class View extends JComponent implements Observer{
 
     private void showPauseMenu(Graphics2D g){
         this.setVisible(false);
+
+        //Don't need to generate the pause menu over and over
+        if(pauseMenu != null) {
+            frame.remove(this);
+            frame.add(pauseMenu);
+            return;
+        }
 
         pauseMenu = new JPanel() {
             @Override
