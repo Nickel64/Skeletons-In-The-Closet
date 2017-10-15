@@ -7,6 +7,8 @@ import Entities.*;
 import Controller.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -178,16 +180,25 @@ public class View extends JComponent implements Observer{
     private void showPauseMenu(Graphics2D g){
         this.setVisible(false);
 
-        pauseMenu = new JPanel();
-        pauseMenu.setLayout(new BoxLayout(pauseMenu, BoxLayout.PAGE_AXIS));
+        pauseMenu = new JPanel() {
+            @Override
+            public void paintComponent(Graphics g1) {
+                super.paintComponent(g1);
+                g1.drawImage(Resources.getImage("Manhole"),0,0,1040,630,this);
+            }
+        };
+        pauseMenu.setLayout(new GridLayout(0,1,0,20));
+        pauseMenu.setBorder(new EmptyBorder(10,getWidth()/3,100,getWidth()/3));
         paused = true;
 
+        pauseMenu.setPreferredSize(new Dimension(100,250));
 
-        JButton newGame = new JButton(Resources.PAUSE_NEWGAME_BUTTON); newGame.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton save = new JButton(Resources.PAUSE_SAVE_BUTTON); save.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton load = new JButton(Resources.PAUSE_LOAD_BUTTON); load.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton help = new JButton(Resources.PAUSE_HELP_BUTTON); help.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton quit = new JButton(Resources.PAUSE_QUIT_BUTTON); quit.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton newGame = new NiceButton(Resources.PAUSE_NEWGAME_BUTTON);
+        JButton save = new NiceButton(Resources.PAUSE_SAVE_BUTTON);
+        JButton load = new NiceButton(Resources.PAUSE_LOAD_BUTTON);
+        JButton help = new NiceButton(Resources.PAUSE_HELP_BUTTON);
+        JButton quit = new NiceButton(Resources.PAUSE_QUIT_BUTTON);
+
 
         newGame.addActionListener(new ActionListener() {
             @Override
@@ -248,7 +259,8 @@ public class View extends JComponent implements Observer{
 
         JLabel title = new JLabel(Resources.PAUSE_MENU_TITLE);
         title.setFont(new Font("SansSerif", Font.PLAIN, 25));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setForeground(Color.white);
+        title.setHorizontalAlignment(JLabel.CENTER);
 
         pauseMenu.add(title);
         pauseMenu.add(newGame);
@@ -702,5 +714,54 @@ public class View extends JComponent implements Observer{
         frame.dispose();
         //this.dispose();
         //System.exit(0);
+    }
+
+    public static class NiceButton extends JButton {
+
+        public NiceButton(String label) {
+            super(label);
+        }
+        private final Color TL = new Color(1f,1f,1f,.2f);
+        private final Color BR = new Color(1f,1f,1f,.4f);
+        private final Color ST = new Color(1f,1f,1f,.2f);
+        private final Color SB = new Color(1f,1f,1f,.1f);
+        private Color ssc;
+        private Color bgc;
+
+        @Override public void updateUI() {
+            super.updateUI();
+            setContentAreaFilled(false);
+            setFocusPainted(false);
+            setOpaque(false);
+            setBorderPainted(false);
+            setForeground(Color.WHITE);
+        }
+        @Override protected void paintComponent(Graphics g) {
+            int x = 0;
+            int y = 0;
+            int w = getWidth();
+            int h = getHeight();
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(
+                    RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+            Shape area = new Rectangle.Float(x, y, w - 1, h - 1);
+            ssc = TL;
+            bgc = BR;
+            ButtonModel m = getModel();
+            if (m.isPressed()) {
+                ssc = SB;
+                bgc = ST;
+            } else if (m.isRollover()) {
+                ssc = ST;
+                bgc = SB;
+            }
+            g2.setPaint(new GradientPaint(x, y, ssc, x, y + h, bgc, true));
+            g2.fill(area);
+            g2.setPaint(BR);
+            g2.draw(area);
+            g2.dispose();
+            super.paintComponent(g);
+        }
     }
 }

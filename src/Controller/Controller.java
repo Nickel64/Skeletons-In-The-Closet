@@ -142,6 +142,8 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         Timer timer = new Timer(500, new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 inAutoMovement = true;
+                if(view.pauseMenuVisible)
+                    return;
                 Point point = pathToGo.poll();
 
                 if(point == null){

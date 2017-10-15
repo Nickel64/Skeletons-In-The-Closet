@@ -75,7 +75,7 @@ public class Resources {
 
 
     public static Image getImage(String imgDesc){
-        if(imgDesc.equals("border")){
+        if(imgDesc.equals("border") || imgDesc.equals("Manhole")){
             String temp = "Decor/";
             temp += imgDesc;
             imgDesc = temp;
