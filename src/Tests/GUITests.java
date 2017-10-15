@@ -485,4 +485,125 @@ public class GUITests {
             fail(error.getMessage());
         }
     }
+
+    @Test
+    public void test_GUIKeyboard_pauseMenu(){
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". . . + . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        try {
+            m.initialise(simpleMap);
+            View v = new View(m);
+
+            Room r = m.getCurrentRoom();
+            Entity e = r.getEntityAt(3, 1);
+            assertEquals("+", e.toString());
+
+            Robot robot = new Robot();
+            robot.delay(1000);
+
+            assertFalse(v.pauseMenuVisible);
+
+            robot.keyPress(KeyEvent.VK_ESCAPE);
+            robot.delay(50);
+            robot.keyRelease(KeyEvent.VK_ESCAPE);
+            robot.delay(100);
+
+            assertTrue(v.pauseMenuVisible);
+
+            v.dispose();
+        } catch (Exception error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    @Test
+    public void test_GUIKeyboard_shieldOn(){
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". . . + . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        try {
+            m.initialise(simpleMap);
+            View v = new View(m);
+
+            Room r = m.getCurrentRoom();
+            Entity e = r.getEntityAt(3, 1);
+            assertEquals("+", e.toString());
+
+            Robot robot = new Robot();
+            robot.delay(1000);
+
+            assertFalse(m.getPlayer().isDefending());
+
+            robot.keyPress(KeyEvent.VK_E);
+            robot.delay(100);
+            robot.keyRelease(KeyEvent.VK_E);
+            robot.delay(500);
+
+            assertTrue(m.getPlayer().isDefending());
+
+            robot.keyPress(KeyEvent.VK_E);
+            robot.delay(100);
+            robot.keyRelease(KeyEvent.VK_E);
+            robot.delay(500);
+
+            assertFalse(m.getPlayer().isDefending());
+
+            v.dispose();
+        } catch (Exception error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+    @Test
+    public void test_GUIKeyboard_AOEAttack(){
+        Model m = new Model();
+        String simpleMap =
+                "RoomA 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". . . + . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        try {
+            m.initialise(simpleMap);
+            View v = new View(m);
+
+            Room r = m.getCurrentRoom();
+            Entity e = r.getEntityAt(3, 1);
+            assertEquals("+", e.toString());
+
+            Robot robot = new Robot();
+            robot.delay(1000);
+
+            assertFalse(m.getPlayer().isPlayerAttackAoE());
+
+            robot.keyPress(KeyEvent.VK_Q);
+            robot.delay(10);
+            robot.keyRelease(KeyEvent.VK_Q);
+            robot.delay(50);
+            assertTrue(m.getPlayer().isPlayerAttackAoE());
+
+
+            v.dispose();
+        } catch (Exception error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
 }
