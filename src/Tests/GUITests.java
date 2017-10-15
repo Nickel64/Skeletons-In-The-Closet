@@ -412,13 +412,13 @@ public class GUITests {
 
             //create robot to attempt keyboard press
             Robot robot = new Robot();
-            robot.delay(5000);
+            robot.delay(1000);
 
-            for(int i = 0; i < 10; i++){
+            for(int i = 0; i < 100; i++){
                 robot.keyPress(KeyEvent.VK_SPACE);
-                robot.delay(500);
+                robot.delay(5);
                 robot.keyRelease(KeyEvent.VK_SPACE);
-                robot.delay(500);
+                robot.delay(50);
             }
 
             assertEquals(e, r.getEntityAt(3, 1));
@@ -438,10 +438,10 @@ public class GUITests {
                 "RoomA 1\n" +
                         "5 5\n" +
                         "* * . . . \n" +
-                        ". . . + 9 \n" +
+                        ". . . + 5 \n" +
                         ". . . . . \n" +
                         "* * * . . \n" +
-                        "9 . . . * ";
+                        "5 . . . * ";
         try {
             m.initialise(simpleMap);
             View v = new View(m);
