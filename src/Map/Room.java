@@ -85,7 +85,9 @@ public class Room implements java.io.Serializable {
                 } else {
                     if (curString.matches("\\.")) {              //open space
                         curEntity = new Nothing();
-                    } else if (curString.matches("\\*")) {         //wall
+                    } else if(curString.matches("&")){
+                        curEntity = new Decor(level, 0,0,0);
+                    }else if (curString.matches("\\*")) {         //wall
                         curEntity = new Wall(this.level);
                     } else if (curString.matches("~")) {
                         curEntity = new PowerUpAttack();
