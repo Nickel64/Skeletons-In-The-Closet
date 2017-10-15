@@ -163,7 +163,6 @@ public class Player extends Observable implements Entity, java.io.Serializable {
             incExp(entity.getLevel()*9);
             if(entity instanceof Boss) {
                 this.bossesDefeated++;
-                System.out.println("bosses defeated: "+bossesDefeated );
             }
         }
     }
