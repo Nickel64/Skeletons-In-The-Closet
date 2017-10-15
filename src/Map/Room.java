@@ -434,6 +434,7 @@ public class Room implements java.io.Serializable {
             throw new GameError("Player cannot progress to next room until room is cleared");
         }
         if(nextRoom.level-1 > player.getBossesDefeated()) {
+            Resources.playAudio("meepmerp.wav");
             throw new GameError("Player cannot enter this stage, must defeat " + (nextRoom.level-player.getBossesDefeated()-1) + " more bosses to enter");
         }
         Entity temp = exit.getEntity();
@@ -601,6 +602,8 @@ public class Room implements java.io.Serializable {
         if (isRoomCleared() && player != null)
             player.regen();
         for (Entity entity : getEnemies()) {
+            if(entity instanceof  Decor)
+                return;
             Enemy e = (Enemy) entity;
             Direction playerProx = null;
             String message = "atk";
@@ -622,7 +625,7 @@ public class Room implements java.io.Serializable {
 
             this.checkEnemyAttack(e, playerProx);
 
-            if (pingLoop++ == 15 - level) {
+            if (pingLoop == 15 - level) {
                 if (playerProx != null) {
                     e.setDirection(playerProx);
                     if (!e.isEnemyAttack()) {
@@ -658,8 +661,8 @@ public class Room implements java.io.Serializable {
                 }
             }
         }
+        pingLoop %= (15-level);
         pingLoop++;
-        pingLoop %= 15;
     }
 
     /**
@@ -687,6 +690,10 @@ public class Room implements java.io.Serializable {
                     this.checkAttack(e, dir);
             }
         }
+    }
+
+    public int getLevel(){
+        return level;
     }
 
 }

@@ -1,68 +1,18 @@
 package Entities;
 
+import Utils.Resources;
+
+import java.awt.*;
+
 /**
  * Created by nicks on 12/10/2017.
  */
-public class Decor implements Entity, java.io.Serializable {
-    @Override
-    public boolean inAggroRange() {
-        return false;
+public class Decor extends Enemy implements java.io.Serializable {
+
+    private transient Image image;
+
+    public Decor(int level, int health, int damage, int speed) {
+        super(0, 1, 0, 0);
+        image = Resources.getDecorObject(level);
     }
-
-    @Override
-    public boolean isDead() {
-        return false;
-    }
-
-    @Override
-    public void attack(Entity entity) {
-
-    }
-
-    @Override
-    public void damaged(int damage) {
-
-    }
-
-    @Override
-    public void setDirection(Direction dir) {
-
-    }
-
-    @Override
-    public int getLevel() {
-        return 0;
-    }
-
-    @Override
-    public int getDamage() {
-        return -1;
-    }
-
-    @Override
-    public int getHealth() {
-        return -1;
-    }
-
-    @Override
-    public int getMaxHealth() {
-        return -1;
-    }
-
-    @Override
-    public String getImageName() {
-        return null;
-    }
-
-    @Override
-    public boolean canMove() {
-        return false;
-    }
-
-    @Override
-    public boolean canStepOn() {
-        return false;
-    }
-
-
-    public boolean ping(){return false;}}
+}
