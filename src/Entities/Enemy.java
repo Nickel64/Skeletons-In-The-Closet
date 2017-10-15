@@ -24,7 +24,7 @@ public class Enemy extends Observable implements Entity, java.io.Serializable {
     protected boolean attacking = false;
     protected boolean dying = false;
     protected int animCount = 0;  //max value of 6
-    protected EntitySet images;
+    protected transient EntitySet images;
 
     public int getHealth(){return health;}
     public int getMaxHealth(){return maxHealth;}
@@ -44,6 +44,8 @@ public class Enemy extends Observable implements Entity, java.io.Serializable {
     public EntitySet getImages(){
         return images;
     }
+
+    public void resetImage() {images = new EntitySet(false, false, level);}
 
     public Image getIdle() {
         return images.getIdle(dir.ordinal());
