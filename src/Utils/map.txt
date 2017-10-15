@@ -1,27 +1,14 @@
-HotConnectionHubWorld 1
-13 9
-. . LvlFourOne . . . LvlFinalOne . . . LvlSixOne . .
-. . . . . . . . . . . . .
-. . * . . . . ~ . . * . LvlFiveLabyrinth
-. . . . . . . . . . . . .
-LvlTwoOne . . . . . + . . . . . .
-. . . . . . = . . . . . .
-. . * . . . . . . . * . LvlThreeOne
-. . . . . . . . . . . . .
-. . . . . . LvlZThr . . . . . .
-
-
 LvlZero 1
 14 10
 . . . . . . . * . . . . . .
+. . . . . . . * . . 1 . . .
 . . . . . . . * . . . . . .
 . . . . . . . * . . . . . .
-. . . . . . . * . . . . . .
-. . . . . . . . . . . . . .
+. + . . . . . 1 . . . . . .
 . . . . . . . . . . . . . LvlZOne
 . . . . . . . . . . . . . .
 . . . . . . . * . . . . . .
-. . . . . . . * . . . . . .
+. . . . . . . * . . 1 . . .
 . . . . . . . * . . . . . .
 
 LvlZOne 1
@@ -496,3 +483,15 @@ LvlFinalBoss 7
 . * . . . . . . . . . . . . . . . . * .
 . * * . . . . . . . . . . . . . . * * .
 . . . . . . . . . LvlFinalFive LvlFinalFive . . . . . . . . .
+
+HotConnectionHubWorld 1
+13 9
+. . LvlFourOne . . . LvlFinalOne . . . LvlSixOne . .
+. . . . . . . . . . . . .
+. . * . . . . . . . * . LvlFiveLabyrinth
+. . . . . . . . . . . . .
+LvlTwoOne . . . . . . . . . . . .
+. . . . . . = . . . . . .
+. . * . . . . . . . * . LvlThreeOne
+. . . . . . . . . . . . .
+. . . . . . LvlZThr . . . . . .
