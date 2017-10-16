@@ -34,11 +34,11 @@ public class EntitySet {
             else if (boss) {
                 if(enemyType == 99){
                     for (int n = 0; n < 4; n++) {
-                        idle[n] = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/Boss/FinalBoss/FinalBossIdle_" + n + ".png"));
+                        idle[n] = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/FinalBoss/FinalBossIdle" + n + ".png"));
 
                         //attacks
                         for(int i = 0; i < 6; i++){
-                            attacks[n][i] = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/Boss/FinalBossAttack" + n +"_"+ i + ".png"));
+                            attacks[n][i] = ImageIO.read(Resources.class.getResource("ImgResources/SpriteSets/FinalBoss/FinalBossAttack" + n +"_"+ i + ".png"));
                         }
                     }
                 }

@@ -86,29 +86,31 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if(inAutoMovement || view.paused)
-            return;
         int code = e.getKeyCode();
-        if(code == KeyEvent.VK_SPACE) {
-            if(view.pauseMenuVisible || System.currentTimeMillis() - timeLastAction < COOLDOWN)
-                return;
-            model.getPlayer().startAction("atk");
-            timeLastAction = System.currentTimeMillis();
-        }
-        else if(code == KeyEvent.VK_ESCAPE){
+        if(code == KeyEvent.VK_ESCAPE) {
             view.pauseMenuToggle();
         }
-        else if(code == KeyEvent.VK_Q){
-            if(view.pauseMenuVisible || System.currentTimeMillis() - timeLastAction < COOLDOWN)
+        else {
+            if(inAutoMovement || view.paused)
                 return;
-            if(model.getPlayer().getSpecial() >= 10) {
-                model.getPlayer().startAction("aoe");
+            if(code == KeyEvent.VK_SPACE) {
+                if(view.pauseMenuVisible || System.currentTimeMillis() - timeLastAction < COOLDOWN)
+                    return;
+                model.getPlayer().startAction("atk");
+                timeLastAction = System.currentTimeMillis();
             }
-            timeLastAction = System.currentTimeMillis();
-        }
-        else if(code == KeyEvent.VK_E) {
-            model.getPlayer().toggleGuard();
-            view.repaint();
+            else if(code == KeyEvent.VK_Q){
+                if(view.pauseMenuVisible || System.currentTimeMillis() - timeLastAction < COOLDOWN)
+                    return;
+                if(model.getPlayer().getSpecial() >= 10) {
+                    model.getPlayer().startAction("aoe");
+                }
+                timeLastAction = System.currentTimeMillis();
+            }
+            else if(code == KeyEvent.VK_E) {
+                model.getPlayer().toggleGuard();
+                view.repaint();
+            }
         }
     }
 
