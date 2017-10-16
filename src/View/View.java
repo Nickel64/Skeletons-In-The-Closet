@@ -129,9 +129,10 @@ public class View extends JComponent implements Observer{
         //player has won (yay!)
         else if(model.getPlayer().getBossesDefeated() >= Resources.BOSSES_TO_WIN){
             gameDone = true;
+            paused = true;
             frame.setJMenuBar(null);
             frame.remove(interfacePanel);
-            JOptionPane.showMessageDialog(this, Resources.SUCCESS_MESSAGE);
+            JOptionPane.showMessageDialog(frame, Resources.SUCCESS_MESSAGE);
             frame.dispose();
             Resources.bgm.stop();
             System.exit(0);
