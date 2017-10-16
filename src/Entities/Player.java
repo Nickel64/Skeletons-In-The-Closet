@@ -68,7 +68,6 @@ public class Player extends Observable implements Entity, java.io.Serializable {
     public int getDamage() {
         return damage;
     }
-    // public int getSpeed(){return speed;}
 
     public int getBossesDefeated() {
         return bossesDefeated;
