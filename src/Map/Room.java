@@ -118,6 +118,7 @@ public class Room implements java.io.Serializable {
                             //BOSS
                             curEntity = new Boss(enemyID, r.nextInt(type) + 40 + lvlbonus,
                                     r.nextInt(type) + 10 + lvlbonus, r.nextInt(type) + 6);
+                            
                         } else throw new Error("Invalid enemy id, must be 1+");
                         enemies.add(curEntity);
                     }
