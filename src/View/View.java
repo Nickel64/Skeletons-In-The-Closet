@@ -243,6 +243,7 @@ public class View extends JComponent implements Observer{
                 g1.drawImage(manhole,0,0,1040,630,this);
             }
         };
+        pauseMenu.addKeyListener(controller);
         pauseMenu.setLayout(new GridLayout(0,1,0,20));
         pauseMenu.setBorder(new EmptyBorder(10,getWidth()/3,100,getWidth()/3));
         paused = true;

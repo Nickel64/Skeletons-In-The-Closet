@@ -11,7 +11,7 @@ import java.awt.*;
 public class Boss extends Enemy {
     public Boss(int name, int health, int damage, int speed) {
         super(name, health, damage, speed);
-        images = new EntitySet(false, true, 9);
+        images = new EntitySet(false, true, name);
     }
 
     @Override
