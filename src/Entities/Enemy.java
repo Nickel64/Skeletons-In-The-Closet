@@ -16,7 +16,6 @@ public class Enemy extends Observable implements Entity, java.io.Serializable {
     protected int health; // how much health the unit has
     protected int maxHealth;  //needed for hp display purposes
     protected int damage; // how much damage the unit deals
-    protected int speed; // how fast the unit can move
     protected boolean inRange;
     protected int level;
 
@@ -28,7 +27,6 @@ public class Enemy extends Observable implements Entity, java.io.Serializable {
 
     public int getHealth(){return health;}
     public int getMaxHealth(){return maxHealth;}
-    public int getSpeed(){return speed;}
 
     //name will determine the sprite or something
     public Enemy(int level, int health, int damage, int speed){
@@ -36,7 +34,6 @@ public class Enemy extends Observable implements Entity, java.io.Serializable {
         this.health = health;
         this.maxHealth = health;
         this.damage = damage;
-        this.speed = speed;
         dir = Direction.Right;
         images = new EntitySet(false, false, level);
     }
@@ -75,9 +72,7 @@ public class Enemy extends Observable implements Entity, java.io.Serializable {
      * Calculates whether the enemy is in range to attack the player
      * @return inRange
      */
-    public boolean inAggroRange(){
-        return inRange;
-    }
+
     public boolean isDead(){
         if (health<=0){
             return true;

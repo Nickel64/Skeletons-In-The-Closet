@@ -417,6 +417,7 @@ public class Room implements java.io.Serializable {
                 PowerUp pUp = (PowerUp) layout[destP.y][destP.x].getEntity();
                 pUp.increase((Player) entity);
                 Resources.playAudio("Item.wav");
+                player.notifyObservers();
             }
             layout[destP.y][destP.x].setEntity(new Nothing());
         }
