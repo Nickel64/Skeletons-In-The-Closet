@@ -11,7 +11,6 @@ import Utils.SaveLoad;
 import org.junit.*;
 
 import java.awt.*;
-import java.nio.file.Path;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -1718,6 +1717,52 @@ public class TestAll {
 
         m = saveLoad.load((String) saveLoad.saves.keySet().toArray()[0]);
         assertEquals(firstRoom.getName(), m.getCurrentRoom().getName());
+    }
+
+    @Test
+    public void test_saveLoad_Success4(){
+        //checks that save and load saves the same layout and entity resource
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". . . . . \n" +
+                        ". . . . . \n" +
+                        "* * + . . \n" +
+                        ". . B . * \n" +
+                        "B 1\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". . . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        Scanner sc = new Scanner(simpleMap);
+        m.read(sc);
+
+        Room room = m.getCurrentRoom();
+        SaveLoad saveLoad = new SaveLoad();
+        saveLoad.saves = new HashMap<>();
+        saveLoad.save(m);
+
+        Model m2 = saveLoad.load((String) saveLoad.saves.keySet().toArray()[0]);
+        Room room2 = m2.getCurrentRoom();
+        assertEquals(room.getName(), room2.getName());
+        assertEquals(room.getWidth(), room2.getWidth());
+        assertEquals(room.getHeight(), room2.getHeight());
+
+        assertEquals(m.getPlayer().getMaxHealth(), m2.getPlayer().getMaxHealth());
+        assertEquals(m.getPlayer().getHealth(), m2.getPlayer().getHealth());
+        assertEquals(m.getPlayer().getDamage(), m2.getPlayer().getDamage());
+        assertEquals(m.getPlayer().getExp(), m2.getPlayer().getExp());
+
+        for(int i = 0; i < room.getWidth(); i++) {
+            for(int j = 0; j < room.getHeight(); j++) {
+                assertEquals(room.getTileAtLocation(i, j).toString(), room2.getTileAtLocation(i, j).toString());
+                assertEquals(room.getEntityAt(i, j).getImageName(), room2.getEntityAt(i, j).getImageName());
+            }
+        }
     }
 
     @Test
