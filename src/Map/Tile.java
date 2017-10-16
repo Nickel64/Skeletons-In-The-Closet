@@ -2,6 +2,11 @@ package Map;
 
 import Entities.Entity;
 
+/**
+ * Tile interface
+ *
+ * @author Balgmi Nam
+ */
 public interface Tile {
     /**
      * Returns whether or not tile is occupied

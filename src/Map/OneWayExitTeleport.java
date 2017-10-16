@@ -2,6 +2,11 @@ package Map;
 
 import Entities.Entity;
 
+/**
+ * Tile that is exit teleport, cannot have multiple exits in one room
+ *
+ * @author Balgmi Nam
+ */
 public class OneWayExitTeleport implements Tile, java.io.Serializable {
 
     private Entity entity;
