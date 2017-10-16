@@ -187,7 +187,7 @@ public class View extends JComponent implements Observer{
         JPanel gameOverScreen = new JPanel() {
             @Override
             protected void paintComponent(Graphics gg) {
-                gg.drawImage(gameOver, 0,0,1040,630,this);
+                gg.drawImage(gameOver, 0,0,this.getWidth(),this.getHeight(),this);
             }
         };
         gameOverScreen.setLayout(new GridLayout(0,1, 0, 50));
