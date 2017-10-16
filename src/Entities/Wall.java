@@ -43,7 +43,7 @@ public class Wall implements Entity, java.io.Serializable {
     }
 
     @Override
-    public void attack(Entity entity) {/*throw new Error();*/}
+    public void attack(Entity entity, boolean aoe) {/*throw new Error();*/}
 
     @Override
     public void damaged(int damage) {/*throw new Error();*/}

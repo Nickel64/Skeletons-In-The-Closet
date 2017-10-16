@@ -116,6 +116,7 @@ public class Room implements java.io.Serializable {
                                     r.nextInt(type) + 4 + lvlbonus, r.nextInt(type) + 1);
                         } else if (enemyID >= 10) {
                             //BOSS
+                            type = 3;
                             curEntity = new Boss(enemyID, r.nextInt(type) + 40 + lvlbonus,
                                     r.nextInt(type) + 10 + lvlbonus, r.nextInt(type) + 6);
                             
@@ -294,7 +295,7 @@ public class Room implements java.io.Serializable {
                 }
             }
         }
-        throw new Error("Point of entity has not been found");
+        throw new GameError("Point of entity has not been found");
     }
 
     /**
@@ -321,7 +322,7 @@ public class Room implements java.io.Serializable {
                     throw new GameError("Cannot move entity " + direction.name() + " x: " + (x + 1) + " y: " + y);
                 return new Point(x, y + 1);
         }
-        throw new Error("Unknown direction: " + direction.name());
+        throw new GameError("Unknown direction: " + direction.name());
     }
 
     /**
@@ -377,7 +378,7 @@ public class Room implements java.io.Serializable {
                         //check that next room door tile is correctly placed
                         if (destDoorPoint.x == 0) {
                             if (!(entity instanceof Player))
-                                throw new Error("An entity other than player cannot move from room to room");
+                                throw new GameError("An entity other than player cannot move from room to room");
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         } else
@@ -389,7 +390,7 @@ public class Room implements java.io.Serializable {
                         //check that next room door tile is correctly placed
                         if (destDoorPoint.y == nextRoom.height - 1) {
                             if (!(entity instanceof Player))
-                                throw new Error("An entity other than player cannot move from room to room");
+                                throw new GameError("An entity other than player cannot move from room to room");
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         } else
@@ -401,7 +402,7 @@ public class Room implements java.io.Serializable {
                         //check that next room door tile is correctly placed
                         if (destDoorPoint.x == nextRoom.width - 1) {
                             if (!(entity instanceof Player))
-                                throw new Error("An entity other than player cannot move from room to room");
+                                throw new GameError("An entity other than player cannot move from room to room");
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         } else
@@ -484,7 +485,7 @@ public class Room implements java.io.Serializable {
      */
     public DoorTile getDoorNamed(String name) {
         if (doors.containsKey(name)) return doors.get(name);
-        throw new Error("Door leading to room " + name + " does not exist");
+        throw new GameError("Door leading to room " + name + " does not exist");
     }
 
     /**
@@ -573,7 +574,7 @@ public class Room implements java.io.Serializable {
     private void attack(Point attack, Point defend) {
         Entity attacker = layout[attack.y][attack.x].getEntity();
         Entity defender = layout[defend.y][defend.x].getEntity();
-        attacker.attack(defender);
+        attacker.attack(defender, false);
         if (defender.isDead()) {
             removeEnemy(defender);
             layout[defend.y][defend.x].setEntity(new Nothing());

@@ -154,10 +154,11 @@ public class Player extends Observable implements Entity, java.io.Serializable {
      * attack method for when an entity is in the target range, so damage is dealt
      *
      * @param entity
+     * @param aoe whether or not this is a special aoe attack
      */
-    public void attack(Entity entity) {
-        entity.damaged(this.damage);
-//        attack();
+    public void attack(Entity entity, boolean aoe) {
+        if(aoe) entity.damaged((int) (this.damage*0.6));
+        else entity.damaged(this.damage);
         if(entity.isDead()){
             incExp(entity.getLevel()*9);
             if(entity instanceof Boss) {

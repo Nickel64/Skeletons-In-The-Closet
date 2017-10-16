@@ -1609,7 +1609,7 @@ public class TestAll {
         assertFalse(nothingTile.ping());
         assertEquals(nothingTile.getLevel(), 0);
         nothingTile.setDirection(Entity.Direction.Up);
-        nothingTile.attack(null);
+        nothingTile.attack(null, false);
         assertNull(nothingTile.getImageName());
     }
 

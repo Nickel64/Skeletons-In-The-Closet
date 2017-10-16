@@ -84,7 +84,7 @@ public class Enemy extends Observable implements Entity, java.io.Serializable {
         }
         return false;
     }
-    public void attack(Entity entity){
+    public void attack(Entity entity, boolean aoe){
         entity.damaged(this.damage);
         if(isDead()){
 

@@ -45,7 +45,7 @@ public class PowerUpHealth implements PowerUp, java.io.Serializable {
     }
 
     @Override
-    public void attack(Entity entity) {
+    public void attack(Entity entity, boolean aoe) {
 
     }
 

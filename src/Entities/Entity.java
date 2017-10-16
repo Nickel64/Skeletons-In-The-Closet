@@ -17,8 +17,9 @@ public interface Entity {
     /**
      * @param entity, the entity to be attacked
      * the entity attacks the entity passed in through the parameters
+     * @param aoe whether or not this is a special aoe attack
      */
-     void attack(Entity entity);
+     void attack(Entity entity, boolean aoe);
 
     /**
      * decreases the entities health, and then calls isdead, checks whether the entity has died
