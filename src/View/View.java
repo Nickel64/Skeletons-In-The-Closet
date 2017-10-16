@@ -59,7 +59,6 @@ public class View extends JComponent implements Observer{
 
     //other fields
     private Image border;
-    private Image manhole;
     private Image gameOver;
     private SaveLoad saveLoad;
 
@@ -70,7 +69,6 @@ public class View extends JComponent implements Observer{
     public View(Model m) {
 
         this.border = Resources.getImage("border");
-        this.manhole = Resources.getImage("Manhole");
         this.gameOver = Resources.getImage("GameOver");
         this.model = m;
 
@@ -237,7 +235,7 @@ public class View extends JComponent implements Observer{
             @Override
             public void paintComponent(Graphics g1) {
                 super.paintComponent(g1);
-                g1.drawImage(manhole,0,0,1040,630,this);
+                g1.drawImage(Resources.manhole,0,0,1040,630,this);
             }
         };
         pauseMenu.addKeyListener(controller);

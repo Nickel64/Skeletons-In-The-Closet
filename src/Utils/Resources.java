@@ -64,6 +64,7 @@ public class Resources {
             "For that, you must now die";
     public static String SUCCESS_MESSAGE = "YOU WON!\n You fought hard and have reached the point where you have slain all of the skeletons in your closet.";
     public static Clip bgm = getAudio("Background.wav");
+    public static Image manhole = getImage("Manhole");
 
 
     public static int BOSSES_TO_WIN = 7;
