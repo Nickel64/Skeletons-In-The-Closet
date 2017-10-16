@@ -39,9 +39,7 @@ public class Pathfinder {
         if(pointA.equals(pointB)
                 || pointA.x < 0 || pointA.y < 0 || pointB.x < 0 || pointB.y < 0
                 || pointA.x > sizeX || pointA.y > sizeY || pointB.x > sizeX || pointB.y > sizeY)
-            return new LinkedList<>(); //Already at ending position
-
-        if(Resources.DEBUG) System.out.println("BEGINNING PATH FIND");
+            return new LinkedList<>(); //Error Cases
 
         Queue<Point> out = new LinkedList<>();
         Stack<Point> path = new Stack<>();
@@ -145,19 +143,13 @@ public class Pathfinder {
             neighbours.remove(bestNode);
         }
 
-        for(Point point: output){
-            if(Resources.DEBUG) System.out.println(" x:" + point.x + " y:" + point.y);
-        }
-
-        //if(Resources.DEBUG) System.out.println("Best Node: x:" + output.get(0).x + " Y:" + output.get(0).y);
-
         return output;
     }
 
     public static Point findNextClosestPointToGoal(Room room, Point node, Point goal){
         Queue<Point> path = findPath(node, goal, room);
         while(!path.isEmpty() && path.peek().x == node.x && path.peek().y == node.y){
-            Point p = path.poll();
+            path.poll();
         }
         Point nextStep = path.poll();
         return nextStep;

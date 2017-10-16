@@ -32,48 +32,50 @@ import java.util.Observer;
 public class View extends JComponent implements Observer{
 
     //Panels of the view
-    JFrame frame;
-    PlayerPanel playerStats;
-    Menu menu;
-    JPanel interfacePanel = new JPanel();
-    JPanel buttonPanel;
-    JMenuBar menuBar = new JMenuBar();
-    JPanel pauseMenu;
+    private JFrame frame;
+    private PlayerPanel playerStats;
+    private JPanel interfacePanel = new JPanel();
+    private JPanel buttonPanel;
+    private JMenuBar menuBar = new JMenuBar();
+    private JPanel pauseMenu;
 
     //menu buttons
-    JButton pauseBtn = new JButton(Resources.PAUSE_PAUSE_BUTTON);
+    private JButton pauseBtn = new JButton(Resources.PAUSE_PAUSE_BUTTON);
 
     //control buttons
-    JButton up = new JButton();
-    JButton left = new JButton();
-    JButton down = new JButton();
-    JButton right = new JButton();
-    JButton attack = new JButton();
-    JButton AoE = new JButton();
-    JButton defend = new JButton();
+    private JButton up = new JButton();
+    private JButton left = new JButton();
+    private JButton down = new JButton();
+    private JButton right = new JButton();
+    private JButton attack = new JButton();
+    private JButton AoE = new JButton();
+    private JButton defend = new JButton();
 
     //MVC fields
-    Controller controller;
-    Model model;
-    Resources resources = new Resources();
+    private Controller controller;
+    private Model model;
 
     //visual fields
-    int startX;
-    int startY;
-    int tileSize = 50;
+    private int startX;
+    private int startY;
+    private int tileSize = 50;
 
     //other fields
-    Image border;
-    Image manhole;
-    Image gameOver;
-    SaveLoad saveLoad;
+    private Image border;
+    private Image manhole;
+    private Image gameOver;
+    private SaveLoad saveLoad;
 
     public boolean pauseMenuVisible = false;
     public boolean paused = false;
 
     public View(Model m) {
 
+        this.border = Resources.getImage("border");
+        this.manhole = Resources.getImage("Manhole");
+        this.gameOver = Resources.getImage("GameOver");
         this.model = m;
+
         controller = new Controller(m, this);
         model.addObserver(this);
 
@@ -105,17 +107,12 @@ public class View extends JComponent implements Observer{
         frame.add(interfacePanel, BorderLayout.SOUTH);
 
         //final setups
-
         frame.pack();
         frame.setVisible(true);
         frame.setResizable(false);
         frame.setFocusable(true);
         this.setDoubleBuffered(true);
         frame.setLocationRelativeTo(null);
-
-        border = Resources.getImage("border");
-        manhole = Resources.getImage("Manhole");
-        gameOver = Resources.getImage("GameOver");
 
         this.getGraphics().drawImage(border, 0, this.getHeight()-border.getHeight(null),null);
     }
@@ -155,6 +152,7 @@ public class View extends JComponent implements Observer{
         }
 
         g.drawImage(border, 0, this.getHeight()-border.getHeight(null),null);
+
         //the AoE should go over the top
         if(model.getPlayer().isPlayerAttackAoE()){
             int x = (model.getPlayerLocation().x*tileSize)+startX-tileSize;
@@ -339,6 +337,9 @@ public class View extends JComponent implements Observer{
         return true;
     }
 
+    /**
+     * Removes the pause menu, and resets the frame back to how it was
+     */
     private void removePauseMenu(){
         if(pauseMenu != null){
             frame.remove(pauseMenu);
@@ -348,6 +349,9 @@ public class View extends JComponent implements Observer{
         frame.add(this, BorderLayout.CENTER);
     }
 
+    /**
+     * Toggles the pause menu on/off
+     */
     public void pauseMenuToggle(){
         pauseMenuVisible = !pauseMenuVisible;
         paused = !paused;
@@ -355,8 +359,6 @@ public class View extends JComponent implements Observer{
         else pauseBtn.setText(Resources.PAUSE_RESUME_BUTTON);
         repaint();
     }
-
-
 
     /**
      * Will draw the room in the game world that the player is currently in.
@@ -401,7 +403,6 @@ public class View extends JComponent implements Observer{
      * @param tile the tile to be drawn
      */
     public void drawTile(Graphics2D g, TileSet tileSet, Tile tile, int x, int y){
-
         Image img;
 
         int indexY = (y-startY)/tileSize;
@@ -568,91 +569,6 @@ public class View extends JComponent implements Observer{
         g.fillRect(0,0,this.getWidth(),this.getHeight());
     }
 
-    public void drawNewShadows(Graphics2D g, Room currentRoom){
-        BufferedImage shadowOverlay = new BufferedImage((currentRoom.getWidth()*tileSize)+tileSize,
-                        (currentRoom.getHeight()*tileSize)+tileSize,BufferedImage.TYPE_INT_ARGB);
-
-        Graphics2D overlayGraphics = shadowOverlay.createGraphics();
-
-        Point playerLocation = currentRoom.getPlayerLocation();
-        Point coordinates = new Point( (int)playerLocation.getX()*tileSize + tileSize/2, (int)playerLocation.getY()*tileSize + tileSize/2);
-        ArrayList<Point> lightSources = new ArrayList<>();
-
-        if(currentRoom.isRoomCleared()) {
-            for (int y = 0; y < currentRoom.getHeight(); y++) {
-                for (int x = 0; x < currentRoom.getWidth(); x++) {
-                    if (currentRoom.getTileAtLocation(x, y) instanceof DoorTile) {
-                        lightSources.add((new Point(x,y)));
-                    }
-                }
-            }
-        }
-
-
-
-        float[] dist = {0.0f, 0.5f, 1.0f};
-        Color[] colors = {Resources.transparent, Resources.transparent, Resources.shadowBack};
-        RadialGradientPaint shadow = new RadialGradientPaint(coordinates, Resources.radius, dist, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE);
-        overlayGraphics.setPaint(shadow);
-        overlayGraphics.fillRect(0,0,shadowOverlay.getWidth(),shadowOverlay.getHeight());
-
-        float[] lightDist = {0.0f, 1.0f};
-        Color[] lightColours = {Resources.doorGlow, Resources.transparent};
-        for(Point p : lightSources){
-            Point lightSource = new Point( (int)p.getX()*tileSize + tileSize, (int)p.getY()*tileSize + tileSize);
-            RadialGradientPaint light = new RadialGradientPaint(lightSource, Resources.lightRadius, lightDist, lightColours, MultipleGradientPaint.CycleMethod.NO_CYCLE);
-            overlayGraphics.setPaint(light);
-            overlayGraphics.fillRect(0,0,shadowOverlay.getWidth(),shadowOverlay.getHeight());
-        }
-
-        g.drawImage(shadowOverlay, startX-tileSize/2, startY-tileSize/2, null);
-
-
-    }
-
-    /**
-     * Should animate an entity doing an action (Movement, attack, death, open, close...)
-     * Maybe
-     *
-     * @param g the graphics2D object to draw to
-     */
-
-    public void animateEntity(Graphics2D g, Entity e){
-
-    }
-
-    /**
-     * Maybe the screen should fade out and fade back into a new room
-     *
-     * @param g the graphics2D object to draw to
-     */
-
-    public void changeRoom(Graphics2D g){
-
-    }
-
-
-    /**
-     * If we do any cutscene type thingies, I guess we can have something like this
-     *
-     * @param g the graphics2D object to draw to
-     */
-    public void showScene(Graphics2D g){
-
-    }
-
-
-    /**
-     * If an entity speaks, and nobody has programmed a way for it to speak out loud,
-     * did it speak at all?
-     *
-     * @param g the plane of existence
-     * @param e the entity that's having a crisis
-     */
-    public void showText(Graphics2D g, Entity e){
-
-    }
-
     /////////////////////////
     //Utility Methods below//
     /////////////////////////
@@ -788,10 +704,11 @@ public class View extends JComponent implements Observer{
 
     public void dispose(){
         frame.dispose();
-        //this.dispose();
-        //System.exit(0);
     }
 
+    /**
+     * It's a button - that is Nice (used for Main and Pause Menus)
+     */
     public static class NiceButton extends JButton {
 
         public NiceButton(String label) {
