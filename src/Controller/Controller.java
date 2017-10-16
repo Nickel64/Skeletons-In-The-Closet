@@ -57,11 +57,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     /* KEY LISTENER METHODS */
 
     @Override
-    public void keyTyped(KeyEvent e) {
-        //if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-        //    model.checkAttack(model.getPlayer(), model.getPlayer().getDir());
-        //}
-    }
+    public void keyTyped(KeyEvent e) { }
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -90,9 +86,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         if(code == KeyEvent.VK_ESCAPE) {
             view.pauseMenuToggle();
         }
-        else {
-            if(inAutoMovement || view.paused)
-                return;
+        else if(!inAutoMovement && !view.paused) {
             if(code == KeyEvent.VK_SPACE) {
                 if(view.pauseMenuVisible || System.currentTimeMillis() - timeLastAction < COOLDOWN)
                     return;
@@ -201,7 +195,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
             switch(buttonName) {
                 case "Up":
                     movePlayer(Entity.Direction.Up);
-                    break;
+                break;
                 case "Down":
                     movePlayer(Entity.Direction.Down);
                     break;

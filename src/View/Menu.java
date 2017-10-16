@@ -20,7 +20,7 @@ import java.io.IOException;
 
 public class Menu extends JComponent {
     JFrame frame;
-    Image manhole = Resources.getImage("Manhole");
+
 
     public Menu() {
         frame = new JFrame();
@@ -30,7 +30,7 @@ public class Menu extends JComponent {
             @Override
             protected void paintComponent(Graphics g1) {
                 super.paintComponent(g1);
-                g1.drawImage(manhole,0,0,1040,630,this);
+                g1.drawImage(Resources.manhole,0,0,1040,630,this);
             }
         };
         panel.setLayout(new GridLayout(0,1, 0, 20));
