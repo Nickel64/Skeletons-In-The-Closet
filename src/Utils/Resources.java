@@ -60,7 +60,7 @@ public class Resources {
     public static String PAUSE_MENU_TITLE = "Game Paused";
     public static String EXIT_CONFIRM = "Are you sure that you want to exit?";
     public static String NEWGAME_CONFIRM = "Are you sure that you want to start a new game?";
-    public static String DEATH_MESSAGE = "YOU'VE DIED \n Oh no, unfortunately you have not succeeded at your quest. \n" +
+    public static String DEATH_MESSAGE = "YOU'VE DIED! \n Oh no, unfortunately you have not succeeded at your quest. \n" +
             "For that, you must now die";
     public static String SUCCESS_MESSAGE = "YOU WON!\n You fought hard and have reached the point where you have slain all of the skeletons in your closet.";
     public static Clip bgm = getAudio("Background.wav");
@@ -72,11 +72,8 @@ public class Resources {
 
     public static Color transparent = new Color(0,0,0,0);
     public static Color shadowBack = new Color(32,39,32);
-    public static Color doorGlow = new Color(255,200,0,50);
     public static int radius = 400;
-    public static int lightRadius = 200;
 
-    public static int levels = 7;   //zero indexed
 
 
     public static Image getImage(String imgDesc){

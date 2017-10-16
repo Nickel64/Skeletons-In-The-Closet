@@ -228,7 +228,7 @@ LvlFourFiveA 4
 . . . . . . . . . .
 * * 7 * * * 7 * * *
 . . . . 3 . . . . &
-& & . . . . . . . .
+& & . . . . . . ~ `
 
 LvlFourFiveB 4
 5 5
@@ -264,14 +264,14 @@ HotConnectionHubWorld . . . . . . . . . . 6 . .
 
 LvlFiveDeadEndOne 5
 3 3
-1 . 3
+1 * 3
 . 2 .
 . LvlFiveLabyrinth .
 
 LvlFiveDeadPathOne 5
 3 3
 . LvlFiveDeadEndThr .
-LvlFiveDeadEndTwo . .
+LvlFiveDeadEndTwo & .
 . LvlFiveLabyrinth .
 
 LvlFiveDeadEndThr 5
@@ -289,12 +289,12 @@ LvlFiveDeadEndTwo 5
 LvlFivePathOne 5
 3 3
 . LvlFivePathTwo .
-. . .
+* . *
 . LvlFiveLabyrinth .
 
 LvlFivePathTwo 5
 3 3
-. . .
+. . &
 LvlFiveDeadEndFour . LvlFivePathThree
 . LvlFivePathOne .
 
@@ -312,15 +312,15 @@ LvlFivePathTwo . .
 
 LvlFivePathFour 5
 3 3
-. . .
+. . 7
 LvlFivePathFive . .
 . LvlFivePathThree .
 
 LvlFivePathFive 5
 3 3
-. LvlFivePathSix .
+1 LvlFivePathSix .
 LvlFiveDeadPathTwo . LvlFivePathFour
-. . .
+. 6 .
 
 LvlFiveDeadPathTwo 5
 3 3
@@ -336,9 +336,9 @@ LvlFiveDeadEndFive 5
 
 LvlFivePathSix 5
 3 3
-. . .
-. . LvlFivePathSev
-. LvlFivePathFive .
+& & &
+& . LvlFivePathSev
+& LvlFivePathFive &
 
 LvlFivePathSev 5
 3 3
@@ -354,26 +354,26 @@ LvlFivePathEgt 5
 
 LvlFiveAnte 5
 7 7
-. . . . . . .
-. 7 . . . 7 .
-. . . . . . .
-LvlFivePathEgt . . . . . .
-. . . . . . .
-. 3 . . . 3 .
+. . . . . . &
+. 7 . * . 7 .
+. . . * . . .
+LvlFivePathEgt * * * * * .
+. & & * & & .
+. 3 & * . 3 .
 . . . LvlFiveBoss . . .
 
 LvlFiveBoss 5
 13 10
-. . . . . . LvlFiveAnte . . . . . .
-. . . . . . . . . . . . .
-. . . . . . . . . . . . .
-. . . . . . . . . . . . .
-. . . . . . . . . . . . .
-. . . . . . . . . . . . .
-. . . . . . 14 . . . . . .
-. . . . . . . . . . . . .
-. . . . . . . . . . . . .
-. . . . . . -HotConnectionHubWorld . . . . . .
+. . . . * . LvlFiveAnte . * . . . .
+. . . . * . . . * . . . .
+. ~ . . & . . . & . . ` .
+. . . . * . . . * . . . .
+. . . . * . . . * . . . .
+. . . . * . . . * . . . .
+. . . . * . 14 . * . . . .
+. 7 . . * . . . * . . 7 .
+. . . . * . . . * . . . .
+. . . . * . -HotConnectionHubWorld . * . . . .
 
 
 LvlSixOne 6
@@ -382,43 +382,43 @@ LvlSixOne 6
 . * * . . * * .
 . . . . . . . .
 . 3 . . . 9 . LvlSixTwoA
-. . . . . . . .
-. . . . . . . .
+. * . . . . * .
+. . * . . * . .
 . . . HotConnectionHubWorld . . . .
 
 LvlSixTwoA 6
 8 7
 . . . . . . . .
-. . . 3 . . . .
-. . . . . . . .
+. . * 3 * . . .
+. . . * . . . .
 LvlSixOne . . . . . 6 .
-. . . . . . . .
-. . . 2 . . . .
+. . . * . . . .
+. . * 2 * . . .
 . . . . . . . .
 
 LvlSixTwoB 6
 9 10
 . . . . LvlSixThree . . . .
-. . . . . . . . .
+* * * * * * * . .
 . . . . . . . . .
 . 5 . . . . . 6 .
-. . . . . . . . .
+. . * * * * * * *
 . . . . 3 . . . .
 . . 9 . . . 7 . .
-. . . . . . . . .
+* * * * * * * . .
 . . . . . . . . .
 . . . . LvlSixOne . . . .
 
 LvlSixThree 6
 9 9
 . . . . . . . . .
-. . . . -HotConnectionHubWorld . . . .
-. . . . . . . . .
-. . . . 15 . . . .
-. . . . . . . . .
-. . . . . . . . .
-. . . . . . . . .
-. . . . . . . . .
+. . . * -HotConnectionHubWorld . * . .
+. . . . . * . . .
+. * . . 15 . . . .
+. . . . . . * . .
+. . * . . . . . *
+. . . * . * . . .
+* . . . . . . * .
 . . . . LvlSixTwoB . . . .
 
 
@@ -427,29 +427,29 @@ LvlSixThree 6
 LvlFinalOne 7
 12 5
 . . . . . . . . . . . .
-. 6 . . . . . . . . 9 .
+. 6 * . . . . . . * 9 .
 LvlFinalTwo . . . . . . . . . . .
-. . . . . 6 . . . . . .
+. . * . . 6 . . . * . .
 . . . . . . . . . HotConnectionHubWorld . .
 
 LvlFinalTwo 7
 4 10
-. . . LvlFinalThree
-. . . .
+& & & LvlFinalThree
+& & . .
 6 . . .
-. . . .
-. . 9 .
-. . . .
-6 . . .
-. . . .
-. . . LvlFinalOne
-. . . .
+. . . &
+& . 9 .
+. . . &
+6 . . &
+. . & &
+& . . LvlFinalOne
+& & & .
 
 LvlFinalThree 7
 10 3
-. . . . . . . . . .
+. * . * . * . * . .
 LvlFinalTwo . . . . . . . . .
-. . . . . . . . LvlFinalFour .
+. * . * . * . * LvlFinalFour .
 
 LvlFinalFour 7
 2 10
@@ -466,20 +466,20 @@ LvlFinalThree .
 
 LvlFinalFive 7
 10 1
-LvlFinalFour . . . . . . . . LvlFinalBoss
+LvlFinalFour & 9 & 9 & 9 & & LvlFinalBoss
 
 LvlFinalBoss 7
 20 10
-. . . . . . . . . -HotConnectionHubWorld . . . . . . . . . .
-. * * . . . . . . . . . . . . . . * * .
-. * . . . . . . . 99 . . . . . . . . * .
-. . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . .
-. * . . . . . . . . . . . . . . . . * .
-. * * . . . . . . . . . . . . . . * * .
-. . . . . . . . . LvlFinalFive LvlFinalFive . . . . . . . . .
+& & & & . . . . . -HotConnectionHubWorld . . . . . . . . & &
+& * * . . . . . . . . . . . . . . * * &
+& * . . . . . . . 99 . . . . . . . . * &
+. . . . . . . . . . . . . . . . . . & &
+& & . . * * . . . . . . . . * * . . . &
+& & . . * * . . . . . . . . * * . . & &
+& . . . & & . . . . . . . . & & . . . &
+& * . . . . . . . . . . . & & . . . * &
+& * * . . . . . . . . . . . . . . * * .
+& & & . . . . . . LvlFinalFive LvlFinalFive . . . & & . . . .
 
 HotConnectionHubWorld 1
 13 9
