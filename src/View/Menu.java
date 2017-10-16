@@ -11,6 +11,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * The game 'main menu'
@@ -63,8 +66,14 @@ public class Menu extends JComponent {
             public void actionPerformed(ActionEvent e) {
                 SaveLoad saveLoad = new SaveLoad();
                 if(saveLoad.saves.size() >= 1) {
-                    Object[] possibilities = saveLoad.saves.keySet().toArray();
-                    String result = (String) JOptionPane.showInputDialog(null, Resources.LOAD_PROMPT_MESSAGE, Resources.LOAD_TITLE_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, possibilities, 0);
+                    ArrayList<String> pos = new ArrayList<>();
+                    pos.addAll(saveLoad.saves.keySet());
+                    Collections.sort(pos);
+
+                    Object[] possibilities = pos.toArray();
+
+                    String result = (String) JOptionPane.showInputDialog(null, Resources.LOAD_PROMPT_MESSAGE, Resources.LOAD_TITLE_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, possibilities, possibilities[possibilities.length-1]);
+                    if(result == null) return;
                     Model m = saveLoad.load(result);
                     if (m == null) {
                         JOptionPane.showMessageDialog(frame, Resources.LOAD_UNSUCCESSFUL_MESSAGE);

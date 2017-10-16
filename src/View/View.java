@@ -16,10 +16,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.EmptyStackException;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 /**
  * The main view of the game
@@ -284,8 +281,14 @@ public class View extends JComponent implements Observer{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(saveLoad.saves.size() >= 1) {
-                    Object[] possibilities = saveLoad.saves.keySet().toArray();
-                    String result = (String) JOptionPane.showInputDialog(null,  Resources.LOAD_PROMPT_MESSAGE, Resources.LOAD_TITLE_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, possibilities, 0);
+                    ArrayList<String> pos = new ArrayList<>();
+                    pos.addAll(saveLoad.saves.keySet());
+                    Collections.sort(pos);
+
+                    Object[] possibilities = pos.toArray();
+
+                    String result = (String) JOptionPane.showInputDialog(null, Resources.LOAD_PROMPT_MESSAGE, Resources.LOAD_TITLE_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, possibilities, possibilities[possibilities.length-1]);
+                    if(result == null) return;
                     if (!replaceModel(saveLoad.load(result))) {
                         JOptionPane.showMessageDialog(frame, Resources.LOAD_UNSUCCESSFUL_MESSAGE);
                     } else pauseMenuToggle();
