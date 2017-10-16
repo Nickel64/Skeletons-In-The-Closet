@@ -1,15 +1,15 @@
 LvlZero 1
 14 10
-~ . . . . . . * & . . . . .
+~ ` & . . . . * & . . . . &
 . . . . . . . * . . . . . .
 . . . . . . . * . . 1 . . .
 . . . . . . . * . . . . . .
-. + . . . . . . . . . . . .
-. . . . . . . . . . . . . LvlZOne
-. . 2 . . . . . . . . . . .
+. + . . . . . & . . . . . .
+. . . . . . . & . . . . . LvlZOne
+. . 2 . . . . & . . . . . .
 . . . . . . . * . . 1 . . .
 . . . . . . . * . . . . . .
-` . . . . . . * . . . . . .
+. . . . . & & * . . . & . .
 
 LvlZOne 1
 14 5
@@ -28,19 +28,19 @@ LvlZTwo 1
 LvlZOne . * . . . . * . .
 . . * . . . . * . .
 . . . . . . . . . .
-. . * . . . . * . .
-. . . . . . . . . .
-. . . 2 . . 2 . . .
+. . * . . . . * . &
+. . . . . . . . . &
+. . . 2 . . 2 . & &
 
 LvlZThr 1
 5 10
-. . HotConnectionHubWorld . .
+& . HotConnectionHubWorld . &
 . . . . .
 . . 10 . .
 . . . . .
-. . . . .
-. . . . .
-. . . . .
+. . . . &
+. * . * &
+. . . . &
 . . . . .
 * . . . *
 . . LvlZTwo . .
@@ -49,25 +49,25 @@ LvlZThr 1
 
 LvlTwoOne 2
 10 7
-. . . . * . . . . .
-. . . . . . . . . .
+. . . . * & . . . .
+* . . . . . . . . .
 LvlTwoAOne . . . . . . . . .
 . . * 1 * 1 * . . HotConnectionHubWorld
 LvlTwoBOne . . . . . . . . .
-. . . . . . . . . .
-. . . . * . . . . .
+* . . . . . . . . .
+. . . * * . . . . .
 
 LvlTwoAOne 2
 4 4
 . LvlTwoATwo . .
 . . . .
 . * . LvlTwoOne
-. . . .
+. 2 . .
 
 LvlTwoATwo 2
 4 4
-. . . .
-LvlTwoBoss . * .
+. . & `
+LvlTwoBoss . * &
 . . . .
 . . LvlTwoAOne .
 
@@ -75,28 +75,28 @@ LvlTwoBoss 2
 6 10
 . . . . . .
 . * * * . LvlTwoATwo
-. * . * . .
+. * & * . .
 . . . . . .
--HotConnectionHubWorld 11 . . . .
+-HotConnectionHubWorld 11 . . . *
 . . . . . .
 . . . . . .
-. * . * . .
+. * & * . .
 . * * * . LvlTwoBTwo
 . . . . . .
 
 LvlTwoBOne 2
 4 4
-. . . .
-. * . LvlTwoOne
-. . . .
+` 7 & .
+& * . LvlTwoOne
+. . . 6
 . LvlTwoBTwo . .
 
 LvlTwoBTwo 2
 4 4
 . . LvlTwoBOne .
 . . . .
-LvlTwoBoss . * .
-. . . .
+LvlTwoBoss . * &
+. . . &
 
 
 LvlThreeOne 3
@@ -114,30 +114,30 @@ HotConnectionHubWorld . * . * . * . * .
 
 LvlThreeTwo 3
 20 10
-. . . LvlThreeOne . . . . . . . . LvlThreeThreeA . . . LvlThreeThreeB . . .
-. . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . &
-. . . . . . . . . 1 . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . .
-. . . 4 . . * * . & * * . . . 6 . . & &
-& & . . . . * . 9 5 . * . . . . . & & &
-& & & . . . * . ~ . . * . . & . & & & &
+. . . LvlThreeOne * . . . . . . . LvlThreeThreeA . * . LvlThreeThreeB . . .
+. . . . * . . . . . . . . . * . . . . .
+. . * * * * * * * * * . * * * . . 6 . .
+. . * . . . * . . . . . * . . 5 . . . .
+. . * . * . . . . 1 . . * . . . . . . .
+. . * . * . * . . . . . * . . . 4 . . .
+. . * . * . * * * . * * * . . . . . . 1
+. . * 4 * * * . . . . . * * * & & * * *
+* . & . . . * . . 5 . . . . . . . . . 6
+. . * . . . * . . . . . * . 2 . . * 7 &
 
 LvlThreeThreeA 3
 5 5
 . . LvlThreeFour . .
-. . . . .
-. . . . .
-. . . . .
+* . ~ . *
+* . 1 . *
+* . . . *
 . . LvlThreeTwo . .
 
 LvlThreeThreeB 3
 5 5
 . . LvlThreeFour . .
 . . . . .
-. . 5 . .
+. . . . .
 . . . . .
 . . LvlThreeTwo . .
 
