@@ -99,26 +99,26 @@ public class Room implements java.io.Serializable {
                     } else if (curString.matches("[0-9]+")) {                 //enemy
                         //if between 1-3 norm, 4-6 agile, 7-9 strong, 10 BOSS
                         Integer enemyID = Integer.parseInt(curString);
-                        int type = enemyID % 3 + 1;
+                        int type = enemyID % 3 + 3;
                         int lvlbonus = level * 2;
                         Random r = new Random();
                         if (enemyID <= 3 && enemyID >= 1) {
                             //NORMAL ENEMY
-                            curEntity = new Enemy(enemyID, r.nextInt(type) + 10 + lvlbonus,
-                                    r.nextInt(type) + 2 + lvlbonus, r.nextInt(type) + 3);
+                            curEntity = new Enemy(enemyID, r.nextInt(type) + 13 + lvlbonus,
+                                    r.nextInt(type) + 4 + lvlbonus, r.nextInt(type) + 3);
                         } else if (enemyID <= 6 && enemyID >= 4) {
                             //AGILE
-                            curEntity = new Enemy(enemyID, r.nextInt(type) + 7 + lvlbonus,
-                                    r.nextInt(type) + 1 + lvlbonus, r.nextInt(type) + 5);
+                            curEntity = new Enemy(enemyID, r.nextInt(type) + 10 + lvlbonus,
+                                    r.nextInt(type) + 3 + lvlbonus, r.nextInt(type) + 5);
                         } else if (enemyID <= 9 && enemyID >= 7) {
                             //STRONG
-                            curEntity = new Enemy(enemyID, r.nextInt(type) + 12 + lvlbonus,
-                                    r.nextInt(type) + 4 + lvlbonus, r.nextInt(type) + 1);
+                            curEntity = new Enemy(enemyID, r.nextInt(type) + 15 + lvlbonus,
+                                    r.nextInt(type) + 6 + lvlbonus, r.nextInt(type) + 1);
                         } else if (enemyID >= 10) {
                             //BOSS
                             type = 3;
-                            curEntity = new Boss(enemyID, r.nextInt(type) + 40 + lvlbonus,
-                                    r.nextInt(type) + 10 + lvlbonus, r.nextInt(type) + 6);
+                            curEntity = new Boss(enemyID, r.nextInt(type) + 45 + lvlbonus,
+                                    r.nextInt(type) + 12 + lvlbonus, r.nextInt(type) + 6);
                             
                         } else throw new Error("Invalid enemy id, must be 1+");
                         enemies.add(curEntity);
