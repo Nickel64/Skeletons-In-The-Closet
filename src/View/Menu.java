@@ -17,6 +17,7 @@ import java.io.IOException;
  *
  * @author Morgan French-Stagg
  */
+
 public class Menu extends JComponent {
     JFrame frame;
     Image manhole = Resources.getImage("Manhole");
