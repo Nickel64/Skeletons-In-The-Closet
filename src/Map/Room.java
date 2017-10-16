@@ -366,7 +366,6 @@ public class Room implements java.io.Serializable {
                         if (destDoorPoint.y == 0) {
                             if (!(entity instanceof Player))
                                 throw new Error("An entity other than player cannot move from room to room");
-                            Resources.playAudio("Door.wav");
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         } else
@@ -379,7 +378,6 @@ public class Room implements java.io.Serializable {
                         if (destDoorPoint.x == 0) {
                             if (!(entity instanceof Player))
                                 throw new Error("An entity other than player cannot move from room to room");
-                            Resources.playAudio("Door.wav");
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         } else
@@ -392,7 +390,6 @@ public class Room implements java.io.Serializable {
                         if (destDoorPoint.y == nextRoom.height - 1) {
                             if (!(entity instanceof Player))
                                 throw new Error("An entity other than player cannot move from room to room");
-                            Resources.playAudio("Door.wav");
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         } else
@@ -405,7 +402,6 @@ public class Room implements java.io.Serializable {
                         if (destDoorPoint.x == nextRoom.width - 1) {
                             if (!(entity instanceof Player))
                                 throw new Error("An entity other than player cannot move from room to room");
-                            Resources.playAudio("Door.wav");
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         } else
@@ -449,6 +445,7 @@ public class Room implements java.io.Serializable {
             Resources.playAudio("meepmerp.wav");
             throw new GameError("Player cannot enter this stage, must defeat " + (nextRoom.level-player.getBossesDefeated()-1) + " more bosses to enter");
         }
+        Resources.playAudio("Door.wav");
         Entity temp = exit.getEntity();
         exit.setEntity(entry.getEntity());
         entry.setEntity(temp);
