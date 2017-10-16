@@ -358,7 +358,6 @@ public class Room implements java.io.Serializable {
             Room nextRoom = model.getRoom(door.nameOfNextRoom());       //finds next room to hold player
             DoorTile endDoor = nextRoom.getDoorNamed(this.name);
             Point destDoorPoint = nextRoom.getTilePoint(endDoor);
-            if (Resources.DEBUG) System.out.println(direction.name() + " at x: " + x + " and y: " + y);
             switch (direction) {
                 case Down:
                     if (y + 1 >= this.height) {    //checks that direction is going out of room
@@ -623,7 +622,6 @@ public class Room implements java.io.Serializable {
                 return;
             Enemy e = (Enemy) entity;
             Direction playerProx = null;
-            String message = "atk";
             Point p = findPoint(entity);
             // search for the player
             if (p.x > 0 && getEntityAt(p.x - 1, p.y) instanceof Player) {
@@ -650,7 +648,6 @@ public class Room implements java.io.Serializable {
                         e.startAction("atk");
                     }
                 } else if (!e.isEnemyAttack()) {
-                    message = "";
 
                     Point nextPos = Pathfinder.findNextClosestPointToGoal(this, p, getPlayerLocation());
                     if (nextPos == null)
@@ -671,9 +668,6 @@ public class Room implements java.io.Serializable {
                         continue;
                     }
                     entity.setDirection(dir);
-                    if (Resources.DEBUG) System.out.println("MOVING ENEMY: " + dir);
-
-                    if (Resources.DEBUG) System.out.println(message);
 
                 }
             }

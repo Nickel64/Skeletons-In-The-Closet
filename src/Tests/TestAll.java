@@ -1158,6 +1158,41 @@ public class TestAll {
     }
 
     @Test
+    public void test_model_move_door_5() {
+        //tests that when model moves player entity on to door the current room of the model is not changed as
+        //player cannot enter new room which requires one boss kill (level 2)
+        Model m = new Model();
+        String simpleMap =
+                "A 1\n" +
+                        "5 5\n" +
+                        "* * . . . \n" +
+                        ". . . . . \n" +
+                        ". . . . . \n" +
+                        "* * + . . \n" +
+                        ". . B . * \n" +
+                        "B 3\n" +
+                        "5 5\n" +
+                        "* * A . . \n" +
+                        ". . . . . \n" +
+                        ". . . . . \n" +
+                        "* * * . . \n" +
+                        ". . . . * ";
+        m.read(new Scanner(simpleMap));
+        Player player = m.getCurrentRoom().getPlayer();
+        Room r = m.getCurrentRoom();
+        try {
+            player.move(Entity.Direction.Down);
+            player.move(Entity.Direction.Down);
+            assertEquals(r, m.getCurrentRoom());
+            assertNull(m.getRoom("B").getPlayer());
+        } catch(GameError error) {
+            error.printStackTrace();
+            fail(error.getMessage());
+        }
+    }
+
+
+    @Test
     public void test_model_attack_1() {
         //tests player attack enemy NORTH, EAST, SOUTH and WEST
         //enemy should take damage

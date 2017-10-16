@@ -90,15 +90,9 @@ public class Enemy extends Observable implements Entity, java.io.Serializable {
 
         }
     }
-    public void move(){
-
-    }
     public void damaged(int damageAmount){
         this.health = this.health - damageAmount;
         Resources.playAudio("DamageEnemy.wav");
-        if(isDead()){
-            //tell view that this entity is dead
-        }
     }
 
     public boolean canMove() {
