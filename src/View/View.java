@@ -207,7 +207,7 @@ public class View extends JComponent implements Observer{
             System.exit(0);
         });
 
-        System.out.println(end.getWidth());
+        if(Resources.DEBUG) System.out.println(end.getWidth());
 
         gameOverScreen.add(deathInfo);
         gameOverScreen.add(end);

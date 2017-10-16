@@ -136,9 +136,9 @@ LvlThreeThreeA 3
 LvlThreeThreeB 3
 5 5
 . . LvlThreeFour . .
-. . . . .
-. . . . .
-. . . . .
+. * . * .
+. * * * .
+. . * . .
 . . LvlThreeTwo . .
 
 LvlThreeFour 3
