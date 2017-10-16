@@ -183,6 +183,7 @@ public class View extends JComponent implements Observer{
     ////////////////////////
 
     private void showGameOverScreen(Graphics2D g) {
+        Resources.playAudio("DeathTaunt.wav");
         this.setVisible(false);
         JPanel gameOverScreen = new JPanel() {
             @Override
