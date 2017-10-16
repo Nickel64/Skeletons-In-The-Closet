@@ -366,6 +366,7 @@ public class Room implements java.io.Serializable {
                         if (destDoorPoint.y == 0) {
                             if (!(entity instanceof Player))
                                 throw new Error("An entity other than player cannot move from room to room");
+                            Resources.playAudio("Door.wav");
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         } else
@@ -378,6 +379,7 @@ public class Room implements java.io.Serializable {
                         if (destDoorPoint.x == 0) {
                             if (!(entity instanceof Player))
                                 throw new Error("An entity other than player cannot move from room to room");
+                            Resources.playAudio("Door.wav");
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         } else
@@ -390,6 +392,7 @@ public class Room implements java.io.Serializable {
                         if (destDoorPoint.y == nextRoom.height - 1) {
                             if (!(entity instanceof Player))
                                 throw new Error("An entity other than player cannot move from room to room");
+                            Resources.playAudio("Door.wav");
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         } else
@@ -402,6 +405,7 @@ public class Room implements java.io.Serializable {
                         if (destDoorPoint.x == nextRoom.width - 1) {
                             if (!(entity instanceof Player))
                                 throw new Error("An entity other than player cannot move from room to room");
+                            Resources.playAudio("Door.wav");
                             updateRoom(model, door, endDoor, nextRoom);
                             return;
                         } else
@@ -422,6 +426,7 @@ public class Room implements java.io.Serializable {
         swap(p, destP);
         if (layout[destP.y][destP.x] instanceof OneWayEntryTeleport && isRoomCleared()) {
             //find teleport exit and updateRoom
+            Resources.playAudio("Trapdoor.wav");
             OneWayEntryTeleport entry = (OneWayEntryTeleport) layout[destP.y][destP.x];
             Room nextRoom = model.getRoom(entry.nameOfNextRoom());
             updateRoom(model, entry, nextRoom.getTeleportExit(), nextRoom);
