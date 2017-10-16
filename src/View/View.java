@@ -137,7 +137,7 @@ public class View extends JComponent implements Observer{
             JOptionPane.showMessageDialog(this, Resources.SUCCESS_MESSAGE);
             frame.dispose();
             Resources.bgm.stop();
-            new Menu();
+            System.exit(0);
             return;
         }
 
@@ -206,7 +206,7 @@ public class View extends JComponent implements Observer{
             Resources.bgm.stop();
             frame.dispose();
             this.dispose();
-            new Menu();
+            System.exit(0);
         });
 
         System.out.println(end.getWidth());
