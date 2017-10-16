@@ -68,6 +68,7 @@ public class View extends JComponent implements Observer{
 
     public boolean pauseMenuVisible = false;
     public boolean paused = false;
+    public boolean gameDone = false;
 
     public View(Model m) {
 
@@ -125,17 +126,20 @@ public class View extends JComponent implements Observer{
 
         //player has died (oh no!)
         if(model.getPlayerLocation() == null){
-            paused = true;
+            gameDone = true;
             showGameOverScreen(gg);
             return;
         }
 
         //player has won (yay!)
         else if(model.getPlayer().getBossesDefeated() >= Resources.BOSSES_TO_WIN){
-            paused = true;
+            gameDone = true;
             frame.setJMenuBar(null);
             frame.remove(interfacePanel);
             JOptionPane.showMessageDialog(this, Resources.SUCCESS_MESSAGE);
+            frame.dispose();
+            Resources.bgm.stop();
+            new Menu();
             return;
         }
 
@@ -188,7 +192,7 @@ public class View extends JComponent implements Observer{
         JPanel gameOverScreen = new JPanel() {
             @Override
             protected void paintComponent(Graphics gg) {
-                gg.drawImage(gameOver, 0,0,this.getWidth(),this.getHeight(),this);
+                gg.drawImage(gameOver, 0,0,this.getWidth(), this.getHeight(),this);
             }
         };
         gameOverScreen.setLayout(new GridLayout(0,1, 0, 50));
@@ -201,8 +205,10 @@ public class View extends JComponent implements Observer{
 
         JButton end = new NiceButton("Accept Your Fate");
         end.addActionListener((e) -> {
+            Resources.bgm.stop();
             frame.dispose();
-            System.exit(0);
+            this.dispose();
+            new Menu();
         });
 
         System.out.println(end.getWidth());

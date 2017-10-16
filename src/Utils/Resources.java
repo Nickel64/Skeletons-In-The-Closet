@@ -63,6 +63,8 @@ public class Resources {
     public static String DEATH_MESSAGE = "YOU'VE DIED \n Oh no, unfortunately you have not succeeded at your quest. \n" +
             "For that, you must now die";
     public static String SUCCESS_MESSAGE = "YOU WON!\n You fought hard and have reached the point where you have slain all of the skeletons in your closet.";
+    public static Clip bgm = getAudio("Background.wav");
+
 
     public static int BOSSES_TO_WIN = 7;
 
@@ -126,13 +128,24 @@ public class Resources {
         return null;
     }
 
-    /** Plays an audio clip*/
-    public static void playAudio(String name) {
+    private static Clip getAudio(String name) {
         try {
             Clip clip = AudioSystem.getClip();
             URL localURL = Resources.class.getResource("SoundResources/"+name);
             AudioInputStream ais = AudioSystem.getAudioInputStream(localURL);
             clip.open(ais);
+            return clip;
+        } catch(Exception e) {
+            e.printStackTrace();
+            //throw new Error("Could not play audio");
+        }
+        return null;
+    }
+
+    /** Plays an audio clip*/
+    public static void playAudio(String name) {
+        try {
+            Clip clip = getAudio(name);
             clip.start();
         } catch(Exception e) {
             e.printStackTrace();
