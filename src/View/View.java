@@ -276,9 +276,9 @@ public class View extends JComponent implements Observer{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(saveLoad.saves.size() >= 1) {
-                    int result = JOptionPane.showOptionDialog(frame, Resources.LOAD_PROMPT_MESSAGE, Resources.LOAD_TITLE_MESSAGE, 0, 0, null, saveLoad.saves.keySet().toArray(), saveLoad.saves.get(saveLoad.saves.keySet().toArray()[0]));
-                    if(result == -1) return;
-                    if (!replaceModel(saveLoad.load((String) saveLoad.saves.keySet().toArray()[result]))) {
+                    Object[] possibilities = saveLoad.saves.keySet().toArray();
+                    String result = (String) JOptionPane.showInputDialog(null,  Resources.LOAD_PROMPT_MESSAGE, Resources.LOAD_TITLE_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, possibilities, 0);
+                    if (!replaceModel(saveLoad.load(result))) {
                         JOptionPane.showMessageDialog(frame, Resources.LOAD_UNSUCCESSFUL_MESSAGE);
                     } else pauseMenuToggle();
                 }
