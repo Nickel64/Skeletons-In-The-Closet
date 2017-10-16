@@ -412,7 +412,7 @@ public class View extends JComponent implements Observer{
         if(tile instanceof DoorTile)
             t = (DoorTile) tile;
             if(indexY == 0){ //draw wall at the top of the room
-                if((t != null && model.getRoom(t.toString()).getLevel() > model.getPlayer().getLevel()))
+                if((t != null && model.getRoom(t.toString()).getLevel()-1 > model.getPlayer().getBossesDefeated()))
                     img = tileSet.getLockTop();
                 else if(t == null)
                     img = tileSet.getWallTop();
@@ -422,7 +422,7 @@ public class View extends JComponent implements Observer{
                     g.drawImage(img, x, y-img.getHeight(null), null);
             }
             if(indexY == model.getCurrentRoom().getHeight()-1){
-                if((t != null && model.getRoom(t.toString()).getLevel() > model.getPlayer().getLevel()))
+                if((t != null && model.getRoom(t.toString()).getLevel()-1 > model.getPlayer().getBossesDefeated()))
                     img = tileSet.getLockDown();
                 else if(t == null)
                     img = tileSet.getWallBottom();
@@ -432,7 +432,7 @@ public class View extends JComponent implements Observer{
                     g.drawImage(img, x, y+tileSize, null);
             }
             if(indexX == 0){
-                if((t != null && model.getRoom(t.toString()).getLevel() > model.getPlayer().getLevel()))
+                if((t != null && model.getRoom(t.toString()).getLevel()-1 > model.getPlayer().getBossesDefeated()))
                     img = tileSet.getLockLeft();
                 else if(t == null)
                     img = tileSet.getWallLeft();
@@ -442,7 +442,7 @@ public class View extends JComponent implements Observer{
                     g.drawImage(img, x-img.getWidth(null), y, null);
             }
             if(indexX == model.getCurrentRoom().getWidth()-1){
-                if((t != null && model.getRoom(t.toString()).getLevel() > model.getPlayer().getLevel()))
+                if((t != null && model.getRoom(t.toString()).getLevel()-1 > model.getPlayer().getBossesDefeated()))
                     img = tileSet.getLockRight();
                 else if(t == null)
                     img = tileSet.getWallRight();
