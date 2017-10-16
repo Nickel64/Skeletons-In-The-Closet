@@ -117,8 +117,8 @@ public class Room implements java.io.Serializable {
                         } else if (enemyID >= 10) {
                             //BOSS
                             type = 3;
-                            curEntity = new Boss(enemyID, r.nextInt(type) + 45 + lvlbonus,
-                                    r.nextInt(type) + 12 + lvlbonus, r.nextInt(type) + 6);
+                            curEntity = new Boss(enemyID, r.nextInt(type) + 40 + lvlbonus,
+                                    r.nextInt(type) + 10 + lvlbonus, r.nextInt(type) + 6);
                             
                         } else throw new Error("Invalid enemy id, must be 1+");
                         enemies.add(curEntity);
