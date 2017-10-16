@@ -37,7 +37,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
 
     private void startLoop() {
         new Timer(50, (e) -> {
-            if((bgmIteration++ % 3880) == 0) { //bgm is 194s * 20 pings/sec
+            if((bgmIteration++ % 800) == 0) { //bgm is 40s * 20 pings/sec
                 bgmIteration = 1;
                 Resources.bgm.start();
             }
