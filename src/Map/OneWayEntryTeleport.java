@@ -4,6 +4,11 @@ import Entities.Entity;
 
 import javax.print.DocFlavor;
 
+/**
+ * Tile that is entry way to exit teleport, can have multiple entries to one exit
+ *
+ * @author Balgmi Nam
+ */
 public class OneWayEntryTeleport implements Tile, java.io.Serializable {
 
     private Entity entity;

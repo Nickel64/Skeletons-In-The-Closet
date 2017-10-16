@@ -2,6 +2,11 @@ package Map;
 
 import Entities.Entity;
 
+/**
+ * Door Tile that leads to different room
+ *
+ * @author Balgmi Nam
+ */
 public class DoorTile implements Tile, java.io.Serializable {
 
     private String connectedRoomName;

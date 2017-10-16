@@ -63,9 +63,9 @@ public class Menu extends JComponent {
             public void actionPerformed(ActionEvent e) {
                 SaveLoad saveLoad = new SaveLoad();
                 if(saveLoad.saves.size() >= 1) {
-                    int result = JOptionPane.showOptionDialog(frame, Resources.LOAD_PROMPT_MESSAGE, Resources.LOAD_TITLE_MESSAGE, 0, 0, null, saveLoad.saves.keySet().toArray(), saveLoad.saves.get(saveLoad.saves.keySet().toArray()[0]));
-                    if(result == -1) return;
-                    Model m = saveLoad.load((String) saveLoad.saves.keySet().toArray()[result]);
+                    Object[] possibilities = saveLoad.saves.keySet().toArray();
+                    String result = (String) JOptionPane.showInputDialog(null, Resources.LOAD_PROMPT_MESSAGE, Resources.LOAD_TITLE_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, possibilities, 0);
+                    Model m = saveLoad.load(result);
                     if (m == null) {
                         JOptionPane.showMessageDialog(frame, Resources.LOAD_UNSUCCESSFUL_MESSAGE);
                     } else {

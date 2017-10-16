@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Room containing room layout of Tiles
- * <p>
+ *
  * Created: 19/9/17
  *
  * @author Balgmi Nam
@@ -114,21 +114,17 @@ public class Room implements java.io.Serializable {
                             //STRONG
                             curEntity = new Enemy(enemyID, r.nextInt(type) + 12 + lvlbonus,
                                     r.nextInt(type) + 4 + lvlbonus, r.nextInt(type) + 1);
-//                            curEntity = new Enemy(enemyID, 4* level, (5+enemyID-6)* level, 2* level);
                         } else if (enemyID >= 10) {
                             //BOSS
-                            curEntity = new Boss(enemyID, r.nextInt(type) + 20 + lvlbonus,
-                                    r.nextInt(type) + 6 + lvlbonus, r.nextInt(type) + 6);
-//                            curEntity = new Boss(enemyID, (20 + enemyID - 6) * level, (8 + enemyID - 6) * level, (2 + enemyID - 6) * level);
+                            curEntity = new Boss(enemyID, r.nextInt(type) + 40 + lvlbonus,
+                                    r.nextInt(type) + 10 + lvlbonus, r.nextInt(type) + 6);
                         } else throw new Error("Invalid enemy id, must be 1+");
                         enemies.add(curEntity);
                     }
                     layout[i][j] = new FloorTile(curEntity);
                 }
                 if (curEntity == null) throw new Error("Entity is invalid " + curString);
-                if (Resources.DEBUG) System.out.print(curString);
             }
-            if (Resources.DEBUG) System.out.println();
         }
         setRoomClearedTo(enemies.size() == 0);
         return sc;
@@ -433,6 +429,13 @@ public class Room implements java.io.Serializable {
 
     }
 
+    /**
+     * Updates the new room which player has entered.
+     * @param model of game
+     * @param entry tile that player ends up at
+     * @param exit tile that player starts at
+     * @param nextRoom that player is moved to
+     */
     private void updateRoom(Model model, Tile entry, Tile exit, Room nextRoom) {
         if (!isRoomCleared()) {
             throw new GameError("Player cannot progress to next room until room is cleared");
@@ -575,6 +578,10 @@ public class Room implements java.io.Serializable {
         }
     }
 
+    /**
+     * Returns room layout in string form
+     * @return String of room layout
+     */
     public String toString() {
         String str = name + " " + level + "\n" + width + " " + height;
         for (Tile[] aLayout : layout) {
@@ -586,6 +593,10 @@ public class Room implements java.io.Serializable {
         return str;
     }
 
+    /**
+     * ping of player attack and room
+     * @param m model of game
+     */
     public void ping(Model m) {
 
         boolean actComplete = false;
