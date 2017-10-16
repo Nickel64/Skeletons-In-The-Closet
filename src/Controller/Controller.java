@@ -39,6 +39,7 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
         new Timer(50, (e) -> {
             if((bgmIteration++ % 800) == 0) { //bgm is 40s * 20 pings/sec
                 bgmIteration = 1;
+                Resources.bgm.setFramePosition(0);
                 Resources.bgm.start();
             }
             if(!view.pauseMenuVisible && !view.paused) {
@@ -245,20 +246,8 @@ public class Controller implements KeyListener, MouseListener, ActionListener {
     }
 
     private void movePlayerPathFind(Entity.Direction dir) {
-        try {
-            if (model.getPlayer().getDir() == dir) {
-                model.moveEntity(model.getPlayer(), dir);
-                Resources.playAudio("footstep.wav");
-            }
-            else {
-                model.getPlayer().setDirection(dir);
-                model.moveEntity(model.getPlayer(), dir);
-                view.repaint();
-            }
-            timeLastAction = System.currentTimeMillis();
-        } catch(GameError e) {
-            Resources.playAudio("bump.wav");
-        }
+        model.getPlayer().setDirection(dir);
+        movePlayer(dir);
     }
 
     /* END OF MOUSE LISTENER METHODS */
